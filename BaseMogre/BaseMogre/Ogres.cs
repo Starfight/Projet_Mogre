@@ -5,7 +5,8 @@ using System.Text;
 
 namespace BaseMogre
 {
-    class Ogres
+    abstract class Ogres
     {
+
     }
 }
