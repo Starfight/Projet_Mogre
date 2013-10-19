@@ -62,7 +62,6 @@ namespace BaseMogre
 
             // Setup RenderSystem
             SetupRenderSystem();
-           
 
             // Create Render Window
             mRoot.Initialise(false, "Main Ogre Window");
@@ -76,9 +75,6 @@ namespace BaseMogre
 
             // Create a Simple Scene
             mgr = mRoot.CreateSceneManager(SceneType.ST_EXTERIOR_CLOSE);
-            mgr.AmbientLight = ColourValue.White;
-            mgr.SetSkyDome(true, "Examples/CloudySky", 5, 8);
-
             //plan
             Map.CreationPlan(ref mgr);
 
@@ -89,25 +85,7 @@ namespace BaseMogre
 
 
             //objet
-            Entity ent = mgr.CreateEntity("Robot", "robot.mesh");
-            SceneNode node = mgr.RootSceneNode.CreateChildSceneNode("RobotNode", new Mogre.Vector3(0.0f, 0.0f, 0.25f));
-            node.AttachObject(ent);
-
-            //animation robot
-            ent = mgr.CreateEntity("Knot1", "knot.mesh");
-            node = mgr.RootSceneNode.CreateChildSceneNode("Knot1Node", new Mogre.Vector3(0.0f, -10.0f, 25.0f));
-            node.AttachObject(ent);
-            node.Scale(0.1f, 0.1f, 0.1f);
-            //
-            ent = mgr.CreateEntity("Knot2", "knot.mesh");
-            node = mgr.RootSceneNode.CreateChildSceneNode("Knot2Node", new Mogre.Vector3(550.0f, -10.0f, 50.0f));
-            node.AttachObject(ent);
-            node.Scale(0.1f, 0.1f, 0.1f);
-            //
-            ent = mgr.CreateEntity("Knot3", "knot.mesh");
-            node = mgr.RootSceneNode.CreateChildSceneNode("Knot3Node", new Mogre.Vector3(-100.0f, -10.0f, -200.0f));
-            node.AttachObject(ent);
-            node.Scale(0.1f, 0.1f, 0.1f);
+            Entity ent = Robot.CreationRobot(ref mgr, "Robot");
 
             //walklist
             mWalkList = new LinkedList<Mogre.Vector3>();
@@ -145,7 +123,7 @@ namespace BaseMogre
         {
 
             Entity ent = mgr.GetEntity("Robot");
-            SceneNode node = mgr.GetSceneNode("RobotNode");
+            SceneNode node = mgr.GetSceneNode("Node_Robot");
 
             float move = mWalkSpeed * (evt.timeSinceLastFrame);
             mDistance -= move;
@@ -175,7 +153,7 @@ namespace BaseMogre
         bool TurnNextLocation()
         {
             Entity ent = mgr.GetEntity("Robot");
-            SceneNode node = mgr.GetSceneNode("RobotNode");
+            SceneNode node = mgr.GetSceneNode("Node_Robot");
 
             if (nextLocation())
             {
