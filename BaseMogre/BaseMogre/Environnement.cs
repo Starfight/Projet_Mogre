@@ -9,5 +9,16 @@ namespace BaseMogre
 {
     class Environnement
     {
+        #region Variables
+        private List<Robot> _ListOfRobots;
+        private List<Ogres> _ListOfOgres;
+        #endregion
+
+        #region Constructeur
+        public Environnement()
+        {
+
+        }
+        #endregion
     }
 }
