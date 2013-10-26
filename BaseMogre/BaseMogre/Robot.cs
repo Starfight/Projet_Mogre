@@ -78,6 +78,17 @@ namespace BaseMogre
         }
         #endregion
 
+        #region Getters et Setters
+        public String NomEntity
+        {
+            get { return _nomEntity; }
+        }
+        public Vector3 Position
+        {
+            get { return _robot.BoundingBox.Center; }
+        }
+        #endregion
+
         #region old to delete
         public static Entity CreationRobot(ref SceneManager scm,string nomEntite)
         {
