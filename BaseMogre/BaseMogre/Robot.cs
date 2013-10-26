@@ -9,6 +9,76 @@ namespace BaseMogre
 {
     class Robot
     {
+        #region Constantes/Variables statiques
+        /// <summary>
+        /// Nom du mesh
+        /// </summary>
+        private const String NAMEMESHROBOT = "robot.mesh";
+
+        /// <summary>
+        /// Nom par défaut
+        /// </summary>
+        private const String NAMEDEFAULT = "robot";
+
+        /// <summary>
+        /// Nom du node par défaut
+        /// </summary>
+        private const String NAMENODE = "Node_";
+
+        /// <summary>
+        /// Caractéristique des PV
+        /// </summary>
+        private const int PVMAX = 20;
+
+        /// <summary>
+        /// Compteur de robot
+        /// </summary>
+        private static int _COUNT = 0;
+        #endregion
+
+        #region Variables
+        SceneManager _scm;
+
+        /// <summary>
+        /// Entity représentant le robot
+        /// </summary>
+        Entity _robot;
+
+        /// <summary>
+        /// Scenenode du robot
+        /// </summary>
+        SceneNode _nodeRobot;
+
+        String _nomEntity;
+        int _pointsDeVie;
+        #endregion
+
+        #region Constructeur
+        /// <summary>
+        /// Création du robot
+        /// </summary>
+        /// <param name="scm">Scenemanager d'intégration du robot</param>
+        /// <param name="position">Position de départ</param>
+        public Robot(ref SceneManager scm, Vector3 position)
+        {
+            //Attribution du nom automatique
+            _COUNT++;
+            _nomEntity = NAMEDEFAULT + _COUNT;
+
+            //Création de l'Entity et du Scenenode à la position
+            _robot = scm.CreateEntity(_nomEntity, NAMEMESHROBOT);
+            _nodeRobot = scm.RootSceneNode.CreateChildSceneNode(NAMENODE + _nomEntity, position);
+            _nodeRobot.AttachObject(_robot);
+
+            //Enregistrement du Scenemanager
+            _scm = scm;
+
+            //Initialisation des caractéristiques
+            _pointsDeVie = PVMAX;
+        }
+        #endregion
+
+        #region old to delete
         public static Entity CreationRobot(ref SceneManager scm,string nomEntite)
         {
             Entity ent = scm.CreateEntity(nomEntite, "robot.mesh");
@@ -35,5 +105,6 @@ namespace BaseMogre
             node.AttachObject(ent);
             node.Scale(0.1f, 0.1f, 0.1f);
         }
+        #endregion
     }
 }

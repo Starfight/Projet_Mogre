@@ -23,10 +23,8 @@ namespace BaseMogre
 
     public enum Motif
     {
-        Localisation,
-        Donner,
-        Prendre,
-        Coup
+        Question,
+        Information
     }
 
     public struct KnowledgeQuery

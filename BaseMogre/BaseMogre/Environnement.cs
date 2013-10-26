@@ -56,8 +56,9 @@ namespace BaseMogre
 
             for (int i = 0; i < iNbRobots; i++)
             {
-                Robot r = new Robot();
-                _ListOfRobots.Add(r);
+                //TODO
+                //Robot r = new Robot();
+                //_ListOfRobots.Add(r);
             }
         }
         #endregion
