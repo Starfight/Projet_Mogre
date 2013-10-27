@@ -7,7 +7,7 @@ using MogreFramework;
 
 namespace BaseMogre
 {
-    class Robot
+    class Robot : Personnage, IComKnowledgeQuery
     {
         #region Constantes/Variables statiques
         /// <summary>
@@ -21,11 +21,6 @@ namespace BaseMogre
         private const String NAMEDEFAULT = "robot";
 
         /// <summary>
-        /// Nom du node par défaut
-        /// </summary>
-        private const String NAMENODE = "Node_";
-
-        /// <summary>
         /// Caractéristique des PV
         /// </summary>
         private const int PVMAX = 20;
@@ -37,20 +32,7 @@ namespace BaseMogre
         #endregion
 
         #region Variables
-        SceneManager _scm;
-
-        /// <summary>
-        /// Entity représentant le robot
-        /// </summary>
-        Entity _robot;
-
-        /// <summary>
-        /// Scenenode du robot
-        /// </summary>
-        SceneNode _nodeRobot;
-
-        String _nomEntity;
-        int _pointsDeVie;
+        
         #endregion
 
         #region Constructeur
@@ -60,32 +42,20 @@ namespace BaseMogre
         /// <param name="scm">Scenemanager d'intégration du robot</param>
         /// <param name="position">Position de départ</param>
         public Robot(ref SceneManager scm, Vector3 position)
+            : base(ref scm, position, NAMEDEFAULT + _COUNT, NAMEMESHROBOT)
         {
-            //Attribution du nom automatique
-            _COUNT++;
-            _nomEntity = NAMEDEFAULT + _COUNT;
-
-            //Création de l'Entity et du Scenenode à la position
-            _robot = scm.CreateEntity(_nomEntity, NAMEMESHROBOT);
-            _nodeRobot = scm.RootSceneNode.CreateChildSceneNode(NAMENODE + _nomEntity, position);
-            _nodeRobot.AttachObject(_robot);
-
-            //Enregistrement du Scenemanager
-            _scm = scm;
+            //Compteur de robots
+            _COUNT++;            
 
             //Initialisation des caractéristiques
             _pointsDeVie = PVMAX;
         }
         #endregion
 
-        #region Getters et Setters
-        public String NomEntity
+        #region Méthodes interface Knowledge Query
+        public Result send(KnowledgeQuery iKQ)
         {
-            get { return _nomEntity; }
-        }
-        public Vector3 Position
-        {
-            get { return _robot.BoundingBox.Center; }
+            return Result.OK;
         }
         #endregion
 

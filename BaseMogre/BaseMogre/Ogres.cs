@@ -6,13 +6,17 @@ using Mogre;
 
 namespace BaseMogre
 {
-    abstract class Ogres
+    abstract class Ogres //: Personnage
     {
         #region Variables
         /// <summary>
         /// Cube détenu par l'ogre
         /// </summary>
         private Cube _cube;
+        #endregion
+
+        #region Constructeur
+        //TODO
         #endregion
     }
 }

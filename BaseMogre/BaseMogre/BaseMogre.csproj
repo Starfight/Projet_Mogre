@@ -70,6 +70,7 @@
     <Compile Include="OgreBatisseur.cs" />
     <Compile Include="OgreOuvrier.cs" />
     <Compile Include="Ogres.cs" />
+    <Compile Include="Personnage.cs" />
     <Compile Include="Porte.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
