@@ -14,22 +14,35 @@ namespace BaseMogre
         #endregion
 
         #region Variables
-        private List<Robot> _ListOfRobots;
-        private List<Ogres> _ListOfOgres;
+        /// <summary>
+        /// Liste des personnages
+        /// </summary>
+        private Dictionary<String, Personnage> _ListPersonnages;
+
+        /// <summary>
+        /// Scenemanager
+        /// </summary>
+        private SceneManager _scm;
+
+        /// <summary>
+        /// Pile FIFO pour la communication
+        /// </summary>
+        private Queue<KnowledgeQuery> _ListOfCom;
         #endregion
 
         #region Constructeur
-        private Environnement()
+        private Environnement(ref SceneManager scm)
         {
-            _ListOfOgres = new List<Ogres>();
-            _ListOfRobots = new List<Robot>();
+            _scm = scm;
+            _ListPersonnages = new Dictionary<string, Personnage>();
+            _ListOfCom = new Queue<KnowledgeQuery>();
         }
         #endregion
 
         #region Méthodes Statiques
-        public static void createEnvironnement()
+        public static void createEnvironnement(ref SceneManager scm)
         {
-            ENV_DEFAULT = new Environnement();
+            ENV_DEFAULT = new Environnement(ref scm);
             ENV_DEFAULT.init(0, 0);
         }
         public static Environnement getInstance()
@@ -39,9 +52,22 @@ namespace BaseMogre
         #endregion
 
         #region Méthodes publiques
+        /// <summary>
+        /// Envoi un message à l'environnement
+        /// </summary>
+        /// <param name="iKQ">Requète de communication</param>
+        /// <returns>Valeur si la communication s'est bien déroulée</returns>
         public Result send(KnowledgeQuery iKQ)
         {
-            return Result.OK;
+            if (iKQ.parametres != null)
+            {
+                _ListOfCom.Enqueue(iKQ);
+                return Result.OK;
+            }
+            else
+            {
+                return Result.FAIL;
+            }
         }
         #endregion
 
@@ -51,14 +77,15 @@ namespace BaseMogre
             for (int i = 0; i < iNbOgres; i++)
             {
                 OgreOuvrier o = new OgreOuvrier();
-                _ListOfOgres.Add(o);
+                //TODO
+                //_ListPersonnages.Add(o);
             }
 
             for (int i = 0; i < iNbRobots; i++)
             {
-                //TODO
-                //Robot r = new Robot();
-                //_ListOfRobots.Add(r);
+                //TODO positionnement
+                Robot r = new Robot(ref _scm, new Vector3());
+                _ListPersonnages.Add(r.NomEntity,r);
             }
         }
         #endregion
