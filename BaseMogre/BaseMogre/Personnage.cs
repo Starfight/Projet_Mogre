@@ -44,7 +44,7 @@ namespace BaseMogre
         /// <summary>
         /// Liste des objets possédés
         /// </summary>
-        private List<Objet> _objetsPerso;
+        //private List<Objet> _objetsPerso;
 
         
         #endregion
@@ -63,6 +63,7 @@ namespace BaseMogre
             //Enregistrement du nom du personnage
             _nomEntity = nomPersonnage;
         }
+        public Personnage() { }
         #endregion
 
         #region Getters et Setters
@@ -74,14 +75,16 @@ namespace BaseMogre
         {
             get { return _entity.BoundingBox.Center; }
         }
-        public List<Objet> ObjetsPerso
-        {
-            get { return _objetsPerso; }
-            set { _objetsPerso = value; }
-        }
+        //public List<Objet> ObjetsPerso
+        //{
+        //  get { return _objetsPerso; }
+        //  set { _objetsPerso = value; }
+        //}
         #endregion
 
         #region methodes
+        /* méthodes pour l'inventaire
+         *A voir pour la supression
         /// <summary>
         /// méthodes de recherche dans l'inventaire
         /// </summary>
@@ -127,6 +130,7 @@ namespace BaseMogre
             if (o != null)
                 this._objetsPerso.Add(o);
         }
+         */
         #endregion
 
     }

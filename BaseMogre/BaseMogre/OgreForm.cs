@@ -86,6 +86,7 @@ namespace BaseMogre
 
             //objet
             Entity ent = Robot.CreationRobot(ref mgr, "Robot");
+            OgreBatisseur OB = new OgreBatisseur(ref mgr, new Mogre.Vector3(0.0f, 0.0f, 0.25f));
 
             //walklist
             mWalkList = new LinkedList<Mogre.Vector3>();
