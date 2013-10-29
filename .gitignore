@@ -48,7 +48,7 @@ local.properties
 x64/
 build/
 #[Bb]in/
-*.log
+[Bb]in/[Dd]ebug/Ogre.log
 [Oo]bj/
 
 # MSTest test Results
