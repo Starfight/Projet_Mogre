@@ -74,6 +74,8 @@ namespace BaseMogre
         #region Méthodes privées
         private void init(int iNbOgres, int iNbRobots)
         {
+            //Commenter car pose des bug pour le lancement test
+            /*
             for (int i = 0; i < iNbOgres; i++)
             {
                 OgreOuvrier o = new OgreOuvrier();
@@ -87,6 +89,7 @@ namespace BaseMogre
                 Robot r = new Robot(ref _scm, new Vector3());
                 _ListPersonnages.Add(r.NomEntity,r);
             }
+             * */
         }
         #endregion
     }

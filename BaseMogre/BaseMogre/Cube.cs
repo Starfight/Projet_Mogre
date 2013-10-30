@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BaseMogre
 {
-    class Cube
+    class Cube : Objet
     {
     }
 }
