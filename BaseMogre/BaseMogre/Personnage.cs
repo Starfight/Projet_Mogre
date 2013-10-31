@@ -6,7 +6,7 @@ using Mogre;
 
 namespace BaseMogre
 {
-    abstract class Personnage
+    abstract class Personnage : IComKnowledgeQuery
     {
         #region Constantes
         /// <summary>
@@ -82,7 +82,13 @@ namespace BaseMogre
         //}
         #endregion
 
-        #region methodes
+        #region methodes publiques
+        public Result send(KnowledgeQuery iKQ)
+        {
+            //TODO
+            return Result.OK;
+        }
+
         /* méthodes pour l'inventaire
          *A voir pour la supression
         /// <summary>

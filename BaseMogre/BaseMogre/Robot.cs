@@ -7,7 +7,7 @@ using MogreFramework;
 
 namespace BaseMogre
 {
-    class Robot : Personnage, IComKnowledgeQuery
+    class Robot : Personnage
     {
         #region Constantes/Variables statiques
         /// <summary>
@@ -53,7 +53,7 @@ namespace BaseMogre
         #endregion
 
         #region Méthodes interface Knowledge Query
-        public Result send(KnowledgeQuery iKQ)
+        public new Result send(KnowledgeQuery iKQ)
         {
             return Result.OK;
         }

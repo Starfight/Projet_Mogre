@@ -32,7 +32,7 @@ namespace BaseMogre
         private Cube _cube;
 
         /// <summary>
-        /// puissance d'atatque de l'ogre
+        /// puissance d'attaque de l'ogre
         /// </summary>
         private int _atk;
 

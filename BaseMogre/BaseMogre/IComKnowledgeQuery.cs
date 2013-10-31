@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Mogre;
 
 namespace BaseMogre
 {
@@ -23,31 +24,81 @@ namespace BaseMogre
 
     public enum Motif
     {
-        Question,
-        Information
+        Position,
+        InfoCube,
+        Coup,
+        Assembler
     }
 
     public struct KnowledgeQuery
     {
+        #region constantes publiques
+        public const String POSITION = "position";
+        public const String CLASSE = "classe";
+        public const String NOM = "nom";
+        #endregion
+
         #region Variables
         public Motif objectif;
-        public List<String> parametres;
+        public String destinataire;
+        public Dictionary<String, String> parametres;
         #endregion
 
         #region Constructeur
-        KnowledgeQuery(Motif iObj, List<String> iParametres)
+        public KnowledgeQuery(Motif iObj, String iDestinataire, Dictionary<String, String> iParametres)
         {
             objectif = iObj;
-            parametres = new List<String>(iParametres);
+            destinataire = iDestinataire;
+            parametres = new Dictionary<String, String>(iParametres);
         }
-        KnowledgeQuery(Motif iObj, params String[] iParametres)
+        public KnowledgeQuery(Motif iObj, String iDestinataire, params String[] iParametres)
         {
             objectif = iObj;
-            parametres = new List<String>();
-            foreach (String p in iParametres)
+            destinataire = iDestinataire;
+            parametres = new Dictionary<String, String>();
+            for (int i = 0; i < iParametres.Count()-iParametres.Count()%2; i+=2)
             {
-                parametres.Add(p);
+                parametres.Add(iParametres[i], iParametres[i + 1]);
             }
+        }
+        #endregion
+
+        #region Méthodes publiques
+        /// <summary>
+        /// Obtient une position dans les paramètres si elle existe
+        /// </summary>
+        /// <returns></returns>
+        public Vector3 getPosition()
+        {
+            Vector3 v3 = new Vector3();
+
+            if (parametres.ContainsKey(POSITION))
+            {
+                String v3string = "";
+                parametres.TryGetValue(POSITION, out v3string);
+                String[] v3tab = v3string.Split(';');
+
+                if (v3tab.Count() == 3)
+                {
+                    int[] v3intTab = new int[3];
+                    for (int i = 0; i < 3; i++)
+                    {
+                        v3intTab[i] = Int32.Parse(v3tab[i]);
+                    }
+                    v3 = new Vector3(v3intTab[0], v3intTab[1], v3intTab[2]);
+                }
+            }
+            return v3;
+        }
+
+        /// <summary>
+        /// Met une position en paramètre
+        /// </summary>
+        /// <param name="v3"></param>
+        public void setPosition(Vector3 v3)
+        {
+            String v3string = v3.x + ";" + v3.y + ";" + v3.z;
+            parametres.Add(POSITION, v3string);
         }
         #endregion
     }
