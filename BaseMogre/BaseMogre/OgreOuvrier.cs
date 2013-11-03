@@ -23,7 +23,27 @@ namespace BaseMogre
         }
         #endregion
 
-        #region méthodes
+        #region méthodes privées
+        protected override void Start()
+        {
+            //boucle principale
+            while (!_stop)
+            {
+                //envoi un message pour savoir où construire/chercher une maison
+
+                //va à l'emplacement si maison en construction
+
+                //demande le prochain cube pour la maison
+
+                //va à la position des entrepôts 
+
+                //demande un cube
+
+                //retourne à la maison
+
+                //demande de donner le cube
+            }
+        }
         #endregion
     }
 }

@@ -43,7 +43,6 @@ namespace BaseMogre
         #endregion
 
         #region Constructeur
-        //TODO
         public Ogres()
         {
             this._cube = null;

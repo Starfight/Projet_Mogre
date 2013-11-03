@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Mogre;
 
 namespace BaseMogre
@@ -42,11 +43,19 @@ namespace BaseMogre
         protected String _nomEntity;
 
         /// <summary>
+        /// Thread pour le fonctionnement autonome du personnage
+        /// </summary>
+        private Thread _threadMission;
+
+        /// <summary>
+        /// Booleen pour stopper les threads
+        /// </summary>
+        protected volatile bool _stop;
+
+        /// <summary>
         /// Liste des objets possédés
         /// </summary>
         //private List<Objet> _objetsPerso;
-
-        
         #endregion
 
         #region Constructeur
@@ -62,6 +71,11 @@ namespace BaseMogre
 
             //Enregistrement du nom du personnage
             _nomEntity = nomPersonnage;
+
+            //Démarage du thread
+            _threadMission = new Thread(Start);
+            _stop = false;
+            _threadMission.Start();
         }
         public Personnage() { }
         #endregion
@@ -137,6 +151,13 @@ namespace BaseMogre
                 this._objetsPerso.Add(o);
         }
          */
+        #endregion
+
+        #region Methodes protected
+        /// <summary>
+        /// Méthode permettant de lancer la mission du personnage (à implémenter selon le type)
+        /// </summary>
+        protected abstract void Start();
         #endregion
 
     }

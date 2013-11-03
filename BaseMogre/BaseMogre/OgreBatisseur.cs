@@ -23,7 +23,12 @@ namespace BaseMogre
         }
         #endregion
 
-        #region méthodes
+        #region méthodes privées
+        protected override void Start()
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

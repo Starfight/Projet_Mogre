@@ -59,6 +59,14 @@ namespace BaseMogre
         }
         #endregion
 
+        #region Méthodes privées
+        protected override void  Start()
+        {
+ 	        //TODO
+            throw new NotImplementedException();
+        }
+        #endregion
+
         #region old to delete
         public static Entity CreationRobot(ref SceneManager scm,string nomEntite)
         {

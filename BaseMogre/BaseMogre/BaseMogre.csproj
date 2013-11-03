@@ -58,6 +58,7 @@
     <Compile Include="Cube.cs" />
     <Compile Include="Environnement.cs" />
     <Compile Include="IComKnowledgeQuery.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="OgreForm.cs">
       <SubType>Form</SubType>
     </Compile>
