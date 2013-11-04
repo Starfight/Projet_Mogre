@@ -26,6 +26,8 @@ namespace BaseMogre
     {
         Position,
         InfoCube,
+        ObtientCube,
+        DonneCube,
         Coup,
         Assembler
     }
@@ -36,6 +38,7 @@ namespace BaseMogre
         public const String POSITION = "position";
         public const String CLASSE = "classe";
         public const String NOM = "nom";
+        public const String TYPECUBE = "cube";
         #endregion
 
         #region Variables

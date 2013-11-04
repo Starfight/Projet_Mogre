@@ -29,7 +29,7 @@ namespace BaseMogre
         /// <summary>
         /// Cube détenu par l'ogre
         /// </summary>
-        private Cube _cube;
+        protected Cube _cube;
 
         /// <summary>
         /// puissance d'attaque de l'ogre
@@ -73,7 +73,7 @@ namespace BaseMogre
         /// </summary>
         /// <param name="c">cube que l'on veux ramasser</param>
         /// <returns>true si il a été ramassé, false si l'inventaire est plein</returns>
-        public bool remassecube(Cube c)
+        public bool ramassecube(Cube c)
         {
             if (this._cube != null)
             {

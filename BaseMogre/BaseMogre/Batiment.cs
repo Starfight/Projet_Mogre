@@ -14,6 +14,11 @@ namespace BaseMogre
             //TODO
             get { return new Vector3(); }
         }
+        public String NomBatiment
+        {
+            //TODO
+            get { return "none"; }
+        }
         #endregion
     }
 }

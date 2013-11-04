@@ -27,7 +27,7 @@ namespace BaseMogre
         protected override void Start()
         {
             //TODO
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         #endregion
     }

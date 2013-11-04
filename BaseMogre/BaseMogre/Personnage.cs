@@ -53,6 +53,11 @@ namespace BaseMogre
         protected volatile bool _stop;
 
         /// <summary>
+        /// Pile FIFO pour les messages entrants
+        /// </summary>
+        protected Queue<KnowledgeQuery> _ListOfComInput;
+
+        /// <summary>
         /// Liste des objets possédés
         /// </summary>
         //private List<Objet> _objetsPerso;
@@ -99,8 +104,15 @@ namespace BaseMogre
         #region methodes publiques
         public Result send(KnowledgeQuery iKQ)
         {
-            //TODO
-            return Result.OK;
+            if (iKQ.parametres != null)
+            {
+                _ListOfComInput.Enqueue(iKQ);
+                return Result.OK;
+            }
+            else
+            {
+                return Result.FAIL;
+            }
         }
 
         /* méthodes pour l'inventaire
@@ -153,12 +165,11 @@ namespace BaseMogre
          */
         #endregion
 
-        #region Methodes protected
+        #region Methodes abstract
         /// <summary>
         /// Méthode permettant de lancer la mission du personnage (à implémenter selon le type)
         /// </summary>
         protected abstract void Start();
         #endregion
-
     }
 }

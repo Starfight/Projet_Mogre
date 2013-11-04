@@ -48,6 +48,19 @@ namespace BaseMogre
         private volatile bool _stop;
         #endregion
 
+        #region Getter et Setter
+        public Vector3 PositionEntrepotPierre
+        {
+            //TODO
+            get { return new Vector3(); }
+        }
+        public Vector3 PositionEntrepotBois
+        {
+            //TODO
+            get { return new Vector3(); }
+        }
+        #endregion
+
         #region Constructeur/Destructeur
         private Environnement(ref SceneManager scm)
         {
@@ -111,14 +124,14 @@ namespace BaseMogre
         /// <param name="iNbRobots">Nombre de robots</param>
         private void initPersonnages(int iNbOgres, int iNbRobots)
         {
-            /*
+            
             for (int i = 0; i < iNbOgres; i++)
             {
-                OgreOuvrier o = new OgreOuvrier();
-                //TODO
-                //_ListPersonnages.Add(o);
+                //TODO : positions
+                OgreOuvrier o = new OgreOuvrier(ref _scm, new Vector3(0,0,0));
+                _ListPersonnages.Add(o.NomEntity, o);
             }
-
+            /*
             for (int i = 0; i < iNbRobots; i++)
             {
                 //TODO positionnement
@@ -200,7 +213,9 @@ namespace BaseMogre
                 //Recherche de la position
                 if ((name == "noname")&&(classe == "maison"))
                 {
-                    v3 = _ListMaisons.First().Value.Position;
+                    Maison m = _ListMaisons.First().Value;
+                    v3 = m.Position;
+                    name = m.NomBatiment;
                 }
                 else if ((name != "noname")&&(classe == "maison"))
                 {
@@ -215,6 +230,7 @@ namespace BaseMogre
                 //Retour de la requète
                 KQreturn.setPosition(v3);
                 KQreturn.parametres.Add(KnowledgeQuery.CLASSE, classe);
+                KQreturn.parametres.Add(KnowledgeQuery.NOM, name); 
             }
         }
         #endregion

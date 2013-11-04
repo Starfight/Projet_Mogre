@@ -8,4 +8,11 @@ namespace BaseMogre
     class Cube : Objet
     {
     }
+
+    public enum TypeCube
+    {
+        Aucun,
+        Bois,
+        Pierre
+    }
 }
