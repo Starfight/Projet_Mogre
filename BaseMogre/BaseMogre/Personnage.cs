@@ -80,7 +80,7 @@ namespace BaseMogre
             //Démarage du thread
             _threadMission = new Thread(Start);
             _stop = false;
-            _threadMission.Start();
+            //TODO : _threadMission.Start();
         }
         public Personnage() { }
         #endregion

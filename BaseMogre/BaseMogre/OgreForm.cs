@@ -99,6 +99,9 @@ namespace BaseMogre
             cam.LookAt(ent.BoundingBox.Center);
 
             CreateInputHandler();
+
+            //Test
+            Environnement.createEnvironnement(ref mgr, 10, 0);
         }
 
         void OgreForm_Disposed(object sender, EventArgs e)

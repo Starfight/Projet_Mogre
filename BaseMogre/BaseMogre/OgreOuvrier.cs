@@ -20,7 +20,7 @@ namespace BaseMogre
         /// <summary>
         /// Maison en cours de construction
         /// </summary>
-        private volatile MaisonInfo _currentMaison;
+        private MaisonInfo _currentMaison;
 
         /// <summary>
         /// Type du prochain cube à chercher
@@ -70,6 +70,7 @@ namespace BaseMogre
                 //Crée la requète
                 kq = new KnowledgeQuery(Motif.InfoCube, this.NomEntity);
                 kq.parametres.Add(KnowledgeQuery.CLASSE, "maison");
+                kq.parametres.Add(KnowledgeQuery.NOM, _currentMaison.nom);
                 envoyer(kq);
 
                 //Attente du retour message pour le prochain cube

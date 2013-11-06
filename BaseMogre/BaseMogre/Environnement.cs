@@ -80,10 +80,16 @@ namespace BaseMogre
         #endregion
 
         #region Méthodes Statiques
-        public static void createEnvironnement(ref SceneManager scm)
+        /// <summary>
+        /// Crée l'instance de l'environnement
+        /// </summary>
+        /// <param name="scm">SceneManager de référence</param>
+        /// <param name="nbogres">Nombre d'ogres ouvriers</param>
+        /// <param name="nbrobots">Nombre de robots</param>
+        public static void createEnvironnement(ref SceneManager scm, int nbogres, int nbrobots)
         {
             ENV_DEFAULT = new Environnement(ref scm);
-            ENV_DEFAULT.initPersonnages(0, 0);
+            ENV_DEFAULT.initPersonnages(nbogres, nbrobots);
 
             //Démarre le thread
             ENV_DEFAULT._ComThread = new Thread(ENV_DEFAULT.ProcessComInOut);
@@ -124,12 +130,27 @@ namespace BaseMogre
         /// <param name="iNbRobots">Nombre de robots</param>
         private void initPersonnages(int iNbOgres, int iNbRobots)
         {
-            
+            int x, z, inc;
+
+            //Création des ogres
+            x = -450;
+            z = -2100;
+            inc = 100;
             for (int i = 0; i < iNbOgres; i++)
             {
-                //TODO : positions
-                OgreOuvrier o = new OgreOuvrier(ref _scm, new Vector3(0,0,0));
+                OgreOuvrier o = new OgreOuvrier(ref _scm, new Vector3(x,0,z));
                 _ListPersonnages.Add(o.NomEntity, o);
+
+                //position
+                if ((i % 10 == 0) && (i != 0))
+                {
+                    z += inc;
+                    x = -450;
+                }
+                else
+                {
+                    x += inc;
+                }
             }
             /*
             for (int i = 0; i < iNbRobots; i++)
@@ -213,6 +234,7 @@ namespace BaseMogre
                 //Recherche de la position
                 if ((name == "noname")&&(classe == "maison"))
                 {
+                    //TODO : retourne la maison en construction ou une nouvelle maison
                     Maison m = _ListMaisons.First().Value;
                     v3 = m.Position;
                     name = m.NomBatiment;
