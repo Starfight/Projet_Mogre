@@ -130,36 +130,39 @@ namespace BaseMogre
         /// <param name="iNbRobots">Nombre de robots</param>
         private void initPersonnages(int iNbOgres, int iNbRobots)
         {
-            int x, z, inc;
+            int inc;
 
             //Création des ogres
-            x = -450;
-            z = -2100;
             inc = 100;
+            Vector3 vect = new Vector3(-250, 0, -1100);
             for (int i = 0; i < iNbOgres; i++)
             {
-                OgreOuvrier o = new OgreOuvrier(ref _scm, new Vector3(x,0,z));
+                OgreOuvrier o = new OgreOuvrier(ref _scm, vect);
                 _ListPersonnages.Add(o.NomEntity, o);
-
-                //position
-                if ((i % 10 == 0) && (i != 0))
-                {
-                    z += inc;
-                    x = -450;
-                }
-                else
-                {
-                    x += inc;
-                }
+                vect = this.creer_vecteur(i, inc, vect);
             }
-            /*
+
+            vect = new Vector3(-250, 0, 500);
             for (int i = 0; i < iNbRobots; i++)
             {
-                //TODO positionnement
-                Robot r = new Robot(ref _scm, new Vector3());
+                Robot r = new Robot(ref _scm, vect);
                 _ListPersonnages.Add(r.NomEntity,r);
+                vect = this.creer_vecteur(i, inc, vect);
             }
-             */
+        }
+
+        private Vector3 creer_vecteur(int i, int inc, Vector3 ancien)
+        {
+            if ((i % 10 == 0) && (i != 0))
+            {
+                ancien.z += inc;
+                ancien.x = -450;
+            }
+            else
+            {
+                ancien.x += inc;
+            }
+            return ancien;
         }
 
         /// <summary>

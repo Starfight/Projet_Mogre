@@ -85,23 +85,25 @@ namespace BaseMogre
 
 
             //objet
+            /*
             Entity ent = Robot.CreationRobot(ref mgr, "Robot");
             OgreBatisseur OB = new OgreBatisseur(ref mgr, new Mogre.Vector3(0.0f, 0.0f, 0.25f));
-
+            */
             //walklist
+            /*
             mWalkList = new LinkedList<Mogre.Vector3>();
             mWalkList.AddLast(new Mogre.Vector3(100.0f, 0.0f, 50.0f));
             mWalkList.AddLast(new Mogre.Vector3(50.0f, 0.0f, -200.0f));
             mWalkList.AddLast(new Mogre.Vector3(0.0f, 0.0f, 25.0f));
-
+            */
             //camera position
             cam.Position = new Mogre.Vector3(0, 200, -400);
-            cam.LookAt(ent.BoundingBox.Center);
+            //cam.LookAt(ent.BoundingBox.Center);
 
             CreateInputHandler();
 
             //Test
-            Environnement.createEnvironnement(ref mgr, 10, 0);
+            Environnement.createEnvironnement(ref mgr, 10, 10);
         }
 
         void OgreForm_Disposed(object sender, EventArgs e)
@@ -122,7 +124,7 @@ namespace BaseMogre
                 return false;
             return true;
         }
-
+        /*
         bool moveRobot(FrameEvent evt)
         {
 
@@ -195,11 +197,12 @@ namespace BaseMogre
 
             return false;
         }
+         * */
         #endregion
 
         protected void CreateInputHandler()
         {
-            this.mRoot.FrameStarted += new FrameListener.FrameStartedHandler(moveRobot);
+            //this.mRoot.FrameStarted += new FrameListener.FrameStartedHandler(moveRobot);
             this.mRoot.FrameStarted += new FrameListener.FrameStartedHandler(FrameStarted);
             this.KeyDown += new KeyEventHandler(KeyDownHandler);
             this.KeyUp += new KeyEventHandler(KeyUpHandler);
