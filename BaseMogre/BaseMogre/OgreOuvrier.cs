@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Mogre;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace BaseMogre
 {
@@ -112,6 +113,12 @@ namespace BaseMogre
                 envoyer(kq);
                 utiliseCube();
             }
+        }
+
+        protected override bool Update(FrameEvent fEvt)
+        {
+            //TODO
+            return true;
         }
 
         /// <summary>

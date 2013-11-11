@@ -58,6 +58,11 @@ namespace BaseMogre
         protected Queue<KnowledgeQuery> _ListOfComInput;
 
         /// <summary>
+        /// Listener pour le raffraichissement des frames
+        /// </summary>
+        private FrameListener.FrameStartedHandler _fListener;
+
+        /// <summary>
         /// Liste des objets possédés
         /// </summary>
         //private List<Objet> _objetsPerso;
@@ -76,6 +81,10 @@ namespace BaseMogre
 
             //Enregistrement du nom du personnage
             _nomEntity = nomPersonnage;
+
+            //Abonnement au rafraichissement de la frame
+            _fListener = new FrameListener.FrameStartedHandler(Update);
+            Root.Singleton.FrameStarted += _fListener;
 
             //Démarage du thread
             _threadMission = new Thread(Start);
@@ -120,9 +129,13 @@ namespace BaseMogre
         /// </summary>
         public void Dispose()
         {
+            //Stoppe le thread
             _stop = true;
             if (_threadMission.ThreadState == ThreadState.Running)
                 _threadMission.Join();
+
+            //Désabonne le listener de frame
+            Root.Singleton.FrameStarted -= _fListener;
         }
 
         /* méthodes pour l'inventaire
@@ -180,6 +193,13 @@ namespace BaseMogre
         /// Méthode permettant de lancer la mission du personnage (à implémenter selon le type)
         /// </summary>
         protected abstract void Start();
+
+        /// <summary>
+        /// Méthode permettant de mettre à jour le personnage dans le monde 3D
+        /// </summary>
+        /// <param name="fEvt">Fourni des information sur le raffraichissement des images</param>
+        /// <returns>False si l'update devrait être stopée, vrai autrement</returns>
+        protected abstract bool Update(FrameEvent fEvt);
         #endregion
     }
 }
