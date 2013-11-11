@@ -7,7 +7,7 @@ using Mogre;
 
 namespace BaseMogre
 {
-    abstract class Personnage : IComKnowledgeQuery
+    abstract class Personnage : IComKnowledgeQuery, IDisposable
     {
         #region Constantes
         /// <summary>
@@ -113,6 +113,15 @@ namespace BaseMogre
             {
                 return Result.FAIL;
             }
+        }
+
+        /// <summary>
+        /// Implémentation de l'interface IDisposable pour l'arrêt des threads
+        /// </summary>
+        public void Dispose()
+        {
+            _stop = true;
+            _threadMission.Join();
         }
 
         /* méthodes pour l'inventaire

@@ -129,6 +129,12 @@ namespace BaseMogre
             //fini le thread
             _stop = true;
             _ComThread.Join();
+
+            //fini les threads de tous les personnages
+            foreach (KeyValuePair<String, Personnage> kvp in _ListPersonnages)
+            {
+                kvp.Value.Dispose();
+            }
         }
         #endregion
 
@@ -183,14 +189,14 @@ namespace BaseMogre
             while (!_stop)
             {
                 //Reception
-                while (_ListOfComInput.Count > 0)
+                while ((_ListOfComInput.Count > 0)&&(!_stop))
                 {
                     KnowledgeQuery kq = _ListOfComInput.Dequeue();
                     ProcessKQ(kq);
                 }
 
                 //Envoi
-                while (_ListOfComOutput.Count > 0)
+                while ((_ListOfComOutput.Count > 0)&&(!_stop))
                 {
                     KnowledgeQuery kq = _ListOfComOutput.Dequeue();
                     if (_ListPersonnages.ContainsKey(kq.destinataire))
