@@ -110,6 +110,8 @@ namespace BaseMogre
         {
             mRoot.Dispose();
             mRoot = null;
+            //Fini le thread de l'environnement
+            Environnement.getInstance().Dispose();
         }
 
         void OgreForm_Resize(object sender, EventArgs e)

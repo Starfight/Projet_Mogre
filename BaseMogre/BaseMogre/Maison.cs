@@ -25,7 +25,7 @@ namespace BaseMogre
         }
         public bool isEmpty()
         {
-            if ((nom == null) && (position == new Vector3(0, 0, 0)))
+            if ((nom == null) && (position == Vector3.ZERO))
             {
                 return true;
             }

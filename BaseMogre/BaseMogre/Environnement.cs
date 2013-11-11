@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace BaseMogre
 {
-    class Environnement : IComKnowledgeQuery
+    class Environnement : IComKnowledgeQuery, IDisposable
     {
         #region Variables Statiques
         private static Environnement ENV_DEFAULT;
@@ -119,6 +119,16 @@ namespace BaseMogre
             {
                 return Result.FAIL;
             }
+        }
+
+        /// <summary>
+        /// Fini le thread de traitement des messages de l'environnement
+        /// </summary>
+        public void Dispose()
+        {
+            //fini le thread
+            _stop = true;
+            _ComThread.Join();
         }
         #endregion
 
