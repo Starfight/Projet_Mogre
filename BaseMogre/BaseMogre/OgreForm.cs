@@ -102,8 +102,8 @@ namespace BaseMogre
 
             CreateInputHandler();
 
-            //Test
-            Environnement.createEnvironnement(ref mgr, 10, 10);
+            //Création de l'environnement
+            Environnement.createEnvironnement(ref mgr, 15, 15);
         }
 
         void OgreForm_Disposed(object sender, EventArgs e)

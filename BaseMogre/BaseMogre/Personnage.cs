@@ -121,7 +121,8 @@ namespace BaseMogre
         public void Dispose()
         {
             _stop = true;
-            _threadMission.Join();
+            if (_threadMission.ThreadState == ThreadState.Running)
+                _threadMission.Join();
         }
 
         /* méthodes pour l'inventaire

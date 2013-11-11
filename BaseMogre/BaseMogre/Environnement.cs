@@ -150,20 +150,20 @@ namespace BaseMogre
 
             //Création des ogres
             inc = 100;
-            Vector3 vect = new Vector3(-250, 0, -1100);
+            Vector3 vect = new Vector3(-350, 0, -1100);
             for (int i = 0; i < iNbOgres; i++)
             {
+                vect = this.creer_vecteur(i, inc, vect);
                 OgreOuvrier o = new OgreOuvrier(ref _scm, vect);
                 _ListPersonnages.Add(o.NomEntity, o);
-                vect = this.creer_vecteur(i, inc, vect);
             }
 
-            vect = new Vector3(-250, 0, 500);
+            vect = new Vector3(-350, 0, 500);
             for (int i = 0; i < iNbRobots; i++)
             {
+                vect = this.creer_vecteur(i, inc, vect);
                 Robot r = new Robot(ref _scm, vect);
                 _ListPersonnages.Add(r.NomEntity,r);
-                vect = this.creer_vecteur(i, inc, vect);
             }
         }
 
@@ -172,7 +172,7 @@ namespace BaseMogre
             if ((i % 10 == 0) && (i != 0))
             {
                 ancien.z += inc;
-                ancien.x = -450;
+                ancien.x += -inc*9;
             }
             else
             {
