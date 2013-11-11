@@ -20,6 +20,11 @@ namespace BaseMogre
         private const String NAMEDEFAULT = "ogres";
 
         /// <summary>
+        /// Vitesse des ogres
+        /// </summary>
+        protected const float VITESSE = 0.2f;
+
+        /// <summary>
         /// Compteur d'ogre
         /// </summary>
         private static int _COUNT = 0;
@@ -54,6 +59,19 @@ namespace BaseMogre
             this._cube = null;
             this._atk = atk;
             this._def = def;
+        }
+        #endregion
+
+        #region Méthodes privées
+        protected override bool Update(FrameEvent fEvt)
+        {
+            //TODO (rotation+problème d'amortissement)
+            if (Destination != Position)
+            {
+                float move = VITESSE * (fEvt.timeSinceLastFrame);
+                _node.Translate((Destination - Position) * move);
+            }
+            return true;
         }
         #endregion
 

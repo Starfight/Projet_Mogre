@@ -53,7 +53,12 @@ namespace BaseMogre
         protected volatile bool _stop;
 
         /// <summary>
-        /// Pile FIFO pour les messages entrants
+        /// Destination en cours d'acheminement
+        /// </summary>
+        private Vector3 _destination;
+
+        /// <summary>
+        /// Pile FIFO pour les messages entrants (Peut être inutile)
         /// </summary>
         protected Queue<KnowledgeQuery> _ListOfComInput;
 
@@ -82,6 +87,9 @@ namespace BaseMogre
             //Enregistrement du nom du personnage
             _nomEntity = nomPersonnage;
 
+            //Définition de la destination initiale
+            _destination = this.Position;
+
             //Abonnement au rafraichissement de la frame
             _fListener = new FrameListener.FrameStartedHandler(Update);
             Root.Singleton.FrameStarted += _fListener;
@@ -95,13 +103,27 @@ namespace BaseMogre
         #endregion
 
         #region Getters et Setters
+        /// <summary>
+        /// Nom de l'entité
+        /// </summary>
         public String NomEntity
         {
             get { return _nomEntity; }
         }
+        /// <summary>
+        /// Position du personnage
+        /// </summary>
         public Vector3 Position
         {
-            get { return _entity.BoundingBox.Center; }
+            get { return _node.Position; }
+        }
+        /// <summary>
+        /// Destination du personnage
+        /// </summary>
+        public Vector3 Destination
+        {
+            get { return _destination; }
+            set { _destination = value; }
         }
         //public List<Objet> ObjetsPerso
         //{

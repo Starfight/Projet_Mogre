@@ -29,12 +29,6 @@ namespace BaseMogre
             //TODO
             //throw new NotImplementedException();
         }
-
-        protected override bool Update(FrameEvent fEvt)
-        {
-            //TODO
-            return true;
-        }
         #endregion
     }
 }

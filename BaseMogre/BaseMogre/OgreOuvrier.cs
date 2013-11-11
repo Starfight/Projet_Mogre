@@ -64,7 +64,7 @@ namespace BaseMogre
                 }
 
                 //va à l'emplacement si maison en construction
-                GoTo(_currentMaison.position);
+                Destination =_currentMaison.position;
 
                 //demande le prochain cube pour la maison
                 //---------------------------------------
@@ -85,10 +85,10 @@ namespace BaseMogre
                 String nextcube = "";
                 switch (_typeNextCube)
                 {
-                    case TypeCube.Bois : GoTo(Environnement.getInstance().PositionEntrepotBois);
+                    case TypeCube.Bois : Destination = Environnement.getInstance().PositionEntrepotBois;
                                          nextcube = "bois";
                         break;
-                    case TypeCube.Pierre : GoTo(Environnement.getInstance().PositionEntrepotPierre);
+                    case TypeCube.Pierre: Destination = Environnement.getInstance().PositionEntrepotPierre;
                                            nextcube = "pierre";
                         break;
                 }
@@ -105,7 +105,7 @@ namespace BaseMogre
                 }
 
                 //retourne à la maison
-                GoTo(_currentMaison.position);
+                Destination = _currentMaison.position;
 
                 //demande de donner le cube
                 kq = new KnowledgeQuery(Motif.DonneCube, this.NomEntity);
@@ -113,21 +113,6 @@ namespace BaseMogre
                 envoyer(kq);
                 utiliseCube();
             }
-        }
-
-        protected override bool Update(FrameEvent fEvt)
-        {
-            //TODO
-            return true;
-        }
-
-        /// <summary>
-        /// Méthode pour aller à une position donnée
-        /// </summary>
-        /// <param name="position"></param>
-        private void GoTo(Vector3 position)
-        {
-            //TODO
         }
 
         /// <summary>
