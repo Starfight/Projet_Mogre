@@ -48,6 +48,17 @@ namespace BaseMogre
         private Thread _threadMission;
 
         /// <summary>
+        /// Delegate pour les tâches
+        /// </summary>
+        /// <param name="parametre">Parametre libre</param>
+        protected delegate void FctTache(object parametre);
+
+        /// <summary>
+        /// Liste des tâches
+        /// </summary>
+        protected List<Tache> _listeTaches;
+
+        /// <summary>
         /// Booleen pour stopper les threads
         /// </summary>
         protected volatile bool _stop;
