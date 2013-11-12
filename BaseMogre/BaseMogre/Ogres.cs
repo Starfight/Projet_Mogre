@@ -22,7 +22,7 @@ namespace BaseMogre
         /// <summary>
         /// Vitesse des ogres
         /// </summary>
-        protected const float VITESSE = 0.2f;
+        protected const float VITESSE = 50;
 
         /// <summary>
         /// Compteur d'ogre
@@ -65,11 +65,13 @@ namespace BaseMogre
         #region Méthodes privées
         protected override bool Update(FrameEvent fEvt)
         {
-            //TODO (rotation+problème d'amortissement)
+            //TODO (rotation)
             if (Destination != Position)
             {
                 float move = VITESSE * (fEvt.timeSinceLastFrame);
-                _node.Translate((Destination - Position) * move);
+                Vector3 vDirection = Destination - Position;
+                vDirection.Normalise();
+                _node.Translate(vDirection * move);
             }
             return true;
         }
