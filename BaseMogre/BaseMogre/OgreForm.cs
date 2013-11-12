@@ -19,13 +19,6 @@ namespace BaseMogre
         RenderWindow mWindow;
         SceneManager mgr;
         Camera cam;
-        //moves
-        AnimationState mAnimationState = null; //The AnimationState the moving object
-        float mDistance = 0.0f;              //The distance the object has left to travel
-        Mogre.Vector3 mDirection = Mogre.Vector3.ZERO;   // The direction the object is moving
-        Mogre.Vector3 mDestination = Mogre.Vector3.ZERO; // The destination the object is moving towards
-        LinkedList<Mogre.Vector3> mWalkList = null; // A doubly linked containing the waypoints
-        float mWalkSpeed = 50.0f;  // The speed at which the object is moving
         //camera move
         const float TRANSLATE = 200;
         const float ROTATE = 0.01f;
@@ -83,27 +76,42 @@ namespace BaseMogre
             cam.AutoAspectRatio = true;
             mWindow.AddViewport(cam);
 
-
-            //objet
-            /*
-            Entity ent = Robot.CreationRobot(ref mgr, "Robot");
-            OgreBatisseur OB = new OgreBatisseur(ref mgr, new Mogre.Vector3(0.0f, 0.0f, 0.25f));
-            */
-            //walklist
-            /*
-            mWalkList = new LinkedList<Mogre.Vector3>();
-            mWalkList.AddLast(new Mogre.Vector3(100.0f, 0.0f, 50.0f));
-            mWalkList.AddLast(new Mogre.Vector3(50.0f, 0.0f, -200.0f));
-            mWalkList.AddLast(new Mogre.Vector3(0.0f, 0.0f, 25.0f));
-            */
             //camera position
             cam.Position = new Mogre.Vector3(0, 200, -400);
-            //cam.LookAt(ent.BoundingBox.Center);
 
+            //Attache les handler
             CreateInputHandler();
 
             //Création de l'environnement
             Environnement.createEnvironnement(ref mgr, 15, 15);
+        }
+
+        private void LoadConfig()
+        {
+            ConfigFile cf = new ConfigFile();
+            cf.Load("resources.cfg", "\t:=", true);
+            ConfigFile.SectionIterator seci = cf.GetSectionIterator();
+            String secName, typeName, archName;
+
+            while (seci.MoveNext())
+            {
+                secName = seci.CurrentKey;
+                ConfigFile.SettingsMultiMap settings = seci.Current;
+                foreach (KeyValuePair<string, string> pair in settings)
+                {
+                    typeName = pair.Key;
+                    archName = pair.Value;
+                    ResourceGroupManager.Singleton.AddResourceLocation(archName, typeName, secName);
+                }
+            }
+        }
+
+        private void SetupRenderSystem()
+        {
+            RenderSystem rs = mRoot.GetRenderSystemByName("Direct3D9 Rendering Subsystem");
+            mRoot.RenderSystem = rs;
+            rs.SetConfigOption("Full Screen", "No");
+            rs.SetConfigOption("Video Mode", "800 x 600 @ 32-bit colour");
         }
 
         void OgreForm_Disposed(object sender, EventArgs e)
@@ -119,98 +127,14 @@ namespace BaseMogre
             mWindow.WindowMovedOrResized();
         }
 
-        #region deplacement
-        protected bool nextLocation()
-        {
-            if (mWalkList.Count == 0)
-                return false;
-            return true;
-        }
-        /*
-        bool moveRobot(FrameEvent evt)
-        {
-
-            Entity ent = mgr.GetEntity("Robot");
-            SceneNode node = mgr.GetSceneNode("Node_Robot");
-
-            float move = mWalkSpeed * (evt.timeSinceLastFrame);
-            mDistance -= move;
-
-            //Knot arrival check
-            if (mDistance <= 0.0f)
-            {
-                if (!TurnNextLocation())
-                {
-                    mAnimationState = ent.GetAnimationState("Idle");
-                    return true;
-                }
-            }
-            else
-            {
-                //movement code goes here
-                node.Translate(mDirection * move);
-            }
-
-            //Update the Animation State.
-            mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
-
-            return true;
-
-        }
-
-        bool TurnNextLocation()
-        {
-            Entity ent = mgr.GetEntity("Robot");
-            SceneNode node = mgr.GetSceneNode("Node_Robot");
-
-            if (nextLocation())
-            {
-                //Start the walk animation
-                mAnimationState = ent.GetAnimationState("Walk");
-                mAnimationState.Loop = true;
-                mAnimationState.Enabled = true;
-
-                LinkedListNode<Mogre.Vector3> tmp;  //temporary listNode
-                mDestination = mWalkList.First.Value; //get the next destination.
-                tmp = mWalkList.First; //save the node that held it
-                mWalkList.RemoveFirst(); //remove that node from the front of the list
-                mWalkList.AddLast(tmp);  //add it to the back of the list.
-
-                //update the direction and the distance
-                mDirection = mDestination - node.Position;
-                mDistance = mDirection.Normalise();
-
-                Mogre.Vector3 src = node.Orientation * Mogre.Vector3.UNIT_X;
-
-
-                if ((1.0f + src.DotProduct(mDirection)) < 0.0001f)
-                {
-                    node.Yaw(new Angle(180.0f));
-                }
-                else
-                {
-                    Quaternion quat = src.GetRotationTo(mDirection);
-                    node.Rotate(quat);
-                }
-
-                return true;
-
-            }
-
-            return false;
-        }
-         * */
-        #endregion
-
         protected void CreateInputHandler()
         {
-            //this.mRoot.FrameStarted += new FrameListener.FrameStartedHandler(moveRobot);
             this.mRoot.FrameStarted += new FrameListener.FrameStartedHandler(FrameStarted);
             this.KeyDown += new KeyEventHandler(KeyDownHandler);
             this.KeyUp += new KeyEventHandler(KeyUpHandler);
         }
 
-        //gestion camera
+        #region gestion camera
         void KeyUpHandler(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -286,35 +210,6 @@ namespace BaseMogre
             }
         }
 
-        private void LoadConfig()
-        {
-            ConfigFile cf = new ConfigFile();
-            cf.Load("resources.cfg", "\t:=", true);
-            ConfigFile.SectionIterator seci = cf.GetSectionIterator();
-            String secName, typeName, archName;
-
-            while (seci.MoveNext())
-            {
-                secName = seci.CurrentKey;
-                ConfigFile.SettingsMultiMap settings = seci.Current;
-                foreach (KeyValuePair<string, string> pair in settings)
-                {
-                    typeName = pair.Key;
-                    archName = pair.Value;
-                    ResourceGroupManager.Singleton.AddResourceLocation(archName, typeName, secName);
-                }
-            }
-        }
-
-        private void SetupRenderSystem()
-        {
-            RenderSystem rs = mRoot.GetRenderSystemByName("Direct3D9 Rendering Subsystem");
-            mRoot.RenderSystem = rs;
-            rs.SetConfigOption("Full Screen", "No");
-            rs.SetConfigOption("Video Mode", "800 x 600 @ 32-bit colour");
-        }
-
-        #region Frame Handlers
         bool FrameStarted(FrameEvent evt)
         {
             cam.Position += cam.Orientation * mTranslation * evt.timeSinceLastFrame;

@@ -65,14 +65,31 @@ namespace BaseMogre
         #region Méthodes privées
         protected override bool Update(FrameEvent fEvt)
         {
-            //TODO (rotation)
-            if (Destination != Position)
+            //Au changement de direction
+            if (_DestinationChanged)
+            {
+                //Modification de la direction et de la distance
+                _vDirection = Destination - Position;
+                _distance = _vDirection.Length;
+                _vDirection.Normalise();
+
+                //Rotation
+                Vector3 src = _node.Orientation * Vector3.UNIT_Z;
+                Quaternion quat = src.GetRotationTo(_vDirection);
+                _node.Rotate(quat);
+
+                //Remise à zero du booleen
+                _DestinationChanged = false;
+            }
+
+            //Mise à jour de la position
+            if (_distance > 10)
             {
                 float move = VITESSE * (fEvt.timeSinceLastFrame);
-                Vector3 vDirection = Destination - Position;
-                vDirection.Normalise();
-                _node.Translate(vDirection * move);
+                _node.Translate(_vDirection * move);
+                _distance -= move;
             }
+            
             return true;
         }
         #endregion

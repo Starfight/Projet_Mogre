@@ -58,9 +58,19 @@ namespace BaseMogre
         private Vector3 _destination;
 
         /// <summary>
-        /// Pile FIFO pour les messages entrants (Peut être inutile)
+        /// Vecteur normé pour la direction
         /// </summary>
-        protected Queue<KnowledgeQuery> _ListOfComInput;
+        protected Vector3 _vDirection;
+
+        /// <summary>
+        /// Distance à parcourir
+        /// </summary>
+        protected double _distance;
+
+        /// <summary>
+        /// Indique des modification à effectuer
+        /// </summary>
+        protected bool _DestinationChanged;
 
         /// <summary>
         /// Listener pour le raffraichissement des frames
@@ -89,6 +99,8 @@ namespace BaseMogre
 
             //Définition de la destination initiale
             _destination = this.Position;
+            _vDirection = new Vector3(1, 0, 0);
+            _distance = 0;
 
             //Abonnement au rafraichissement de la frame
             _fListener = new FrameListener.FrameStartedHandler(Update);
@@ -123,7 +135,12 @@ namespace BaseMogre
         public Vector3 Destination
         {
             get { return _destination; }
-            set { _destination = value; }
+            set
+            {
+                _destination = value;
+                //Indique des modification à faire 
+                _DestinationChanged = true;
+            }
         }
         //public List<Objet> ObjetsPerso
         //{
@@ -137,7 +154,7 @@ namespace BaseMogre
         {
             if (iKQ.parametres != null)
             {
-                _ListOfComInput.Enqueue(iKQ);
+                //TODO : traite la requète
                 return Result.OK;
             }
             else
