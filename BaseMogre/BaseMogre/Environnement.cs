@@ -158,9 +158,6 @@ namespace BaseMogre
                 _ListPersonnages.Add(o.NomEntity, o);
             }
 
-            //Test
-            _ListPersonnages.First().Value.Destination = new Vector3(0, 0, 0);
-
             //Création des robots
             vect = new Vector3(-350, 0, 500);
             for (int i = 0; i < iNbRobots; i++)

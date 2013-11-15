@@ -16,12 +16,6 @@ namespace BaseMogre
         private const String NAMENODE = "Node_";
         #endregion
 
-        #region Event
-        protected delegate void DecisionEventHandler(object sender, EventArgs e);
-
-        protected event DecisionEventHandler DecisionEvent;
-        #endregion 
-
         #region Variables
         /// <summary>
         /// Points de vie 
@@ -52,6 +46,11 @@ namespace BaseMogre
         /// Thread pour le fonctionnement autonome du personnage
         /// </summary>
         private Thread _threadMission;
+
+        /// <summary>
+        /// Indique si la prise de décision doit se lancer
+        /// </summary>
+        protected volatile bool _needToDecide;
 
         /// <summary>
         /// Booleen pour stopper les threads
@@ -112,13 +111,12 @@ namespace BaseMogre
             _fListener = new FrameListener.FrameStartedHandler(Update);
             Root.Singleton.FrameStarted += _fListener;
 
-            //Attache l'évènement à la prise de décision
-            DecisionEvent += Decision;
-
+            //Prise de décision
+            _needToDecide = true;
             //Démarage du thread
             _threadMission = new Thread(Start);
             _stop = false;
-            //TODO : _threadMission.Start();
+            _threadMission.Start();
         }
         public Personnage() { }
         #endregion
@@ -141,7 +139,7 @@ namespace BaseMogre
         /// <summary>
         /// Destination du personnage
         /// </summary>
-        public Vector3 Destination
+        protected Vector3 Destination
         {
             get { return _destination; }
             set
@@ -238,15 +236,9 @@ namespace BaseMogre
 
         #region Methodes abstract
         /// <summary>
-        /// Méthode permettant de lancer la mission du personnage (à implémenter selon le type)
-        /// </summary>
-        [Obsolete]
-        protected abstract void Start();
-
-        /// <summary>
         /// Méthode permettant la prise de décision
         /// </summary>
-        protected abstract void Decision(object sender, EventArgs e);
+        protected abstract void Decision();
 
         /// <summary>
         /// Méthode permettant de mettre à jour le personnage dans le monde 3D
@@ -254,6 +246,44 @@ namespace BaseMogre
         /// <param name="fEvt">Fourni des information sur le raffraichissement des images</param>
         /// <returns>False si l'update devrait être stopée, vrai autrement</returns>
         protected abstract bool Update(FrameEvent fEvt);
+        #endregion
+
+        #region Méthodes privées
+        /// <summary>
+        /// Raffraichit la prise de décision
+        /// </summary>
+        private void Start()
+        {
+            while (!_stop)
+            {
+                if (_needToDecide)
+                {
+                    Decision();
+                    _needToDecide = false;
+                }
+                else
+                {
+                    Thread.Sleep(100);
+                }
+            }
+        }
+        #endregion
+
+        #region Méthode statiques
+        /// <summary>
+        /// Renvoi un vecteur aléatoire sur le plan horizontal
+        /// </summary>
+        /// <param name="min">Minimum en x et z</param>
+        /// <param name="max">Maximum en x et z</param>
+        /// <returns>Vecteur aléatoire</returns>
+        protected Vector3 getRandomHorizontalVecteur(int min, int max)
+        {
+            Random rnd = new Random();
+            int x = rnd.Next(min,max);
+            int y = 0;
+            int z = rnd.Next(min,max);
+            return new Vector3(x, y, z);
+        }
         #endregion
     }
 }

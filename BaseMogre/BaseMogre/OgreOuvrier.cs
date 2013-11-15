@@ -42,7 +42,8 @@ namespace BaseMogre
         #endregion
 
         #region méthodes privées
-        protected override void Start()
+        [Obsolete]
+        protected void Start()
         {
             //Variables pour la boucle
             KnowledgeQuery kq;
@@ -118,9 +119,9 @@ namespace BaseMogre
         /// <summary>
         /// Prise de décision
         /// </summary>
-        protected override void Decision(object sender, EventArgs e)
+        protected override void Decision()
         {
-            //TODO
+            Destination = getRandomHorizontalVecteur(-500, 500);
         }
 
         /// <summary>

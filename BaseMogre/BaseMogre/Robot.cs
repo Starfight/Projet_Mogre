@@ -60,16 +60,14 @@ namespace BaseMogre
         #endregion
 
         #region Méthodes privées
-        protected override void  Start()
-        {
- 	        //TODO
-            throw new NotImplementedException();
-        }
-
         protected override bool Update(FrameEvent fEvt)
         {
             //TODO
             return true;
+        }
+        protected override void Decision()
+        {
+            //TODO
         }
         #endregion
 

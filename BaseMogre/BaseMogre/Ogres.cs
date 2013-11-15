@@ -89,6 +89,11 @@ namespace BaseMogre
                 _node.Translate(_vDirection * move);
                 _distance -= move;
             }
+            else if (!_needToDecide)
+            {
+                //Indique qu'il faut prendre une décision
+                _needToDecide = true;
+            }
             
             return true;
         }
