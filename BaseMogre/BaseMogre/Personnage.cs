@@ -16,6 +16,12 @@ namespace BaseMogre
         private const String NAMENODE = "Node_";
         #endregion
 
+        #region Event
+        protected delegate void DecisionEventHandler(object sender, EventArgs e);
+
+        protected event DecisionEventHandler DecisionEvent;
+        #endregion 
+
         #region Variables
         /// <summary>
         /// Points de vie 
@@ -46,17 +52,6 @@ namespace BaseMogre
         /// Thread pour le fonctionnement autonome du personnage
         /// </summary>
         private Thread _threadMission;
-
-        /// <summary>
-        /// Delegate pour les tâches
-        /// </summary>
-        /// <param name="parametre">Parametre libre</param>
-        protected delegate void FctTache(object parametre);
-
-        /// <summary>
-        /// Liste des tâches
-        /// </summary>
-        protected List<Tache> _listeTaches;
 
         /// <summary>
         /// Booleen pour stopper les threads
@@ -116,6 +111,9 @@ namespace BaseMogre
             //Abonnement au rafraichissement de la frame
             _fListener = new FrameListener.FrameStartedHandler(Update);
             Root.Singleton.FrameStarted += _fListener;
+
+            //Attache l'évènement à la prise de décision
+            DecisionEvent += Decision;
 
             //Démarage du thread
             _threadMission = new Thread(Start);
@@ -242,7 +240,13 @@ namespace BaseMogre
         /// <summary>
         /// Méthode permettant de lancer la mission du personnage (à implémenter selon le type)
         /// </summary>
+        [Obsolete]
         protected abstract void Start();
+
+        /// <summary>
+        /// Méthode permettant la prise de décision
+        /// </summary>
+        protected abstract void Decision(object sender, EventArgs e);
 
         /// <summary>
         /// Méthode permettant de mettre à jour le personnage dans le monde 3D

@@ -116,6 +116,14 @@ namespace BaseMogre
         }
 
         /// <summary>
+        /// Prise de décision
+        /// </summary>
+        protected override void Decision(object sender, EventArgs e)
+        {
+            //TODO
+        }
+
+        /// <summary>
         /// Envoi un message
         /// </summary>
         /// <param name="iKQ"></param>
