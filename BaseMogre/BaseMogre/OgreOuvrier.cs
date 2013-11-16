@@ -121,7 +121,8 @@ namespace BaseMogre
         /// </summary>
         protected override void Decision()
         {
-            Destination = getRandomHorizontalVecteur(-500, 500);
+            //Donne une nouvelle destination aléatoire
+            Destination = getRandomHorizontalVecteur(-1000, 1000);
         }
 
         /// <summary>

@@ -29,10 +29,18 @@ namespace BaseMogre
         /// Compteur de robot
         /// </summary>
         private static int _COUNT = 0;
+
+        /// <summary>
+        /// Vitesse des robots
+        /// </summary>
+        private static int VITESSE = 30;
         #endregion
 
         #region Variables
-        
+        /// <summary>
+        /// Animation du robot lors de la marche
+        /// </summary>
+        private AnimationState _robotAnim;
         #endregion
 
         #region Constructeur
@@ -46,6 +54,11 @@ namespace BaseMogre
         {
             //Compteur de robots
             _COUNT++;            
+
+            //Initialisation de l'animation
+            _robotAnim = _entity.GetAnimationState("Idle");
+            _robotAnim.Loop = true;
+            _robotAnim.Enabled = true;
 
             //Initialisation des caractéristiques
             _pointsDeVie = PVMAX;
@@ -62,12 +75,53 @@ namespace BaseMogre
         #region Méthodes privées
         protected override bool Update(FrameEvent fEvt)
         {
-            //TODO
+            //Au changement de direction
+            if (_DestinationChanged)
+            {
+                //Modification de la direction et de la distance
+                _vDirection = Destination - Position;
+                _distance = _vDirection.Length;
+                _vDirection.Normalise();
+
+                //Rotation
+                Vector3 src = _node.Orientation * Vector3.UNIT_X;
+                Quaternion quat = src.GetRotationTo(_vDirection);
+                _node.Rotate(quat);
+
+                //Remise à zero du booleen
+                _DestinationChanged = false;
+
+                //Démarrage de l'animation
+                _robotAnim = _entity.GetAnimationState("Walk");
+                _robotAnim.Loop = true;
+                _robotAnim.Enabled = true;
+            }
+
+            //Mise à jour de la position
+            if (_distance > 10)
+            {
+                //Position
+                float move = VITESSE * (fEvt.timeSinceLastFrame);
+                _node.Translate(_vDirection * move);
+                _distance -= move;
+
+                //Animation
+                _robotAnim.AddTime(fEvt.timeSinceLastFrame * VITESSE / 20);
+            }
+            else if (!_needToDecide)
+            {
+                //Stoppe l'animation
+                _robotAnim = _entity.GetAnimationState("Idle");
+
+                //Indique qu'il faut prendre une décision
+                _needToDecide = true;
+            }
+
             return true;
         }
         protected override void Decision()
         {
-            //TODO
+            Destination = getRandomHorizontalVecteur(-1000, 1000);
         }
         #endregion
 
