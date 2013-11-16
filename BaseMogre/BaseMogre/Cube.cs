@@ -83,6 +83,16 @@ namespace BaseMogre
             _node.Scale(new Vector3((float)0.3));
             _node.AttachObject(_entity);
 
+            //Mise en place de la texture
+            if (type == TypeCube.Bois)
+            {
+                _entity.SetMaterialName("Texture/CubeBois");
+            }
+            else if (type == TypeCube.Pierre)
+            {
+                _entity.SetMaterialName("Texture/CubePierre");
+            }
+
             //Enregistrement du Scenemanager
             _scm = scm;
 

@@ -33,7 +33,7 @@ namespace BaseMogre
         /// <summary>
         /// Vitesse des robots
         /// </summary>
-        private static int VITESSE = 30;
+        private const float VITESSE = 50;
         #endregion
 
         #region Variables

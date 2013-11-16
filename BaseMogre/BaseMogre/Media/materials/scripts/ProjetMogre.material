@@ -12,3 +12,33 @@ material Texture/Grass
 		}
 	}
 }
+
+material Texture/CubeBois
+{
+	technique 
+	{
+		pass 
+		{		
+			texture_unit 
+			{
+				cubic_texture texture-bois-plank.jpg texture-bois-plank.jpg texture-bois-plank.jpg texture-bois-plank.jpg texture-bois-plank.jpg texture-bois-plank.jpg separateUV
+				tex_address_mode wrap        
+			}
+		}
+	}
+}
+
+material Texture/CubePierre
+{
+	technique 
+	{
+		pass 
+		{		
+			texture_unit 
+			{
+				cubic_texture texture-pierre.png texture-pierre.png texture-pierre.png texture-pierre.png texture-pierre.png texture-pierre.png separateUV
+				tex_address_mode wrap        
+			}
+		}
+	}
+}

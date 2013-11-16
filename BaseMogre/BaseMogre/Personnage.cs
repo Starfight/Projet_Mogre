@@ -104,6 +104,7 @@ namespace BaseMogre
 
             //Définition de la destination initiale
             _destination = this.Position;
+            _DestinationChanged = false;
             _vDirection = new Vector3(1, 0, 0);
             _distance = 0;
 
