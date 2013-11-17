@@ -180,9 +180,6 @@ namespace BaseMogre
             _stop = true;
             if (_threadMission.ThreadState == ThreadState.Running)
                 _threadMission.Join();
-
-            //Désabonne le listener de frame
-            Root.Singleton.FrameStarted -= _fListener;
         }
 
         /* méthodes pour l'inventaire

@@ -17,12 +17,14 @@ namespace BaseMogre
         /// <summary>
         /// Distance pour la detection d'une collision avec un cube
         /// </summary>
-        private const int DISTANCECOLLISIONCUBE = 20;
+        private const int DISTANCECOLLISIONCUBE = 600;
 
         /// <summary>
         /// Coordonnée max exploitable 
         /// </summary>
         private const int MAXLONGUEURTERRAIN = 1000;
+
+        private static Random rnd = new Random();
         #endregion
 
         #region Variables
@@ -40,6 +42,11 @@ namespace BaseMogre
         /// Liste des maisons
         /// </summary>
         private Dictionary<String, Maison> _ListMaisons;
+
+        /// <summary>
+        /// HashSet pour les collisions
+        /// </summary>
+        private HashSet<String> _hsetCollisions;
 
         /// <summary>
         /// Scenemanager
@@ -90,6 +97,7 @@ namespace BaseMogre
             _listCubes = new Dictionary<string, Cube>();
             _ListOfComInput = new Queue<KnowledgeQuery>();
             _ListOfComOutput = new Queue<KnowledgeQuery>();
+            _hsetCollisions = new HashSet<string>();
 
             //Abonnement au rafraichissement de la frame
             _fListener = new FrameListener.FrameStartedHandler(Update);
@@ -140,10 +148,9 @@ namespace BaseMogre
         /// <returns>Vecteur aléatoire</returns>
         public static Vector3 getRandomHorizontalVecteur()
         {
-            Random rnd = new Random();
-            int x = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN);
+            int x = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN+1);
             int y = 0;
-            int z = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN);
+            int z = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN+1);
             return new Vector3(x, y, z);
         }
         #endregion
@@ -262,10 +269,18 @@ namespace BaseMogre
                     foreach (KeyValuePair<String, Cube> kvpCube in _listCubes)
                     {
                         float distanceAuCarre = (kvpPerso.Value.Position - kvpCube.Value.Position).SquaredLength;
-                        if (distanceAuCarre < System.Math.Pow(DISTANCECOLLISIONCUBE, 2))
+                        if (distanceAuCarre < DISTANCECOLLISIONCUBE)
                         {
-                            //Collision
-                            //System.Windows.Forms.MessageBox.Show("Collision");
+                            if (!_hsetCollisions.Contains(kvpPerso.Key + kvpCube.Key))
+                            {
+                                //Collision
+                                _hsetCollisions.Add(kvpPerso.Key + kvpCube.Key);
+                                //System.Windows.Forms.MessageBox.Show("Collision : " + kvpPerso.Key + " et "+ kvpCube.Key);
+                            }
+                        }
+                        else if (_hsetCollisions.Contains(kvpPerso.Key + kvpCube.Key))
+                        {
+                            _hsetCollisions.Remove(kvpPerso.Key + kvpCube.Key);
                         }
                     }
                 }
