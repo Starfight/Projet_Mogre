@@ -158,6 +158,9 @@ namespace BaseMogre
                 _ListPersonnages.Add(o.NomEntity, o);
             }
 
+            //test
+            ((Ogres)_ListPersonnages.First().Value).ramassecube(new Cube(ref _scm, Vector3.ZERO, TypeCube.Pierre));
+
             //Création des robots
             vect = new Vector3(-350, 0, 1100);
             for (int i = 0; i < iNbRobots; i++)

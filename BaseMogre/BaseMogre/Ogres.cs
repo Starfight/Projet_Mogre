@@ -28,6 +28,11 @@ namespace BaseMogre
         /// Compteur d'ogre
         /// </summary>
         private static int _COUNT = 0;
+
+        /// <summary>
+        /// Distance de l'ogre au cube 
+        /// </summary>
+        private const int DISTANCECUBE = 50;
         #endregion
 
         #region Variables
@@ -77,6 +82,14 @@ namespace BaseMogre
                 Vector3 src = _node.Orientation * Vector3.UNIT_Z;
                 Quaternion quat = src.GetRotationTo(_vDirection);
                 _node.Rotate(quat);
+                
+                //MAJ cube
+                if (_cube != null)
+                {
+                    _cube.Position = this.Position;
+                    _cube.Translate(_vDirection * DISTANCECUBE);
+                    _cube.Rotate(quat);
+                }
 
                 //Remise à zero du booleen
                 _DestinationChanged = false;
@@ -85,9 +98,16 @@ namespace BaseMogre
             //Mise à jour de la position
             if (_distance > 10)
             {
+                //Position ogre
                 float move = VITESSE * (fEvt.timeSinceLastFrame);
                 _node.Translate(_vDirection * move);
                 _distance -= move;
+
+                //Cube si existant
+                if (_cube != null)
+                {
+                    _cube.Translate(_vDirection * move);
+                }
             }
             else if (!_needToDecide)
             {
@@ -117,9 +137,11 @@ namespace BaseMogre
         /// <returns>true si il a été ramassé, false si l'inventaire est plein</returns>
         public bool ramassecube(Cube c)
         {
-            if (this._cube != null)
+            if (_cube == null)
             {
-                this._cube = c;
+                _cube = c;
+                _cube.Position = this.Position;
+                _cube.Translate(_vDirection * DISTANCECUBE);
                 return true;
             }
             return false;

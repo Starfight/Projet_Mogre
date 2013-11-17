@@ -84,7 +84,7 @@ namespace BaseMogre
 
             //Création de l'environnement
             Environnement.createEnvironnement(ref mgr, 15, 15);
-            Cube C = new Cube(ref mgr, new Mogre.Vector3(0, 0, 0), TypeCube.Bois);
+            Cube C = new Cube(ref mgr, new Mogre.Vector3(100, 0, 0), TypeCube.Bois);
         }
 
         private void LoadConfig()

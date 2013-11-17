@@ -20,7 +20,7 @@ namespace BaseMogre
         private static int _COUNT = 0;
         #endregion
 
-        #region attributs
+        #region Attributs
         /// <summary>
         /// Type de cube
         /// </summary>
@@ -67,13 +67,16 @@ namespace BaseMogre
         public Vector3 Position
         {
             get { return _node.Position; }
+            set { _node.Position = value; }
         }
 
         #endregion
 
+        #region Constructeur
         public Cube(ref SceneManager scm, Vector3 position, TypeCube type)
         {
             //Création de l'Entity et du Scenenode à la position
+            _COUNT++;
             _type = type;
             _position = position;
             _nomEntity = "Cube" + _COUNT;
@@ -97,10 +100,29 @@ namespace BaseMogre
             _scm = scm;
 
         }
+        #endregion
 
+        #region Méthodes publiques
+        /// <summary>
+        /// Rotation du cube
+        /// </summary>
+        /// <param name="quat"></param>
+        public void Rotate(Quaternion quat)
+        {
+            _node.Rotate(quat);
+        }
+
+        /// <summary>
+        /// Transalation du cube
+        /// </summary>
+        /// <param name="vec"></param>
+        public void Translate(Vector3 vec)
+        {
+            _node.Translate(vec);
+        }
+        #endregion
     }
 
-    
 
     public enum TypeCube
     {
