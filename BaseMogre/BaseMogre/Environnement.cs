@@ -13,6 +13,16 @@ namespace BaseMogre
         #region Variables Statiques
         private static Environnement ENV_DEFAULT;
         private const String ENV_NAME = "Environnement";
+
+        /// <summary>
+        /// Distance pour la detection d'une collision avec un cube
+        /// </summary>
+        private const int DISTANCECOLLISIONCUBE = 20;
+
+        /// <summary>
+        /// Coordonnée max exploitable 
+        /// </summary>
+        private const int MAXLONGUEURTERRAIN = 1000;
         #endregion
 
         #region Variables
@@ -20,6 +30,11 @@ namespace BaseMogre
         /// Liste des personnages
         /// </summary>
         private Dictionary<String, Personnage> _ListPersonnages;
+
+        /// <summary>
+        /// Liste des cubes
+        /// </summary>
+        private Dictionary<String, Cube> _listCubes;
 
         /// <summary>
         /// Liste des maisons
@@ -46,6 +61,11 @@ namespace BaseMogre
         /// Booleen pour la gestion du thread de com
         /// </summary>
         private volatile bool _stop;
+
+        /// <summary>
+        /// Listener pour le raffraichissement des frames
+        /// </summary>
+        private FrameListener.FrameStartedHandler _fListener;
         #endregion
 
         #region Getter et Setter
@@ -67,8 +87,13 @@ namespace BaseMogre
             _scm = scm;
             _ListPersonnages = new Dictionary<string, Personnage>();
             _ListMaisons = new Dictionary<string, Maison>();
+            _listCubes = new Dictionary<string, Cube>();
             _ListOfComInput = new Queue<KnowledgeQuery>();
             _ListOfComOutput = new Queue<KnowledgeQuery>();
+
+            //Abonnement au rafraichissement de la frame
+            _fListener = new FrameListener.FrameStartedHandler(Update);
+            Root.Singleton.FrameStarted += _fListener;
         }
 
         ~Environnement()
@@ -86,19 +111,40 @@ namespace BaseMogre
         /// <param name="scm">SceneManager de référence</param>
         /// <param name="nbogres">Nombre d'ogres ouvriers</param>
         /// <param name="nbrobots">Nombre de robots</param>
-        public static void createEnvironnement(ref SceneManager scm, int nbogres, int nbrobots)
+        public static void createEnvironnement(ref SceneManager scm, int nbogres, int nbrobots, int nbcubes)
         {
             ENV_DEFAULT = new Environnement(ref scm);
             ENV_DEFAULT.initPersonnages(nbogres, nbrobots);
+            ENV_DEFAULT.initCubes(nbcubes);
 
             //Démarre le thread
             ENV_DEFAULT._ComThread = new Thread(ENV_DEFAULT.ProcessComInOut);
             ENV_DEFAULT._stop = false;
             ENV_DEFAULT._ComThread.Start();
         }
+
+        /// <summary>
+        /// Retourne l'instance courante d'Environnement
+        /// </summary>
+        /// <returns></returns>
         public static Environnement getInstance()
         {
             return ENV_DEFAULT;
+        }
+
+        /// <summary>
+        /// Renvoi un vecteur aléatoire sur le plan horizontal
+        /// </summary>
+        /// <param name="min">Minimum en x et z</param>
+        /// <param name="max">Maximum en x et z</param>
+        /// <returns>Vecteur aléatoire</returns>
+        public static Vector3 getRandomHorizontalVecteur()
+        {
+            Random rnd = new Random();
+            int x = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN);
+            int y = 0;
+            int z = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN);
+            return new Vector3(x, y, z);
         }
         #endregion
 
@@ -158,9 +204,6 @@ namespace BaseMogre
                 _ListPersonnages.Add(o.NomEntity, o);
             }
 
-            //test
-            ((Ogres)_ListPersonnages.First().Value).ramassecube(new Cube(ref _scm, Vector3.ZERO, TypeCube.Pierre));
-
             //Création des robots
             vect = new Vector3(-350, 0, 1100);
             for (int i = 0; i < iNbRobots; i++)
@@ -168,6 +211,25 @@ namespace BaseMogre
                 vect = this.creer_vecteur(i, inc, vect);
                 Robot r = new Robot(ref _scm, vect);
                 _ListPersonnages.Add(r.NomEntity,r);
+            }
+        }
+
+        /// <summary>
+        /// Initialisation des cubes de départ
+        /// </summary>
+        /// <param name="nbCubes">Nombre de cubes</param>
+        private void initCubes(int nbCubes)
+        {
+            Vector3 vec = Vector3.ZERO;
+            TypeCube t = TypeCube.Pierre;
+            for (int i = 0; i < nbCubes; i++)
+            {
+                if (i > nbCubes / 2)
+                    t = TypeCube.Bois;
+
+                vec = Environnement.getRandomHorizontalVecteur();
+                Cube c = new Cube(ref _scm, vec, t);
+                _listCubes.Add(c.NomEntity, c);
             }
         }
 
@@ -183,6 +245,33 @@ namespace BaseMogre
                 ancien.x += inc;
             }
             return ancien;
+        }
+
+        /// <summary>
+        /// Appelé à la MAJ de la frame
+        /// </summary>
+        /// <param name="fEvt"></param>
+        /// <returns></returns>
+        private bool Update(FrameEvent fEvt)
+        {
+            //Comparaison de distance
+            foreach (KeyValuePair<String, Personnage> kvpPerso in _ListPersonnages)
+            {
+                if (kvpPerso.Key.StartsWith("ogre"))
+                {
+                    foreach (KeyValuePair<String, Cube> kvpCube in _listCubes)
+                    {
+                        float distanceAuCarre = (kvpPerso.Value.Position - kvpCube.Value.Position).SquaredLength;
+                        if (distanceAuCarre < System.Math.Pow(DISTANCECOLLISIONCUBE, 2))
+                        {
+                            //Collision
+                            //System.Windows.Forms.MessageBox.Show("Collision");
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
 
         /// <summary>

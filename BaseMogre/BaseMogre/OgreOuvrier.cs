@@ -122,7 +122,7 @@ namespace BaseMogre
         protected override void Decision()
         {
             //Donne une nouvelle destination aléatoire
-            Destination = getRandomHorizontalVecteur(-1000, 1000);
+            Destination = Environnement.getRandomHorizontalVecteur();
         }
 
         /// <summary>

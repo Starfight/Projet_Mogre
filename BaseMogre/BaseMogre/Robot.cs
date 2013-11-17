@@ -121,7 +121,7 @@ namespace BaseMogre
         }
         protected override void Decision()
         {
-            Destination = getRandomHorizontalVecteur(-1000, 1000);
+            Destination = Environnement.getRandomHorizontalVecteur();
         }
         #endregion
 

@@ -269,22 +269,5 @@ namespace BaseMogre
             }
         }
         #endregion
-
-        #region Méthode statiques
-        /// <summary>
-        /// Renvoi un vecteur aléatoire sur le plan horizontal
-        /// </summary>
-        /// <param name="min">Minimum en x et z</param>
-        /// <param name="max">Maximum en x et z</param>
-        /// <returns>Vecteur aléatoire</returns>
-        protected Vector3 getRandomHorizontalVecteur(int min, int max)
-        {
-            Random rnd = new Random();
-            int x = rnd.Next(min,max);
-            int y = 0;
-            int z = rnd.Next(min,max);
-            return new Vector3(x, y, z);
-        }
-        #endregion
     }
 }

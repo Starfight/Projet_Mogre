@@ -77,13 +77,13 @@ namespace BaseMogre
             mWindow.AddViewport(cam);
 
             //camera position
-            cam.Position = new Mogre.Vector3(0, 200, -400);
+            cam.Position = new Mogre.Vector3(0, 200, -200);
 
             //Attache les handler
             CreateInputHandler();
 
             //Création de l'environnement
-            Environnement.createEnvironnement(ref mgr, 15, 15);
+            Environnement.createEnvironnement(ref mgr, 15, 15, 5);
             Cube C = new Cube(ref mgr, new Mogre.Vector3(100, 0, 0), TypeCube.Bois);
         }
 
