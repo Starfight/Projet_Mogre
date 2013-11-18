@@ -15,9 +15,14 @@ namespace BaseMogre
         private const String ENV_NAME = "Environnement";
 
         /// <summary>
-        /// Distance pour la detection d'une collision avec un cube
+        /// Distance pour la detection d'une collision avec un cube (au carré)
         /// </summary>
         private const int DISTANCECOLLISIONCUBE = 600;
+
+        /// <summary>
+        /// Distance minimale entre 2 cube (au carré)
+        /// </summary>
+        private const int DISTANCECUBEACUBE = 1000;
 
         /// <summary>
         /// Coordonnée max exploitable 
@@ -234,10 +239,27 @@ namespace BaseMogre
                 if (i > nbCubes / 2)
                     t = TypeCube.Bois;
 
-                vec = Environnement.getRandomHorizontalVecteur();
+                vec = getCubeInitPosition();
                 Cube c = new Cube(ref _scm, vec, t);
                 _listCubes.Add(c.NomEntity, c);
             }
+        }
+
+        private Vector3 getCubeInitPosition()
+        {
+            bool ok = true;
+            Vector3 v;
+            do
+            {
+                v = getRandomHorizontalVecteur();
+                foreach (KeyValuePair<String, Cube> kvp in _listCubes)
+                {
+                    float distanceAuCarre = (kvp.Value.Position - v).SquaredLength;
+                    if (distanceAuCarre < DISTANCECUBEACUBE)
+                        ok = false;
+                }
+            } while (!ok);
+            return v;
         }
 
         private Vector3 creer_vecteur(int i, int inc, Vector3 ancien)
@@ -269,18 +291,19 @@ namespace BaseMogre
                     foreach (KeyValuePair<String, Cube> kvpCube in _listCubes)
                     {
                         float distanceAuCarre = (kvpPerso.Value.Position - kvpCube.Value.Position).SquaredLength;
+                        string name = kvpPerso.Key + kvpCube.Key;
                         if (distanceAuCarre < DISTANCECOLLISIONCUBE)
                         {
-                            if (!_hsetCollisions.Contains(kvpPerso.Key + kvpCube.Key))
+                            if (!_hsetCollisions.Contains(name))
                             {
                                 //Collision
-                                _hsetCollisions.Add(kvpPerso.Key + kvpCube.Key);
+                                _hsetCollisions.Add(name);
                                 //System.Windows.Forms.MessageBox.Show("Collision : " + kvpPerso.Key + " et "+ kvpCube.Key);
                             }
                         }
-                        else if (_hsetCollisions.Contains(kvpPerso.Key + kvpCube.Key))
+                        else if (_hsetCollisions.Contains(name))
                         {
-                            _hsetCollisions.Remove(kvpPerso.Key + kvpCube.Key);
+                            _hsetCollisions.Remove(name);
                         }
                     }
                 }
