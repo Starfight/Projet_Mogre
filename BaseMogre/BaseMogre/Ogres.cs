@@ -140,8 +140,15 @@ namespace BaseMogre
             if (_cube == null)
             {
                 _cube = c;
+
+                //Position
                 _cube.Position = this.Position;
                 _cube.Translate(_vDirection * DISTANCECUBE);
+
+                //Rotation
+                Vector3 src = _cube.Orientation * Vector3.UNIT_Z;
+                Quaternion quat = src.GetRotationTo(_vDirection);
+                _cube.Rotate(quat);
                 return true;
             }
             return false;

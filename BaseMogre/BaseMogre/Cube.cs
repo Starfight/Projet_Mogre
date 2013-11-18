@@ -62,7 +62,7 @@ namespace BaseMogre
         }
 
         /// <summary>
-        /// Position du personnage
+        /// Position du cube
         /// </summary>
         public Vector3 Position
         {
@@ -70,6 +70,13 @@ namespace BaseMogre
             set { _node.Position = value; }
         }
 
+        /// <summary>
+        /// Orientation du cube
+        /// </summary>
+        public Quaternion Orientation
+        {
+            get { return _node.Orientation; }
+        }
         #endregion
 
         #region Constructeur
@@ -126,7 +133,6 @@ namespace BaseMogre
 
     public enum TypeCube
     {
-        Aucun,
         Bois,
         Pierre
     }

@@ -17,7 +17,7 @@ namespace BaseMogre
         /// <summary>
         /// Distance pour la detection d'une collision avec un cube (au carré)
         /// </summary>
-        private const int DISTANCECOLLISIONCUBE = 600;
+        private const int DISTANCECOLLISIONCUBE = 1000;
 
         /// <summary>
         /// Distance minimale entre 2 cube (au carré)
@@ -42,6 +42,7 @@ namespace BaseMogre
         /// Liste des cubes
         /// </summary>
         private Dictionary<String, Cube> _listCubes;
+        private HashSet<String> _listCubesToDelete;
 
         /// <summary>
         /// Liste des maisons
@@ -100,6 +101,7 @@ namespace BaseMogre
             _ListPersonnages = new Dictionary<string, Personnage>();
             _ListMaisons = new Dictionary<string, Maison>();
             _listCubes = new Dictionary<string, Cube>();
+            _listCubesToDelete = new HashSet<string>();
             _ListOfComInput = new Queue<KnowledgeQuery>();
             _ListOfComOutput = new Queue<KnowledgeQuery>();
             _hsetCollisions = new HashSet<string>();
@@ -114,6 +116,92 @@ namespace BaseMogre
             //fini le thread
             _stop = true;
             _ComThread.Join();
+        }
+        #endregion
+
+        #region Méthodes d'initialisation
+        /// <summary>
+        /// Initialisation des personnages
+        /// </summary>
+        /// <param name="iNbOgres">Nombre d'ogres ouvriers</param>
+        /// <param name="iNbRobots">Nombre de robots</param>
+        private void initPersonnages(int iNbOgres, int iNbRobots)
+        {
+            int inc;
+
+            //Création des ogres
+            inc = 100;
+            Vector3 vect = new Vector3(-350, 0, -1100);
+            for (int i = 0; i < iNbOgres; i++)
+            {
+                vect = this.creer_vecteur(i, inc, vect);
+                OgreOuvrier o = new OgreOuvrier(ref _scm, vect);
+                _ListPersonnages.Add(o.NomEntity, o);
+            }
+
+            //Création des robots
+            vect = new Vector3(-350, 0, 1100);
+            for (int i = 0; i < iNbRobots; i++)
+            {
+                vect = this.creer_vecteur(i, inc, vect);
+                Robot r = new Robot(ref _scm, vect);
+                _ListPersonnages.Add(r.NomEntity, r);
+            }
+        }
+
+        /// <summary>
+        /// Initialisation des cubes de départ
+        /// </summary>
+        /// <param name="nbCubes">Nombre de cubes</param>
+        private void initCubes(int nbCubes)
+        {
+            Vector3 vec = Vector3.ZERO;
+            TypeCube t = TypeCube.Pierre;
+            for (int i = 0; i < nbCubes; i++)
+            {
+                if (i > nbCubes / 2)
+                    t = TypeCube.Bois;
+
+                vec = getCubeInitPosition();
+                Cube c = new Cube(ref _scm, vec, t);
+                _listCubes.Add(c.NomEntity, c);
+            }
+        }
+
+        /// <summary>
+        /// Obtient une position qui laisse une marge minimale avec les autres cubes
+        /// </summary>
+        /// <returns>Vecteur</returns>
+        private Vector3 getCubeInitPosition()
+        {
+            bool ok;
+            Vector3 v;
+            do
+            {
+                ok = true;
+                v = getRandomHorizontalVecteur();
+                foreach (KeyValuePair<String, Cube> kvp in _listCubes)
+                {
+                    float distanceAuCarre = (kvp.Value.Position - v).SquaredLength;
+                    if (distanceAuCarre < DISTANCECUBEACUBE)
+                        ok = false;
+                }
+            } while (!ok);
+            return v;
+        }
+
+        private Vector3 creer_vecteur(int i, int inc, Vector3 ancien)
+        {
+            if ((i % 10 == 0) && (i != 0))
+            {
+                ancien.z += inc;
+                ancien.x += -inc * 9;
+            }
+            else
+            {
+                ancien.x += inc;
+            }
+            return ancien;
         }
         #endregion
 
@@ -168,7 +256,7 @@ namespace BaseMogre
         /// <returns>Valeur si la communication s'est bien déroulée</returns>
         public Result send(KnowledgeQuery iKQ)
         {
-            if (iKQ.parametres != null)
+            if (iKQ.NomPerso != null)
             {
                 _ListOfComInput.Enqueue(iKQ);
                 return Result.OK;
@@ -194,89 +282,27 @@ namespace BaseMogre
                 kvp.Value.Dispose();
             }
         }
+
+        /// <summary>
+        /// Obtient le cube à partir du nom
+        /// </summary>
+        /// <param name="nomCube">Nom du cube</param>
+        /// <returns>Le cube ou null si introuvable</returns>
+        public Cube getCube(String nomCube)
+        {
+            Cube cubeOut = null;
+            if ((_listCubes.ContainsKey(nomCube))&&(!_listCubesToDelete.Contains(nomCube)))
+            {
+                _listCubes.TryGetValue(nomCube, out cubeOut);
+                //Enlève le cube de la liste
+                if (cubeOut != null)
+                    _listCubesToDelete.Add(nomCube);
+            }
+            return cubeOut;
+        }
         #endregion
 
         #region Méthodes privées
-        /// <summary>
-        /// Initialisation des personnages
-        /// </summary>
-        /// <param name="iNbOgres">Nombre d'ogres ouvriers</param>
-        /// <param name="iNbRobots">Nombre de robots</param>
-        private void initPersonnages(int iNbOgres, int iNbRobots)
-        {
-            int inc;
-
-            //Création des ogres
-            inc = 100;
-            Vector3 vect = new Vector3(-350, 0, -1100);
-            for (int i = 0; i < iNbOgres; i++)
-            {
-                vect = this.creer_vecteur(i, inc, vect);
-                OgreOuvrier o = new OgreOuvrier(ref _scm, vect);
-                _ListPersonnages.Add(o.NomEntity, o);
-            }
-
-            //Création des robots
-            vect = new Vector3(-350, 0, 1100);
-            for (int i = 0; i < iNbRobots; i++)
-            {
-                vect = this.creer_vecteur(i, inc, vect);
-                Robot r = new Robot(ref _scm, vect);
-                _ListPersonnages.Add(r.NomEntity,r);
-            }
-        }
-
-        /// <summary>
-        /// Initialisation des cubes de départ
-        /// </summary>
-        /// <param name="nbCubes">Nombre de cubes</param>
-        private void initCubes(int nbCubes)
-        {
-            Vector3 vec = Vector3.ZERO;
-            TypeCube t = TypeCube.Pierre;
-            for (int i = 0; i < nbCubes; i++)
-            {
-                if (i > nbCubes / 2)
-                    t = TypeCube.Bois;
-
-                vec = getCubeInitPosition();
-                Cube c = new Cube(ref _scm, vec, t);
-                _listCubes.Add(c.NomEntity, c);
-            }
-        }
-
-        private Vector3 getCubeInitPosition()
-        {
-            bool ok;
-            Vector3 v;
-            do
-            {
-                ok = true;
-                v = getRandomHorizontalVecteur();
-                foreach (KeyValuePair<String, Cube> kvp in _listCubes)
-                {
-                    float distanceAuCarre = (kvp.Value.Position - v).SquaredLength;
-                    if (distanceAuCarre < DISTANCECUBEACUBE)
-                        ok = false;
-                }
-            } while (!ok);
-            return v;
-        }
-
-        private Vector3 creer_vecteur(int i, int inc, Vector3 ancien)
-        {
-            if ((i % 10 == 0) && (i != 0))
-            {
-                ancien.z += inc;
-                ancien.x += -inc*9;
-            }
-            else
-            {
-                ancien.x += inc;
-            }
-            return ancien;
-        }
-
         /// <summary>
         /// Appelé à la MAJ de la frame
         /// </summary>
@@ -284,11 +310,20 @@ namespace BaseMogre
         /// <returns></returns>
         private bool Update(FrameEvent fEvt)
         {
-            //Comparaison de distance
+            //Regarde s'il y a des cubes à enlever
+            while (_listCubesToDelete.Count != 0)
+            {
+                _listCubes.Remove(_listCubesToDelete.First());
+                _listCubesToDelete.Remove(_listCubesToDelete.First());
+            }
+
+            //Detection des collisions avec les personnages
             foreach (KeyValuePair<String, Personnage> kvpPerso in _ListPersonnages)
             {
+                //Si c'est un ogre
                 if (kvpPerso.Key.StartsWith("ogre"))
                 {
+                    //Détection des collisions avec les cubes
                     foreach (KeyValuePair<String, Cube> kvpCube in _listCubes)
                     {
                         float distanceAuCarre = (kvpPerso.Value.Position - kvpCube.Value.Position).SquaredLength;
@@ -299,7 +334,10 @@ namespace BaseMogre
                             {
                                 //Collision
                                 _hsetCollisions.Add(name);
-                                //System.Windows.Forms.MessageBox.Show("Collision : " + kvpPerso.Key + " et "+ kvpCube.Key);
+
+                                //Message pour l'ogre
+                                KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, Classe.Cube, kvpCube.Key, kvpCube.Value.Position);
+                                _ListOfComOutput.Enqueue(kq);                                
                             }
                         }
                         else if (_hsetCollisions.Contains(name))
@@ -331,10 +369,10 @@ namespace BaseMogre
                 while ((_ListOfComOutput.Count > 0)&&(!_stop))
                 {
                     KnowledgeQuery kq = _ListOfComOutput.Dequeue();
-                    if (_ListPersonnages.ContainsKey(kq.destinataire))
+                    if (_ListPersonnages.ContainsKey(kq.NomPerso))
                     {
                         Personnage p;
-                        _ListPersonnages.TryGetValue(kq.destinataire, out p);
+                        _ListPersonnages.TryGetValue(kq.NomPerso, out p);
                         p.send(kq);
                     }
                 }
@@ -349,7 +387,7 @@ namespace BaseMogre
         /// <param name="iKQ"></param>
         private void ProcessKQ(KnowledgeQuery iKQ)
         {
-            Motif obj = iKQ.objectif;
+            /*Motif obj = iKQ.objectif;
             switch (obj)
             {
                 case Motif.Position: ProcessPosition(iKQ);
@@ -360,12 +398,12 @@ namespace BaseMogre
                     break;
                 case Motif.Assembler :
                     break;
-            }
+            }*/
         }
 
         private void ProcessPosition(KnowledgeQuery iKQ)
         {
-            KnowledgeQuery KQreturn = new KnowledgeQuery(Motif.Position, iKQ.destinataire);
+            /*KnowledgeQuery KQreturn = new KnowledgeQuery(Motif.Position, iKQ.destinataire);
 
             //Recherche par nom 
             String name = "noname";
@@ -404,7 +442,7 @@ namespace BaseMogre
                 KQreturn.setPosition(v3);
                 KQreturn.parametres.Add(KnowledgeQuery.CLASSE, classe);
                 KQreturn.parametres.Add(KnowledgeQuery.NOM, name); 
-            }
+            }*/
         }
         #endregion
     }

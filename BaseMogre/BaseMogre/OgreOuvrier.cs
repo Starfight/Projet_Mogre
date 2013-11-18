@@ -22,11 +22,6 @@ namespace BaseMogre
         /// Maison en cours de construction
         /// </summary>
         private MaisonInfo _currentMaison;
-
-        /// <summary>
-        /// Type du prochain cube à chercher
-        /// </summary>
-        private volatile TypeCube _typeNextCube;
         #endregion
 
         #region constructeurs
@@ -37,7 +32,6 @@ namespace BaseMogre
             
             //init
             _currentMaison.Reset();
-            _typeNextCube = TypeCube.Aucun;
         }
         #endregion
 
@@ -45,7 +39,7 @@ namespace BaseMogre
         [Obsolete]
         protected void Start()
         {
-            //Variables pour la boucle
+            /*//Variables pour la boucle
             KnowledgeQuery kq;
 
             //boucle principale
@@ -113,7 +107,7 @@ namespace BaseMogre
                 kq.parametres.Add(KnowledgeQuery.TYPECUBE, nextcube);
                 envoyer(kq);
                 utiliseCube();
-            }
+            }*/
         }
 
         /// <summary>
@@ -121,8 +115,21 @@ namespace BaseMogre
         /// </summary>
         protected override void Decision()
         {
-            //Donne une nouvelle destination aléatoire
-            Destination = Environnement.getRandomHorizontalVecteur();
+            //S'il y a des messages à traiter
+            if (_listComInput.Count > 0)
+            {
+                KnowledgeQuery kq = _listComInput.Dequeue();
+
+                if ((kq.Classe == Classe.Cube)&&(_cube==null))
+                {
+                    ramassecube(Environnement.getInstance().getCube(kq.Nom));
+                }
+            }
+            else
+            {
+                //Donne une nouvelle destination aléatoire
+                Destination = Environnement.getRandomHorizontalVecteur();
+            }
         }
 
         /// <summary>

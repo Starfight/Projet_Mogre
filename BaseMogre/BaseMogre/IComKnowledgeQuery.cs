@@ -22,86 +22,60 @@ namespace BaseMogre
         OK
     }
 
-    public enum Motif
+    public enum Classe
     {
-        Position,
-        InfoCube,
-        ObtientCube,
-        DonneCube,
-        Coup,
-        Assembler
+        Cube,
+        Robot,
+        Ogre,
+        Maison
     }
 
     public struct KnowledgeQuery
     {
-        #region constantes publiques
-        public const String POSITION = "position";
-        public const String CLASSE = "classe";
-        public const String NOM = "nom";
-        public const String TYPECUBE = "cube";
-        #endregion
-
         #region Variables
-        public Motif objectif;
-        public String destinataire;
-        public Dictionary<String, String> parametres;
-        #endregion
+        /// <summary>
+        /// Emetteur de la requete
+        /// </summary>
+        private String _nomPerso;
+
+        /// <summary>
+        /// Données de la requète
+        /// </summary>
+        private Classe _classe;
+        private String _nom;
+        private Vector3 _position;
+        #endregion 
 
         #region Constructeur
-        public KnowledgeQuery(Motif iObj, String iDestinataire, Dictionary<String, String> iParametres)
+        public KnowledgeQuery(String nomPerso, Classe classe, String nom, Vector3 position)
         {
-            objectif = iObj;
-            destinataire = iDestinataire;
-            parametres = new Dictionary<String, String>(iParametres);
-        }
-        public KnowledgeQuery(Motif iObj, String iDestinataire, params String[] iParametres)
-        {
-            objectif = iObj;
-            destinataire = iDestinataire;
-            parametres = new Dictionary<String, String>();
-            for (int i = 0; i < iParametres.Count()-iParametres.Count()%2; i+=2)
-            {
-                parametres.Add(iParametres[i], iParametres[i + 1]);
-            }
+            _nomPerso = nomPerso;
+            _classe = classe;
+            _nom = nom;
+            _position = position;
         }
         #endregion
 
-        #region Méthodes publiques
-        /// <summary>
-        /// Obtient une position dans les paramètres si elle existe
-        /// </summary>
-        /// <returns></returns>
-        public Vector3 getPosition()
+        #region Getters et Setters
+        public String NomPerso
         {
-            Vector3 v3 = new Vector3();
-
-            if (parametres.ContainsKey(POSITION))
-            {
-                String v3string = "";
-                parametres.TryGetValue(POSITION, out v3string);
-                String[] v3tab = v3string.Split(';');
-
-                if (v3tab.Count() == 3)
-                {
-                    int[] v3intTab = new int[3];
-                    for (int i = 0; i < 3; i++)
-                    {
-                        v3intTab[i] = Int32.Parse(v3tab[i]);
-                    }
-                    v3 = new Vector3(v3intTab[0], v3intTab[1], v3intTab[2]);
-                }
-            }
-            return v3;
+            get { return _nomPerso; }
+            set { _nomPerso = value; }
         }
-
-        /// <summary>
-        /// Met une position en paramètre
-        /// </summary>
-        /// <param name="v3"></param>
-        public void setPosition(Vector3 v3)
+        public Classe Classe
         {
-            String v3string = v3.x + ";" + v3.y + ";" + v3.z;
-            parametres.Add(POSITION, v3string);
+            get { return _classe; }
+            set { _classe = value; }
+        }
+        public String Nom
+        {
+            get { return _nom; }
+            set { _nom = value; }
+        }
+        public Vector3 Position
+        {
+            get { return _position; }
+            set { _position = value; }
         }
         #endregion
     }

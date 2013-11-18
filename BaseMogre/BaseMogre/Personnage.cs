@@ -86,6 +86,11 @@ namespace BaseMogre
         /// Liste des objets possédés
         /// </summary>
         //private List<Objet> _objetsPerso;
+
+        /// <summary>
+        /// Queue pour la communication
+        /// </summary>
+        protected Queue<KnowledgeQuery> _listComInput;
         #endregion
 
         #region Constructeur
@@ -111,6 +116,9 @@ namespace BaseMogre
             //Abonnement au rafraichissement de la frame
             _fListener = new FrameListener.FrameStartedHandler(Update);
             Root.Singleton.FrameStarted += _fListener;
+
+            //Queue pour la com
+            _listComInput = new Queue<KnowledgeQuery>();
 
             //Prise de décision
             _needToDecide = true;
@@ -160,9 +168,10 @@ namespace BaseMogre
         #region methodes publiques
         public Result send(KnowledgeQuery iKQ)
         {
-            if (iKQ.parametres != null)
+            if (iKQ.NomPerso != null)
             {
-                //TODO : traite la requète
+                _listComInput.Enqueue(iKQ);
+                _needToDecide = true;
                 return Result.OK;
             }
             else
@@ -257,6 +266,8 @@ namespace BaseMogre
                 if (_needToDecide)
                 {
                     Decision();
+
+                    //indique que la décision a bien été prise
                     _needToDecide = false;
                 }
                 else
