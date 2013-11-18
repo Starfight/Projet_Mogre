@@ -247,10 +247,11 @@ namespace BaseMogre
 
         private Vector3 getCubeInitPosition()
         {
-            bool ok = true;
+            bool ok;
             Vector3 v;
             do
             {
+                ok = true;
                 v = getRandomHorizontalVecteur();
                 foreach (KeyValuePair<String, Cube> kvp in _listCubes)
                 {
