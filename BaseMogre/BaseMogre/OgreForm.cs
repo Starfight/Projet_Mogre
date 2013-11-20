@@ -47,9 +47,6 @@ namespace BaseMogre
             }
         }
 
-        
-        
-
         public void Init()
         {
             // Create root object
@@ -124,6 +121,7 @@ namespace BaseMogre
         }
         #endregion
 
+        #region méthode d'initialisation
         private void LoadConfig()
         {
             ConfigFile cf = new ConfigFile();
@@ -151,7 +149,9 @@ namespace BaseMogre
             rs.SetConfigOption("Full Screen", "No");
             rs.SetConfigOption("Video Mode", "800 x 600 @ 32-bit colour");
         }
+        #endregion
 
+        #region événement form
         void OgreForm_Disposed(object sender, EventArgs e)
         {
             mRoot.Dispose();
@@ -164,6 +164,7 @@ namespace BaseMogre
         {
             mWindow.WindowMovedOrResized();
         }
+        #endregion
 
         protected void CreateInputHandler()
         {
@@ -172,7 +173,7 @@ namespace BaseMogre
             this.KeyUp += new KeyEventHandler(KeyUpHandler);
         }
 
-        #region gestion camera
+        #region gestion camera clavier
         void KeyUpHandler(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
