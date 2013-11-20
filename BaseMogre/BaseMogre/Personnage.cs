@@ -18,7 +18,7 @@ namespace BaseMogre
         /// <summary>
         /// Distance pour esquiver une collision
         /// </summary>
-        protected const int ESQUIVE_COLLISION = 30;
+        protected const int ESQUIVE_COLLISION = 200;
         #endregion
 
         #region Variables
@@ -298,6 +298,7 @@ namespace BaseMogre
         protected void EviteCollision(Vector3 pos)
         {
             Vector3 v = (Position - pos);
+            v.Normalise();
             Destination = v * ESQUIVE_COLLISION;
         }
         #endregion
