@@ -164,6 +164,11 @@ namespace BaseMogre
                 return true;
             return false;
         }
+
+        public override Classe getClasse()
+        {
+            return Classe.Ogre;
+        }
         #endregion
     }
 }

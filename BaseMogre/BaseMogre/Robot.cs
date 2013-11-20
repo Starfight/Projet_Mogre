@@ -125,6 +125,13 @@ namespace BaseMogre
         }
         #endregion
 
+        #region Méthodes publiques
+        public override Classe getClasse()
+        {
+            return Classe.Robot;
+        }
+        #endregion
+
         #region old to delete
         public static Entity CreationRobot(ref SceneManager scm,string nomEntite)
         {

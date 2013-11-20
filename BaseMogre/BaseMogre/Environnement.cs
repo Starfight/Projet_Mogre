@@ -5,6 +5,7 @@ using System.Text;
 using Mogre;
 using MogreFramework;
 using System.Threading;
+using System.Collections;
 
 namespace BaseMogre
 {
@@ -17,7 +18,12 @@ namespace BaseMogre
         /// <summary>
         /// Distance pour la detection d'une collision avec un cube (au carré)
         /// </summary>
-        private const int DISTANCECOLLISIONCUBE = 1200;
+        private const int DISTANCECOLLISIONCUBE = 1500;
+
+        /// <summary>
+        /// Distance pour la detection d'une collision avec un perso (au carré)
+        /// </summary>
+        private const int DISTANCECOLLISIONPERSO = 2000;
 
         /// <summary>
         /// Distance minimale entre 2 cube (au carré)
@@ -318,10 +324,12 @@ namespace BaseMogre
             }
 
             //Detection des collisions avec les personnages
+            int iPerso = 1;
+            KeyValuePair<String, Personnage>[] tabPerso = _ListPersonnages.ToArray();
             foreach (KeyValuePair<String, Personnage> kvpPerso in _ListPersonnages)
             {
                 //Si c'est un ogre
-                if (kvpPerso.Key.StartsWith("ogre"))
+                if (kvpPerso.Value.getClasse()==Classe.Ogre)
                 {
                     //Détection des collisions avec les cubes
                     foreach (KeyValuePair<String, Cube> kvpCube in _listCubes)
@@ -337,7 +345,32 @@ namespace BaseMogre
 
                                 //Message pour l'ogre
                                 KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, Classe.Cube, kvpCube.Key, kvpCube.Value.Position);
-                                _ListOfComOutput.Enqueue(kq);                                
+                                _ListOfComOutput.Enqueue(kq);         
+                            }
+                        }
+                        else if (_hsetCollisions.Contains(name))
+                        {
+                            _hsetCollisions.Remove(name);
+                        }
+                    }
+
+                    //Détection des collisions avec les autres persos
+                    for (int i = iPerso; i < tabPerso.Length - 1; i++)
+                    {
+                        float distanceAuCarre = (kvpPerso.Value.Position - tabPerso[i].Value.Position).SquaredLength;
+                        string name = kvpPerso.Key + tabPerso[i].Key;
+                        if (distanceAuCarre < DISTANCECOLLISIONPERSO)
+                        {
+                            if (!_hsetCollisions.Contains(name))
+                            {
+                                //Collision
+                                _hsetCollisions.Add(name);
+
+                                //Messages
+                                KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, tabPerso[i].Value.getClasse(), tabPerso[i].Key, tabPerso[i].Value.Position);
+                                KnowledgeQuery kq2 = new KnowledgeQuery(tabPerso[i].Key, kvpPerso.Value.getClasse(), kvpPerso.Key, kvpPerso.Value.Position);
+                                _ListOfComOutput.Enqueue(kq);
+                                _ListOfComOutput.Enqueue(kq2);
                             }
                         }
                         else if (_hsetCollisions.Contains(name))
@@ -346,7 +379,11 @@ namespace BaseMogre
                         }
                     }
                 }
+
+                iPerso++;
             }
+
+            
 
             return true;
         }

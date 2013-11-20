@@ -163,6 +163,7 @@ namespace BaseMogre
                 _DestinationChanged = true;
             }
         }
+
         //public List<Objet> ObjetsPerso
         //{
         //  get { return _objetsPerso; }
@@ -258,6 +259,12 @@ namespace BaseMogre
         /// <param name="fEvt">Fourni des information sur le raffraichissement des images</param>
         /// <returns>False si l'update devrait être stopée, vrai autrement</returns>
         protected abstract bool Update(FrameEvent fEvt);
+
+        /// <summary>
+        /// Retourne la classe du personnage
+        /// </summary>
+        /// <returns></returns>
+        public abstract Classe getClasse();
         #endregion
 
         #region Méthodes privées

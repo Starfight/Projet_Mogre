@@ -126,7 +126,7 @@ namespace BaseMogre
                     ramassecube(Environnement.getInstance().getCube(kq.Nom));
                 }
                 //Evite la collision
-                else if ((kq.Classe == Classe.Cube) && (_cube != null))
+                else if (((kq.Classe == Classe.Cube) && (_cube != null))||(kq.Classe == Classe.Ogre))
                 {
                     EviteCollision(kq.Position);
                 }
