@@ -120,9 +120,15 @@ namespace BaseMogre
             {
                 KnowledgeQuery kq = _listComInput.Dequeue();
 
+                //Ramassage de cube
                 if ((kq.Classe == Classe.Cube)&&(_cube==null))
                 {
                     ramassecube(Environnement.getInstance().getCube(kq.Nom));
+                }
+                //Evite la collision
+                else if ((kq.Classe == Classe.Cube) && (_cube != null))
+                {
+                    EviteCollision(kq.Position);
                 }
             }
             else

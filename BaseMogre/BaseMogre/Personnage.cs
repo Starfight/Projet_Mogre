@@ -14,6 +14,11 @@ namespace BaseMogre
         /// Nom du node par défaut
         /// </summary>
         private const String NAMENODE = "Node_";
+
+        /// <summary>
+        /// Distance pour esquiver une collision
+        /// </summary>
+        protected const int ESQUIVE_COLLISION = 30;
         #endregion
 
         #region Variables
@@ -275,6 +280,20 @@ namespace BaseMogre
                     Thread.Sleep(100);
                 }
             }
+        }
+        #endregion
+
+        #region Méthodes protected
+        /// <summary>
+        /// Evite la collision avec un objet
+        /// </summary>
+        /// <param name="pos">Position de l'objet en collision</param>
+        protected void EviteCollision(Vector3 pos)
+        {
+            Vector3 v = (Position - pos);
+            v.Normalise();
+            v = v.CrossProduct(Vector3.UNIT_Y);
+            Destination = v * ESQUIVE_COLLISION;
         }
         #endregion
     }

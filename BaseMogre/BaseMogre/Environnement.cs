@@ -17,7 +17,7 @@ namespace BaseMogre
         /// <summary>
         /// Distance pour la detection d'une collision avec un cube (au carré)
         /// </summary>
-        private const int DISTANCECOLLISIONCUBE = 1000;
+        private const int DISTANCECOLLISIONCUBE = 1200;
 
         /// <summary>
         /// Distance minimale entre 2 cube (au carré)
