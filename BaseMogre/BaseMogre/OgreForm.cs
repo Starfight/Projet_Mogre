@@ -19,11 +19,13 @@ namespace BaseMogre
         RenderWindow mWindow;
         SceneManager mgr;
         Camera cam;
-        //camera move
-        const float TRANSLATE = 200;
-        const float ROTATE = 0.01f;
+        //déplacement camera (touches)
+        const float TRANSLATE = 200; 
         Mogre.Vector3 mTranslation = Mogre.Vector3.ZERO;
-
+        //changement angle camera (souris)
+        const float ROTATE = 0.2f;
+        Point mLastPosition;
+        bool mouseMove=false;
         #endregion
 
         #region Constructeur
@@ -44,6 +46,9 @@ namespace BaseMogre
                 Application.DoEvents();
             }
         }
+
+        
+        
 
         public void Init()
         {
@@ -84,8 +89,40 @@ namespace BaseMogre
 
             //Création de l'environnement
             Environnement.createEnvironnement(ref mgr, 15, 15, 25);
-            Cube C = new Cube(ref mgr, new Mogre.Vector3(100, 0, 0), TypeCube.Bois);
+            //Cube C = new Cube(ref mgr, new Mogre.Vector3(100, 0, 0), TypeCube.Bois);
+            Maison M = new Maison(ref mgr, new Mogre.Vector3(100, 0, 0));
+
+            //Initialisation des événements de la souris
+            this.MouseMove += new MouseEventHandler(OgreForm_MouseMove);
+            this.MouseDown += new MouseEventHandler(OgreForm_MouseDown);
+            this.MouseUp += new MouseEventHandler(OgreForm_MouseUp);
         }
+
+        #region événement pour la rotation de la caméra
+        void OgreForm_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseMove = false;
+        }
+
+        void OgreForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                mouseMove = true;
+                mLastPosition = new Point(e.X,e.Y);
+            }
+        }
+
+        void OgreForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseMove)
+            {
+                cam.Yaw(new Degree((mLastPosition.X - e.X) * ROTATE));
+                cam.Pitch(new Degree((mLastPosition.Y - e.Y) * ROTATE));
+                mLastPosition = new Point(e.X, e.Y);
+            }
+        }
+        #endregion
 
         private void LoadConfig()
         {
@@ -140,73 +177,33 @@ namespace BaseMogre
         {
             switch (e.KeyCode)
             {
-                //case Keys.Up:
                 case Keys.Z:
-                //case Keys.Down:
                 case Keys.S:
                     mTranslation.z = 0;
                     break;
-
-                case Keys.Left:
                 case Keys.Q:
-                case Keys.Right:
                 case Keys.D:
                     mTranslation.x = 0;
-                    break;
-
-                case Keys.Up:
-                //case Keys.Q:
-                case Keys.Down:
-                    //case Keys.E:
-                    mTranslation.y = 0;
-                    mTranslation.z = 0;
                     break;
             }
         }
 
-        //gestion camera 
+        //gestion camera via clavier 
         void KeyDownHandler(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
-                //case Keys.Up:
                 case Keys.Z:
                     mTranslation.z = -TRANSLATE;
                     break;
-
-                //case Keys.Down:
                 case Keys.S:
                     mTranslation.z = TRANSLATE;
                     break;
-
-                case Keys.Left:
-                    //case Keys.Q:
+                case Keys.Q:
                     mTranslation.x = -TRANSLATE;
                     break;
-
-                case Keys.Right:
-                    //case Keys.D:
-                    mTranslation.x = TRANSLATE;
-                    break;
-
-                case Keys.Up:
-                    //case Keys.Q:
-                    mTranslation.y = TRANSLATE;
-                    mTranslation.z = TRANSLATE;
-                    break;
-
-                case Keys.Down:
-                    //case Keys.E:
-                    mTranslation.y = -TRANSLATE;
-                    mTranslation.z = -TRANSLATE;
-                    break;
-
-                case Keys.Q:
-                    cam.Yaw(ROTATE);
-                    break;
-
                 case Keys.D:
-                    cam.Yaw(-ROTATE);
+                    mTranslation.x = TRANSLATE;
                     break;
             }
         }
@@ -214,7 +211,6 @@ namespace BaseMogre
         bool FrameStarted(FrameEvent evt)
         {
             cam.Position += cam.Orientation * mTranslation * evt.timeSinceLastFrame;
-
             return true;
         }
         #endregion

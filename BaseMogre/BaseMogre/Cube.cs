@@ -25,19 +25,19 @@ namespace BaseMogre
         /// Type de cube
         /// </summary>
         private TypeCube _type;
-      
+
         /// <summary>
         /// Référence du scenemanager
         /// </summary>
         protected SceneManager _scm;
 
         /// <summary>
-        /// Entity représentant le personnage
+        /// Entity représentant le cubr
         /// </summary>
         protected Entity _entity;
 
         /// <summary>
-        /// Scenenode du personnage
+        /// Scenenode du cube
         /// </summary>
         protected SceneNode _node;
 
@@ -76,6 +76,14 @@ namespace BaseMogre
         public Quaternion Orientation
         {
             get { return _node.Orientation; }
+        }
+
+        /// <summary>
+        /// Type du cube
+        /// </summary>
+        public TypeCube Type
+        {
+            get { return _type; }
         }
         #endregion
 

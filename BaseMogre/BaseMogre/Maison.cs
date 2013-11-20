@@ -8,6 +8,28 @@ namespace BaseMogre
 {
     class Maison:Batiment
     {
+        #region Constantes/Variables statiques
+        /// <summary>
+        /// Compteur de maison
+        /// </summary>
+        private static int _COUNT = 0;
+
+        /// <summary>
+        /// Nom de base
+        /// </summary>
+        private static String NAMEDEFAULT = "maison";
+
+        /// <summary>
+        /// Mesh de la maison
+        /// </summary>
+        private static String NAMEMESHMAISON = "cube.mesh";//on a pas encore de mesh pour la maison...
+        #endregion
+
+        public Maison(ref SceneManager scm,Vector3 position)
+            : base(ref scm, position, NAMEDEFAULT + _COUNT, NAMEMESHMAISON,20,5,5)
+        {
+            _COUNT++;
+        }
     }
 
     /// <summary>

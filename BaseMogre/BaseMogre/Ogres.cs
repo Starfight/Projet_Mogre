@@ -12,7 +12,7 @@ namespace BaseMogre
         /// <summary>
         /// Nom du mesh
         /// </summary>
-        private const String NAMEMESHROBOT = "ogrehead.mesh";
+        private const String NAMEMESHOGRE = "ogrehead.mesh";
 
         /// <summary>
         /// Nom par défaut
@@ -58,7 +58,7 @@ namespace BaseMogre
             this._cube = null;
         }
         public Ogres(ref SceneManager scm,Vector3 position,int atk, int def)
-            : base(ref scm, position, NAMEDEFAULT + _COUNT, NAMEMESHROBOT)
+            : base(ref scm, position, NAMEDEFAULT + _COUNT, NAMEMESHOGRE)
         {
             _COUNT++;
             this._cube = null;
