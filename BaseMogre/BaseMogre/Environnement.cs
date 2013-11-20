@@ -406,11 +406,14 @@ namespace BaseMogre
                 while ((_ListOfComOutput.Count > 0)&&(!_stop))
                 {
                     KnowledgeQuery kq = _ListOfComOutput.Dequeue();
-                    if (_ListPersonnages.ContainsKey(kq.NomPerso))
+                    if (kq.NomPerso != null)
                     {
-                        Personnage p;
-                        _ListPersonnages.TryGetValue(kq.NomPerso, out p);
-                        p.send(kq);
+                        if (_ListPersonnages.ContainsKey(kq.NomPerso))
+                        {
+                            Personnage p;
+                            _ListPersonnages.TryGetValue(kq.NomPerso, out p);
+                            p.send(kq);
+                        }
                     }
                 }
 

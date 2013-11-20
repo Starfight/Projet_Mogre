@@ -298,8 +298,6 @@ namespace BaseMogre
         protected void EviteCollision(Vector3 pos)
         {
             Vector3 v = (Position - pos);
-            v.Normalise();
-            v = v.CrossProduct(Vector3.UNIT_Y);
             Destination = v * ESQUIVE_COLLISION;
         }
         #endregion
