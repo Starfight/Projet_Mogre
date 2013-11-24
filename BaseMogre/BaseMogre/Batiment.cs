@@ -145,12 +145,14 @@ namespace BaseMogre
             {
                 _nbCubeBoisNecessaire--;
                 _listeDesCubes.Add(C);
+                C.Deplacable = false;
                 return true;
             }
             if (C.Type == TypeCube.Pierre && _nbCubePierreNecessaire > 0)
             {
                 _nbCubePierreNecessaire--;
                 _listeDesCubes.Add(C);
+                C.Deplacable = false;
                 return true;
             }
             return false;

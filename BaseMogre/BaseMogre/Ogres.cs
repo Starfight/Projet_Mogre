@@ -137,7 +137,7 @@ namespace BaseMogre
         /// <returns>true si il a été ramassé, false si l'inventaire est plein</returns>
         public bool ramassecube(Cube c)
         {
-            if (_cube == null)
+            if (_cube == null && c!= null && c.Deplacable == true)
             {
                 _cube = c;
 

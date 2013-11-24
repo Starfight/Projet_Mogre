@@ -87,8 +87,15 @@ namespace BaseMogre
             //Création de l'environnement
             Environnement.createEnvironnement(ref mgr, 15, 15, 25);
             //Cube C = new Cube(ref mgr, new Mogre.Vector3(100, 0, 0), TypeCube.Bois);
-            Maison M = new Maison(ref mgr, new Mogre.Vector3(100, 0, 0));
-
+            Maison M = new Maison(ref mgr, new Mogre.Vector3(100, -60, 0));
+            for (int i = 0; i < 11; i++)
+            {
+                M.ajoutDeBloc(new Cube(ref mgr, new Mogre.Vector3(0, 0, 0), TypeCube.Bois));
+            }
+            for (int i = 0; i <= 11; i++)
+            {
+                M.ajoutDeBloc(new Cube(ref mgr, new Mogre.Vector3(0, 0, 0), TypeCube.Pierre));
+            }
             //Initialisation des événements de la souris
             this.MouseMove += new MouseEventHandler(OgreForm_MouseMove);
             this.MouseDown += new MouseEventHandler(OgreForm_MouseDown);

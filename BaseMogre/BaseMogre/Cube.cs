@@ -6,6 +6,9 @@ using Mogre;
 
 namespace BaseMogre
 {
+    /// <summary>
+    /// A titre indicatif, avec ce scale les cubes font 30x30x30 px
+    /// </summary>
     class Cube : Objet
     {
         #region Constantes/Variables statiques
@@ -50,9 +53,23 @@ namespace BaseMogre
         /// position du cube
         /// </summary>
         protected Vector3 _position;
+
+        /// <summary>
+        /// autorise ou non le déplacement d'un cube
+        /// </summary>
+        private bool _deplacable;
         #endregion
 
         #region Getters et Setters
+        /// <summary>
+        /// variable de déplcament du cube 
+        /// </summary>
+        public bool Deplacable
+        {
+            get { return _deplacable; }
+            set { _deplacable = value; }
+        }
+
         /// <summary>
         /// Nom de l'entité
         /// </summary>
@@ -100,6 +117,7 @@ namespace BaseMogre
             _node.SetPosition(position.x,position.y,position.z);
             _node.Scale(new Vector3((float)0.3));
             _node.AttachObject(_entity);
+            _deplacable = true;
 
             //Mise en place de la texture
             if (type == TypeCube.Bois)
