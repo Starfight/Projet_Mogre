@@ -139,7 +139,7 @@ namespace BaseMogre
         /// </summary>
         /// <param name="C">cube à ajouter</param>
         /// <returns>bool si c'est bon false si on a pas besoin du cube</returns>
-        public bool ajoutCube(Cube C)//peut etre passer la référence ici, je sais pas trop
+        protected bool ajoutCube(Cube C)//peut etre passer la référence ici, je sais pas trop
         {
             if (C.Type == TypeCube.Bois && _nbCubeBoisNecessaire > 0)
             {

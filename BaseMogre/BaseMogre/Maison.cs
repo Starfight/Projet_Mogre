@@ -42,6 +42,11 @@ namespace BaseMogre
             if (possible)
             {
                 C.Position = _positionFuture.PositionToVector();
+
+                Vector3 src = C.Orientation * Vector3.UNIT_Z;
+                Quaternion quat = src.GetRotationTo(Vector3.UNIT_Z);
+                C.Rotate(quat);
+
                 SetNextCubePosition();
                 return true;
             }
