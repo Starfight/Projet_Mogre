@@ -53,70 +53,70 @@ namespace BaseMogre
             switch (_nbCubeBoisNecessaire + _nbCubePierreNecessaire)
             {
                 case 22:
-                    _positionFuture.ChangeValeurs(0, 0, 30);
+                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
                     break;
                 case 21:
-                    _positionFuture.ChangeValeurs(0, 0, 30);
+                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
                     break;
                 case 20:
-                    _positionFuture.ChangeValeurs(-30, 0, 0);
+                    _positionFuture.ChangeValeurs(-Cube._SIZE, 0, 0);
                     break;
                 case 19:
-                    _positionFuture.ChangeValeurs(-30, 0, 0);
+                    _positionFuture.ChangeValeurs(-Cube._SIZE, 0, 0);
                     break;
                 case 18:
-                    _positionFuture.ChangeValeurs(0, 0, -30);
+                    _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
                     break;
                 case 17:
-                    _positionFuture.ChangeValeurs(0, 0, -30);
+                    _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
                     break;
                 case 16:
-                    _positionFuture.ChangeValeurs(0, 30, 0);
+                    _positionFuture.ChangeValeurs(0, Cube._SIZE, 0);
                     break;
                 case 15:
-                    _positionFuture.ChangeValeurs(0, 0, 30);
+                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
                     break;
                 case 14:
-                    _positionFuture.ChangeValeurs(0, 0, 30);
+                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
                     break;
                 case 13:
-                    _positionFuture.ChangeValeurs(30, 0, 0);
+                    _positionFuture.ChangeValeurs(Cube._SIZE, 0, 0);
                     break;
                 case 12:
-                    _positionFuture.ChangeValeurs(30, 0, 0);
+                    _positionFuture.ChangeValeurs(Cube._SIZE, 0, 0);
                     break;
                 case 11:
-                    _positionFuture.ChangeValeurs(0, 0, -30);
+                    _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
                     break;
                 case 10:
-                    _positionFuture.ChangeValeurs(0, 0, -30);
+                    _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
                     break;
                 case 9:
-                    _positionFuture.ChangeValeurs(0, 30, 0);
+                    _positionFuture.ChangeValeurs(0, Cube._SIZE, 0);
                     break;
                 case 8:
-                    _positionFuture.ChangeValeurs(0, 0, 30);
+                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
                     break;
                 case 7:
-                    _positionFuture.ChangeValeurs(0, 0, 30);
+                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
                     break;
                 case 6:
-                    _positionFuture.ChangeValeurs(-30, 0, 0);
+                    _positionFuture.ChangeValeurs(-Cube._SIZE, 0, 0);
                     break;
                 case 5:
-                    _positionFuture.ChangeValeurs(-30, 0, 0);
+                    _positionFuture.ChangeValeurs(-Cube._SIZE, 0, 0);
                     break;
                 case 4:
-                    _positionFuture.ChangeValeurs(0, 0, -30);
+                    _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
                     break;
                 case 3:
-                    _positionFuture.ChangeValeurs(0, 0, -30);
+                    _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
                     break;
                 case 2:
-                    _positionFuture.ChangeValeurs(30, 0, 0);
+                    _positionFuture.ChangeValeurs(Cube._SIZE, 0, 0);
                     break;
                 case 1:
-                    _positionFuture.ChangeValeurs(0, 0, 30);
+                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
                     break;
             }
         }

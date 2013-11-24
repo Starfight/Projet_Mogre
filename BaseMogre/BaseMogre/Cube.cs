@@ -21,6 +21,8 @@ namespace BaseMogre
         /// Compteur de cube
         /// </summary>
         private static int _COUNT = 0;
+
+        public static float _SIZE = 30;
         #endregion
 
         #region Attributs
