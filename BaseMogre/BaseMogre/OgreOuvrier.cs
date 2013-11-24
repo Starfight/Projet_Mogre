@@ -15,6 +15,11 @@ namespace BaseMogre
         /// Caractéristique des PV
         /// </summary>
         private const int PVMAX = 20;
+
+        /// <summary>
+        /// Chance de pouvoir construire une maison (1 sur cette valeur)
+        /// </summary>
+        private const int CHANCEPOURUNEMAISON = 10;
         #endregion
 
         #region Variables
@@ -36,80 +41,6 @@ namespace BaseMogre
         #endregion
 
         #region méthodes privées
-        [Obsolete]
-        protected void Start()
-        {
-            /*//Variables pour la boucle
-            KnowledgeQuery kq;
-
-            //boucle principale
-            while (!_stop)
-            {                
-                //envoi un message pour savoir où construire/chercher une maison
-                //--------------------------------------------------------------
-                //Crée la requète
-                kq = new KnowledgeQuery(Motif.Position, this.NomEntity);
-                kq.parametres.Add(KnowledgeQuery.CLASSE, "maison");
-                envoyer(kq);
-
-                //Attente du retour message pour la construction
-                while (_currentMaison.isEmpty())
-                {
-                    Thread.Sleep(10);
-                }
-
-                //va à l'emplacement si maison en construction
-                Destination =_currentMaison.position;
-
-                //demande le prochain cube pour la maison
-                //---------------------------------------
-                //Crée la requète
-                kq = new KnowledgeQuery(Motif.InfoCube, this.NomEntity);
-                kq.parametres.Add(KnowledgeQuery.CLASSE, "maison");
-                kq.parametres.Add(KnowledgeQuery.NOM, _currentMaison.nom);
-                envoyer(kq);
-
-                //Attente du retour message pour le prochain cube
-                while (_typeNextCube == TypeCube.Aucun)
-                {
-                    Thread.Sleep(10);
-                }
-
-                //va à la position des entrepôts 
-                //------------------------------
-                String nextcube = "";
-                switch (_typeNextCube)
-                {
-                    case TypeCube.Bois : Destination = Environnement.getInstance().PositionEntrepotBois;
-                                         nextcube = "bois";
-                        break;
-                    case TypeCube.Pierre: Destination = Environnement.getInstance().PositionEntrepotPierre;
-                                           nextcube = "pierre";
-                        break;
-                }
-
-                //demande un cube
-                kq = new KnowledgeQuery(Motif.ObtientCube, this.NomEntity);
-                kq.parametres.Add(KnowledgeQuery.TYPECUBE, nextcube);
-                envoyer(kq);
-
-                //Attente du retour message pour l'obtention du cube
-                while (_cube == null)
-                {
-                    Thread.Sleep(10);
-                }
-
-                //retourne à la maison
-                Destination = _currentMaison.position;
-
-                //demande de donner le cube
-                kq = new KnowledgeQuery(Motif.DonneCube, this.NomEntity);
-                kq.parametres.Add(KnowledgeQuery.TYPECUBE, nextcube);
-                envoyer(kq);
-                utiliseCube();
-            }*/
-        }
-
         /// <summary>
         /// Prise de décision
         /// </summary>
@@ -126,15 +57,53 @@ namespace BaseMogre
                     ramassecube(Environnement.getInstance().getCube(kq.Nom));
                 }
                 //Evite la collision
-                else if (((kq.Classe == Classe.Cube) && (_cube != null))||(kq.Classe == Classe.Ogre))
+                else if (((kq.Classe == Classe.Cube) && (_cube != null))|| //si un l'ogre possède déjà un cube
+                        (kq.Classe == Classe.Ogre))                        //si l'ogre rencontre un autre ogre 
                 {
+                    EviteCollision(kq.Position);
+                }
+                //Rencontre d'une maison
+                else if (kq.Classe == Classe.Maison) 
+                {
+                    _currentMaison = new MaisonInfo(kq.Nom, kq.Position);
+                    if (_cube!=null)
+                    {
+                        //Essaie de donner le cube à la maison
+                        if (Environnement.getInstance().giveCube(_cube, _currentMaison.nom))
+                        {
+                            _cube = null;
+                        }
+                        else
+                        {
+                            _currentMaison.Reset();
+                        }
+                    }
                     EviteCollision(kq.Position);
                 }
             }
             else
             {
-                //Donne une nouvelle destination aléatoire
-                Destination = Environnement.getRandomHorizontalVecteur();
+                //Si il n'a pas repéré de maison et qu'il a un cube
+                if ((_currentMaison.isEmpty()) && (_cube != null))
+                {
+                    //Donne une chance de crée une maison
+                    if (Environnement.getInstance().getUneChanceSur(CHANCEPOURUNEMAISON))
+                    {
+                        KnowledgeQuery kq = new KnowledgeQuery(NomEntity, Classe.Maison, "", Position);
+                        Environnement.getInstance().send(kq);
+                    }
+                }
+                //Si il a repéré une maison et qu'il a un cube 
+                else if ((!_currentMaison.isEmpty()) && (_cube != null))
+                {
+                    Destination = _currentMaison.position;
+                }
+                //Sinon
+                else
+                {
+                    //Donne une nouvelle destination aléatoire
+                    Destination = Environnement.getRandomHorizontalVecteur();
+                }
             }
         }
 

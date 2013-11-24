@@ -26,9 +26,19 @@ namespace BaseMogre
         private const int DISTANCECOLLISIONPERSO = 2000;
 
         /// <summary>
-        /// Distance minimale entre 2 cube (au carré)
+        /// Distance pour la detection d'une collision avec une maison (au carré)
+        /// </summary>
+        private const int DISTANCECOLLISIONMAISON = 10000;
+
+        /// <summary>
+        /// Distance minimale entre 2 cubes (au carré)
         /// </summary>
         private const int DISTANCECUBEACUBE = 1000;
+
+        /// <summary>
+        /// Distance minimale entre 2 maisons (au carré)
+        /// </summary>
+        private const int DISTANCEMAISONAMAISON = 100000;
 
         /// <summary>
         /// Coordonnée max exploitable 
@@ -54,6 +64,7 @@ namespace BaseMogre
         /// Liste des maisons
         /// </summary>
         private Dictionary<String, Maison> _ListMaisons;
+        private Mutex _mutMaison;
 
         /// <summary>
         /// HashSet pour les collisions
@@ -106,6 +117,7 @@ namespace BaseMogre
             _scm = scm;
             _ListPersonnages = new Dictionary<string, Personnage>();
             _ListMaisons = new Dictionary<string, Maison>();
+            _mutMaison = new Mutex();
             _listCubes = new Dictionary<string, Cube>();
             _listCubesToDelete = new HashSet<string>();
             _ListOfComInput = new Queue<KnowledgeQuery>();
@@ -162,23 +174,21 @@ namespace BaseMogre
         private void initCubes(int nbCubes)
         {
             Vector3 vec = Vector3.ZERO;
-            TypeCube t = TypeCube.Pierre;
             for (int i = 0; i < nbCubes; i++)
             {
-                if (i > nbCubes / 2)
-                    t = TypeCube.Bois;
+                TypeCube t = getRandomTypeCube();
 
-                vec = getCubeInitPosition();
+                vec = getPositionAntiCollision(DISTANCECUBEACUBE);
                 Cube c = new Cube(ref _scm, vec, t);
                 _listCubes.Add(c.NomEntity, c);
             }
         }
 
         /// <summary>
-        /// Obtient une position qui laisse une marge minimale avec les autres cubes
+        /// Obtient une position qui laisse une marge minimale
         /// </summary>
         /// <returns>Vecteur</returns>
-        private Vector3 getCubeInitPosition()
+        private Vector3 getPositionAntiCollision(int marge)
         {
             bool ok;
             Vector3 v;
@@ -189,11 +199,24 @@ namespace BaseMogre
                 foreach (KeyValuePair<String, Cube> kvp in _listCubes)
                 {
                     float distanceAuCarre = (kvp.Value.Position - v).SquaredLength;
-                    if (distanceAuCarre < DISTANCECUBEACUBE)
+                    if (distanceAuCarre < marge)
                         ok = false;
                 }
             } while (!ok);
             return v;
+        }
+
+        /// <summary>
+        /// Renvoi un type de cube aléatoirement
+        /// </summary>
+        /// <returns>Type de cube</returns>
+        private TypeCube getRandomTypeCube()
+        {
+            int z = rnd.Next(2);
+            if (z == 0)
+                return TypeCube.Bois;
+            else
+                return TypeCube.Pierre;
         }
 
         private Vector3 creer_vecteur(int i, int inc, Vector3 ancien)
@@ -252,6 +275,20 @@ namespace BaseMogre
             int z = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN+1);
             return new Vector3(x, y, z);
         }
+
+        /// <summary>
+        /// Retourne true selon la chance donnée
+        /// </summary>
+        /// <param name="nb">Une chance sur ce nombre de retourner true</param>
+        /// <returns>True si chanceux, false sinon</returns>
+        public bool getUneChanceSur(int nb)
+        {
+            int z = rnd.Next(nb);
+            if (z < 1)
+                return true;
+            else
+                return false;
+        }
         #endregion
 
         #region Méthodes publiques
@@ -306,6 +343,28 @@ namespace BaseMogre
             }
             return cubeOut;
         }
+
+        /// <summary>
+        /// Donne le cube à la maison
+        /// </summary>
+        /// <param name="c">Cube donné</param>
+        /// <param name="nomMaison">Nom de la maison</param>
+        /// <returns>True si le cube a été transféré, false sinon</returns>
+        public bool giveCube(Cube c, String nomMaison)
+        {
+            bool isOk = false;
+
+            Maison m = null;
+            if (_ListMaisons.ContainsKey(nomMaison))
+            {
+                _ListMaisons.TryGetValue(nomMaison, out m);
+                //Ajoute le cube à la maison
+                if (m != null)
+                    isOk = m.ajoutDeBloc(c);
+            }
+
+            return isOk;
+        }
         #endregion
 
         #region Méthodes privées
@@ -316,11 +375,16 @@ namespace BaseMogre
         /// <returns></returns>
         private bool Update(FrameEvent fEvt)
         {
-            //Regarde s'il y a des cubes à enlever
+            //Regarde s'il y a des cubes à renouveler
             while (_listCubesToDelete.Count != 0)
             {
+                //Enlève le cube pris par l'ogre
                 _listCubes.Remove(_listCubesToDelete.First());
                 _listCubesToDelete.Remove(_listCubesToDelete.First());
+
+                //Ajoute un cube sur le terrain
+                Cube c = new Cube(ref _scm, getPositionAntiCollision(DISTANCECUBEACUBE), getRandomTypeCube());
+                _listCubes.Add(c.NomEntity, c);
             }
 
             //Detection des collisions avec les personnages
@@ -353,6 +417,31 @@ namespace BaseMogre
                             _hsetCollisions.Remove(name);
                         }
                     }
+
+                    //Detection des collisions avec les maisons
+                    _mutMaison.WaitOne();
+                    foreach (KeyValuePair<String, Maison> kvpMaison in _ListMaisons)
+                    {
+                        float distanceAuCarre = (kvpPerso.Value.Position - kvpMaison.Value.Position).SquaredLength;
+                        string name = kvpPerso.Key + kvpMaison.Key;
+                        if (distanceAuCarre < DISTANCECOLLISIONMAISON)
+                        {
+                            if (!_hsetCollisions.Contains(name))
+                            {
+                                //Collision
+                                _hsetCollisions.Add(name);
+
+                                //Message
+                                KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, Classe.Maison, kvpMaison.Key, kvpMaison.Value.Position);
+                                _ListOfComOutput.Enqueue(kq);
+                            }
+                        }
+                        else if (_hsetCollisions.Contains(name))
+                        {
+                            _hsetCollisions.Remove(name);
+                        }
+                    }
+                    _mutMaison.ReleaseMutex();
 
                     //Détection des collisions avec les autres persos
                     for (int i = iPerso; i < tabPerso.Length - 1; i++)
@@ -412,7 +501,8 @@ namespace BaseMogre
                         {
                             Personnage p;
                             _ListPersonnages.TryGetValue(kq.NomPerso, out p);
-                            p.send(kq);
+                            if (p!=null)
+                                p.send(kq);
                         }
                     }
                 }
@@ -427,62 +517,15 @@ namespace BaseMogre
         /// <param name="iKQ"></param>
         private void ProcessKQ(KnowledgeQuery iKQ)
         {
-            /*Motif obj = iKQ.objectif;
-            switch (obj)
+            //Demande de maison
+            if (iKQ.Classe == Classe.Maison)
             {
-                case Motif.Position: ProcessPosition(iKQ);
-                    break;
-                case Motif.InfoCube :
-                    break;
-                case Motif.Coup : 
-                    break;
-                case Motif.Assembler :
-                    break;
-            }*/
-        }
-
-        private void ProcessPosition(KnowledgeQuery iKQ)
-        {
-            /*KnowledgeQuery KQreturn = new KnowledgeQuery(Motif.Position, iKQ.destinataire);
-
-            //Recherche par nom 
-            String name = "noname";
-            if (iKQ.parametres.ContainsKey(KnowledgeQuery.NOM))
-            {
-                iKQ.parametres.TryGetValue(KnowledgeQuery.NOM, out name);
-                KQreturn.parametres.Add(KnowledgeQuery.NOM, name);
+                //Création
+                Maison m = new Maison(ref _scm, iKQ.Position);
+                _mutMaison.WaitOne();
+                _ListMaisons.Add(m.NomEntity, m);
+                _mutMaison.ReleaseMutex();
             }
-
-            //Recherche par classe
-            if (iKQ.parametres.ContainsKey(KnowledgeQuery.CLASSE))
-            {
-                String classe = "";
-                iKQ.parametres.TryGetValue(KnowledgeQuery.CLASSE, out classe);
-                Vector3 v3 = new Vector3();
-
-                //Recherche de la position
-                if ((name == "noname")&&(classe == "maison"))
-                {
-                    //TODO : retourne la maison en construction ou une nouvelle maison
-                    Maison m = _ListMaisons.First().Value;
-                    v3 = m.Position;
-                    name = m.NomBatiment;
-                }
-                else if ((name != "noname")&&(classe == "maison"))
-                {
-                    if (_ListMaisons.ContainsKey(name))
-                    {
-                        Maison m; 
-                        _ListMaisons.TryGetValue(name, out m);
-                        v3 = m.Position;
-                    }
-                }
-
-                //Retour de la requète
-                KQreturn.setPosition(v3);
-                KQreturn.parametres.Add(KnowledgeQuery.CLASSE, classe);
-                KQreturn.parametres.Add(KnowledgeQuery.NOM, name); 
-            }*/
         }
         #endregion
     }
