@@ -178,7 +178,7 @@ namespace BaseMogre
             {
                 TypeCube t = getRandomTypeCube();
 
-                vec = getPositionAntiCollision(DISTANCECUBEACUBE);
+                vec = getPositionAntiCollisionCube(DISTANCECUBEACUBE);
                 Cube c = new Cube(ref _scm, vec, t);
                 _listCubes.Add(c.NomEntity, c);
             }
@@ -188,7 +188,7 @@ namespace BaseMogre
         /// Obtient une position qui laisse une marge minimale
         /// </summary>
         /// <returns>Vecteur</returns>
-        private Vector3 getPositionAntiCollision(int marge)
+        private Vector3 getPositionAntiCollisionCube(int marge)
         {
             bool ok;
             Vector3 v;
@@ -383,7 +383,7 @@ namespace BaseMogre
                 _listCubesToDelete.Remove(_listCubesToDelete.First());
 
                 //Ajoute un cube sur le terrain
-                Cube c = new Cube(ref _scm, getPositionAntiCollision(DISTANCECUBEACUBE), getRandomTypeCube());
+                Cube c = new Cube(ref _scm, getPositionAntiCollisionCube(DISTANCECUBEACUBE), getRandomTypeCube());
                 _listCubes.Add(c.NomEntity, c);
             }
 
@@ -520,11 +520,23 @@ namespace BaseMogre
             //Demande de maison
             if (iKQ.Classe == Classe.Maison)
             {
+                //Vérification
+                bool ok = true;
+                foreach (KeyValuePair<String, Maison> kvp in _ListMaisons)
+                {
+                    float distanceAuCarre = (kvp.Value.Position - iKQ.Position).SquaredLength;
+                    if (distanceAuCarre < DISTANCEMAISONAMAISON)
+                        ok = false;
+                }
+
                 //Création
-                Maison m = new Maison(ref _scm, iKQ.Position);
-                _mutMaison.WaitOne();
-                _ListMaisons.Add(m.NomEntity, m);
-                _mutMaison.ReleaseMutex();
+                if (ok)
+                {
+                    Maison m = new Maison(ref _scm, iKQ.Position);
+                    _mutMaison.WaitOne();
+                    _ListMaisons.Add(m.NomEntity, m);
+                    _mutMaison.ReleaseMutex();
+                }
             }
         }
         #endregion

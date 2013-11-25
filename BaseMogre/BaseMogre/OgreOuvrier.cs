@@ -92,6 +92,11 @@ namespace BaseMogre
                         KnowledgeQuery kq = new KnowledgeQuery(NomEntity, Classe.Maison, "", Position);
                         Environnement.getInstance().send(kq);
                     }
+                    else
+                    {
+                        //Donne une nouvelle destination aléatoire
+                        Destination = Environnement.getRandomHorizontalVecteur();
+                    }
                 }
                 //Si il a repéré une maison et qu'il a un cube 
                 else if ((!_currentMaison.isEmpty()) && (_cube != null))
