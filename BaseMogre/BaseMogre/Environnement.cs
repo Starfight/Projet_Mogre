@@ -38,7 +38,7 @@ namespace BaseMogre
         /// <summary>
         /// Distance minimale entre 2 maisons (au carré)
         /// </summary>
-        private const int DISTANCEMAISONAMAISON = 100000;
+        private const int DISTANCEMAISONAMAISON = 1000000;
 
         /// <summary>
         /// Coordonnée max exploitable 
