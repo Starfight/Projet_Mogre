@@ -38,7 +38,7 @@ namespace BaseMogre
         /// <summary>
         /// Distance minimale entre 2 maisons (au carré)
         /// </summary>
-        private const int DISTANCEMAISONAMAISON = 1000000;
+        private const int DISTANCEMAISONAMAISON = 100000;
 
         /// <summary>
         /// Coordonnée max exploitable 
@@ -432,7 +432,7 @@ namespace BaseMogre
                                 _hsetCollisions.Add(name);
 
                                 //Message
-                                KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, Classe.Maison, kvpMaison.Key, kvpMaison.Value.Position);
+                                KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, Classe.Maison, kvpMaison.Key, kvpMaison.Value.Position, kvpMaison.Value.isFinish().ToString());
                                 _ListOfComOutput.Enqueue(kq);
                             }
                         }

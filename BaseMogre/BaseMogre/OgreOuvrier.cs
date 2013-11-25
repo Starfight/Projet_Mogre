@@ -65,18 +65,26 @@ namespace BaseMogre
                 //Rencontre d'une maison
                 else if (kq.Classe == Classe.Maison) 
                 {
-                    _currentMaison = new MaisonInfo(kq.Nom, kq.Position);
-                    if (_cube!=null)
+                    //Si la maison n'est pas complète
+                    if (kq.Parametre == "False")
                     {
-                        //Essaie de donner le cube à la maison
-                        if (Environnement.getInstance().giveCube(_cube, _currentMaison.nom))
+                        _currentMaison = new MaisonInfo(kq.Nom, kq.Position);
+                        if (_cube != null)
                         {
-                            _cube = null;
+                            //Essaie de donner le cube à la maison
+                            if (Environnement.getInstance().giveCube(_cube, _currentMaison.nom))
+                            {
+                                _cube = null;
+                            }
+                            else //Si le cube n'est pas accepté
+                            {
+                                _currentMaison.Reset();
+                            }
                         }
-                        else
-                        {
-                            _currentMaison.Reset();
-                        }
+                    }
+                    else if(kq.Nom==_currentMaison.nom) //Si la maison est complète
+                    {
+                        _currentMaison.Reset();
                     }
                     EviteCollision(kq.Position);
                 }

@@ -44,15 +44,17 @@ namespace BaseMogre
         private Classe _classe;
         private String _nom;
         private Vector3 _position;
+        private String _parametre;
         #endregion 
 
         #region Constructeur
-        public KnowledgeQuery(String nomPerso, Classe classe, String nom, Vector3 position)
+        public KnowledgeQuery(String nomPerso, Classe classe, String nom, Vector3 position, String parametre = null)
         {
             _nomPerso = nomPerso;
             _classe = classe;
             _nom = nom;
             _position = position;
+            _parametre = parametre;
         }
         #endregion
 
@@ -76,6 +78,11 @@ namespace BaseMogre
         {
             get { return _position; }
             set { _position = value; }
+        }
+        public String Parametre
+        {
+            get { return _parametre; }
+            set { _parametre = value; }
         }
         #endregion
     }

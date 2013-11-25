@@ -158,5 +158,16 @@ namespace BaseMogre
             return false;
         }
 
+        /// <summary>
+        /// Si la maison est finie
+        /// </summary>
+        /// <returns></returns>
+        public bool isFinish()
+        {
+            if (_nbCubeBoisNecessaire + _nbCubePierreNecessaire == 0)
+                return true;
+            else
+                return false;
+        }
     }
 }
