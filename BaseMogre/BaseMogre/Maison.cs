@@ -32,8 +32,18 @@ namespace BaseMogre
         public Maison(ref SceneManager scm,Vector3 position)
             : base(ref scm, position, NAMEDEFAULT + _COUNT, NAMEMESHMAISON,20,11,12)
         {
+
+            Entity entity = scm.CreateEntity("base_maison" + _COUNT, "cube.mesh");
+            SceneNode node = scm.RootSceneNode.CreateChildSceneNode("base_maison_node" + _COUNT, position);
+            node.SetPosition(position.x, position.y-12, position.z);
+            node.Scale(new Vector3(1,0.05f,1));
+            node.AttachObject(entity);
+
             _COUNT++;
             _positionFuture = new PositionCubes(this.Position.x+30, 0, this.Position.z-30);
+
+            
+
         }
 
         public bool ajoutDeBloc(Cube C)
