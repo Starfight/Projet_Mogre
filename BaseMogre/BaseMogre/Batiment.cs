@@ -113,13 +113,13 @@ namespace BaseMogre
         public List<Cube> _listeDesCubes;
         #endregion
 
-        public Batiment(ref SceneManager scm, Vector3 position, String nomBatiment, String nomMesh,int PdV,int nbCubeBois, int NbCubePierre)
+        public Batiment(ref SceneManager scm, Vector3 position, String nomBatiment,int PdV,int nbCubeBois, int NbCubePierre)
         {
             //Création de l'Entity et du Scenenode à la position
             //_entity = scm.CreateEntity()
             _node = scm.RootSceneNode.CreateChildSceneNode(NAMENODE + nomBatiment, position);
             //_node.AttachObject(_entity);
-
+            
             //Enregistrement du Scenemanager
             _scm = scm;
 
