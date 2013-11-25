@@ -19,31 +19,26 @@ namespace BaseMogre
         /// </summary>
         private static String NAMEDEFAULT = "maison";
 
-        /// <summary>
-        /// Mesh de la maison
-        /// </summary>
-        private static String NAMEMESHMAISON = "cube.mesh";//on a pas encore de mesh pour la maison...
         #endregion
 
         #region variables
         private PositionCubes _positionFuture;
+
+        private SceneNode _nodeBaseMaison;
         #endregion
 
         public Maison(ref SceneManager scm,Vector3 position)
-            : base(ref scm, position, NAMEDEFAULT + _COUNT, NAMEMESHMAISON,20,11,12)
+            : base(ref scm, position, NAMEDEFAULT + _COUNT, 20,11,12)
         {
-
             Entity entity = scm.CreateEntity("base_maison" + _COUNT, "cube.mesh");
-            SceneNode node = scm.RootSceneNode.CreateChildSceneNode("base_maison_node" + _COUNT, position);
-            node.SetPosition(position.x, position.y-12, position.z);
-            node.Scale(new Vector3(1,0.05f,1));
-            node.AttachObject(entity);
-
+            _nodeBaseMaison = scm.RootSceneNode.CreateChildSceneNode("base_maison_node" + _COUNT, position);
+            _nodeBaseMaison.SetPosition(position.x, position.y - 12, position.z);
+            _nodeBaseMaison.Scale(new Vector3(1, 0.05f, 1));
+            _nodeBaseMaison.AttachObject(entity);
+            entity.SetMaterialName("Texture/BaseMaison");
+           
             _COUNT++;
             _positionFuture = new PositionCubes(this.Position.x+30, 0, this.Position.z-30);
-
-            
-
         }
 
         public bool ajoutDeBloc(Cube C)

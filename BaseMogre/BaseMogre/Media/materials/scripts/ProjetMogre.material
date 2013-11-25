@@ -42,3 +42,18 @@ material Texture/CubePierre
 		}
 	}
 }
+
+material Texture/BaseMaison
+{
+	technique 
+	{
+		pass 
+		{		
+			texture_unit 
+			{
+				cubic_texture BaseHome.jpg BaseHome.jpg BaseHome.jpg BaseHome.jpg BaseHome.jpg BaseHome.jpg separateUV
+				tex_address_mode wrap        
+			}
+		}
+	}
+}
