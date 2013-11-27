@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Mogre;
+using System.Threading;
 
 namespace BaseMogre
 {
@@ -18,6 +19,8 @@ namespace BaseMogre
         /// Nom de base
         /// </summary>
         private static String NAMEDEFAULT = "maison";
+
+        private Mutex _depotCube;
 
         #endregion
 
@@ -39,10 +42,12 @@ namespace BaseMogre
            
             _COUNT++;
             _positionFuture = new PositionCubes(this.Position.x+30, 0, this.Position.z-30);
+            _depotCube = new Mutex();
         }
 
         public bool ajoutDeBloc(Cube C)
         {
+            _depotCube.WaitOne();
             bool possible = this.ajoutCube(C);
             if (possible)
             {
@@ -53,8 +58,10 @@ namespace BaseMogre
                 C.Rotate(quat);
 
                 SetNextCubePosition();
+                _depotCube.ReleaseMutex();
                 return true;
             }
+            _depotCube.ReleaseMutex();
             return false;
         }
 
