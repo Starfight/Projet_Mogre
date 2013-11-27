@@ -441,7 +441,7 @@ namespace BaseMogre
                 _mutMaison.ReleaseMutex();
 
                 //Détection des collisions avec les autres persos
-                for (int i = iPerso; i < tabPerso.Length - 1; i++)
+                for (int i = iPerso; i < tabPerso.Length; i++)
                 {
                     float distanceAuCarre = (kvpPerso.Value.Position - tabPerso[i].Value.Position).SquaredLength;
                     string name = kvpPerso.Key + tabPerso[i].Key;
