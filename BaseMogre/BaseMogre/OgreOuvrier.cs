@@ -54,7 +54,12 @@ namespace BaseMogre
                 //Ramassage de cube
                 if ((kq.Classe == Classe.Cube)&&(_cube==null))
                 {
-                    ramassecube(Environnement.getInstance().getCube(kq.Nom));
+                    bool ok = ramassecube(Environnement.getInstance().getCube(kq.Nom));
+                    //S'il connait une maison, change la destination
+                    if ((!_currentMaison.isEmpty()) && ok)
+                    {
+                        Destination = _currentMaison.position;
+                    }
                 }
                 //Evite la collision
                 else if (((kq.Classe == Classe.Cube) && (_cube != null))|| //si un l'ogre possède déjà un cube

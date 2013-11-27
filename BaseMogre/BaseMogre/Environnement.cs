@@ -38,7 +38,7 @@ namespace BaseMogre
         /// <summary>
         /// Distance minimale entre 2 maisons (au carré)
         /// </summary>
-        private const int DISTANCEMAISONAMAISON = 100000;
+        private const int DISTANCEMAISONAMAISON = 50000;
 
         /// <summary>
         /// Coordonnée max exploitable 
@@ -392,80 +392,76 @@ namespace BaseMogre
             KeyValuePair<String, Personnage>[] tabPerso = _ListPersonnages.ToArray();
             foreach (KeyValuePair<String, Personnage> kvpPerso in _ListPersonnages)
             {
-                //Si c'est un ogre
-                if (kvpPerso.Value.getClasse()==Classe.Ogre)
+                //Détection des collisions avec les cubes
+                foreach (KeyValuePair<String, Cube> kvpCube in _listCubes)
                 {
-                    //Détection des collisions avec les cubes
-                    foreach (KeyValuePair<String, Cube> kvpCube in _listCubes)
+                    float distanceAuCarre = (kvpPerso.Value.Position - kvpCube.Value.Position).SquaredLength;
+                    string name = kvpPerso.Key + kvpCube.Key;
+                    if (distanceAuCarre < DISTANCECOLLISIONCUBE)
                     {
-                        float distanceAuCarre = (kvpPerso.Value.Position - kvpCube.Value.Position).SquaredLength;
-                        string name = kvpPerso.Key + kvpCube.Key;
-                        if (distanceAuCarre < DISTANCECOLLISIONCUBE)
+                        if (!_hsetCollisions.Contains(name))
                         {
-                            if (!_hsetCollisions.Contains(name))
-                            {
-                                //Collision
-                                _hsetCollisions.Add(name);
+                            //Collision
+                            _hsetCollisions.Add(name);
 
-                                //Message pour l'ogre
-                                KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, Classe.Cube, kvpCube.Key, kvpCube.Value.Position);
-                                _ListOfComOutput.Enqueue(kq);         
-                            }
-                        }
-                        else if (_hsetCollisions.Contains(name))
-                        {
-                            _hsetCollisions.Remove(name);
+                            //Message pour l'ogre
+                            KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, Classe.Cube, kvpCube.Key, kvpCube.Value.Position);
+                            _ListOfComOutput.Enqueue(kq);         
                         }
                     }
-
-                    //Detection des collisions avec les maisons
-                    _mutMaison.WaitOne();
-                    foreach (KeyValuePair<String, Maison> kvpMaison in _ListMaisons)
+                    else if (_hsetCollisions.Contains(name))
                     {
-                        float distanceAuCarre = (kvpPerso.Value.Position - kvpMaison.Value.Position).SquaredLength;
-                        string name = kvpPerso.Key + kvpMaison.Key;
-                        if (distanceAuCarre < DISTANCECOLLISIONMAISON)
-                        {
-                            if (!_hsetCollisions.Contains(name))
-                            {
-                                //Collision
-                                _hsetCollisions.Add(name);
+                        _hsetCollisions.Remove(name);
+                    }
+                }
 
-                                //Message
-                                KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, Classe.Maison, kvpMaison.Key, kvpMaison.Value.Position, kvpMaison.Value.isFinish().ToString());
-                                _ListOfComOutput.Enqueue(kq);
-                            }
-                        }
-                        else if (_hsetCollisions.Contains(name))
+                //Detection des collisions avec les maisons
+                _mutMaison.WaitOne();
+                foreach (KeyValuePair<String, Maison> kvpMaison in _ListMaisons)
+                {
+                    float distanceAuCarre = (kvpPerso.Value.Position - kvpMaison.Value.Position).SquaredLength;
+                    string name = kvpPerso.Key + kvpMaison.Key;
+                    if (distanceAuCarre < DISTANCECOLLISIONMAISON)
+                    {
+                        if (!_hsetCollisions.Contains(name))
                         {
-                            _hsetCollisions.Remove(name);
+                            //Collision
+                            _hsetCollisions.Add(name);
+
+                            //Message
+                            KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, Classe.Maison, kvpMaison.Key, kvpMaison.Value.Position, kvpMaison.Value.isFinish().ToString());
+                            _ListOfComOutput.Enqueue(kq);
                         }
                     }
-                    _mutMaison.ReleaseMutex();
-
-                    //Détection des collisions avec les autres persos
-                    for (int i = iPerso; i < tabPerso.Length - 1; i++)
+                    else if (_hsetCollisions.Contains(name))
                     {
-                        float distanceAuCarre = (kvpPerso.Value.Position - tabPerso[i].Value.Position).SquaredLength;
-                        string name = kvpPerso.Key + tabPerso[i].Key;
-                        if (distanceAuCarre < DISTANCECOLLISIONPERSO)
-                        {
-                            if (!_hsetCollisions.Contains(name))
-                            {
-                                //Collision
-                                _hsetCollisions.Add(name);
+                        _hsetCollisions.Remove(name);
+                    }
+                }
+                _mutMaison.ReleaseMutex();
 
-                                //Messages
-                                KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, tabPerso[i].Value.getClasse(), tabPerso[i].Key, tabPerso[i].Value.Position);
-                                KnowledgeQuery kq2 = new KnowledgeQuery(tabPerso[i].Key, kvpPerso.Value.getClasse(), kvpPerso.Key, kvpPerso.Value.Position);
-                                _ListOfComOutput.Enqueue(kq);
-                                _ListOfComOutput.Enqueue(kq2);
-                            }
-                        }
-                        else if (_hsetCollisions.Contains(name))
+                //Détection des collisions avec les autres persos
+                for (int i = iPerso; i < tabPerso.Length - 1; i++)
+                {
+                    float distanceAuCarre = (kvpPerso.Value.Position - tabPerso[i].Value.Position).SquaredLength;
+                    string name = kvpPerso.Key + tabPerso[i].Key;
+                    if (distanceAuCarre < DISTANCECOLLISIONPERSO)
+                    {
+                        if (!_hsetCollisions.Contains(name))
                         {
-                            _hsetCollisions.Remove(name);
+                            //Collision
+                            _hsetCollisions.Add(name);
+
+                            //Messages
+                            KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, tabPerso[i].Value.getClasse(), tabPerso[i].Key, tabPerso[i].Value.Position);
+                            KnowledgeQuery kq2 = new KnowledgeQuery(tabPerso[i].Key, kvpPerso.Value.getClasse(), kvpPerso.Key, kvpPerso.Value.Position);
+                            _ListOfComOutput.Enqueue(kq);
+                            _ListOfComOutput.Enqueue(kq2);
                         }
+                    }
+                    else if (_hsetCollisions.Contains(name))
+                    {
+                        _hsetCollisions.Remove(name);
                     }
                 }
 

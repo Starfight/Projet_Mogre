@@ -65,13 +65,6 @@ namespace BaseMogre
         }
         #endregion
 
-        #region Méthodes interface Knowledge Query
-        public new Result send(KnowledgeQuery iKQ)
-        {
-            return Result.OK;
-        }
-        #endregion
-
         #region Méthodes privées
         protected override bool Update(FrameEvent fEvt)
         {
@@ -119,9 +112,27 @@ namespace BaseMogre
 
             return true;
         }
+
+        /// <summary>
+        /// Prise de décision du robot
+        /// </summary>
         protected override void Decision()
         {
-            Destination = Environnement.getRandomHorizontalVecteur();
+            //S'il y a des messages à traiter
+            if (_listComInput.Count > 0)
+            {
+                KnowledgeQuery kq = _listComInput.Dequeue();
+
+                //Evite la collision avec un autre robot ou un cube
+                if ((kq.Classe == Classe.Robot)||(kq.Classe == Classe.Cube))
+                {
+                    EviteCollision(kq.Position);
+                }
+            }
+            else
+            {
+                Destination = Environnement.getRandomHorizontalVecteur();
+            }
         }
         #endregion
 
@@ -129,35 +140,6 @@ namespace BaseMogre
         public override Classe getClasse()
         {
             return Classe.Robot;
-        }
-        #endregion
-
-        #region old to delete
-        public static Entity CreationRobot(ref SceneManager scm,string nomEntite)
-        {
-            Entity ent = scm.CreateEntity(nomEntite, "robot.mesh");
-            SceneNode node = scm.RootSceneNode.CreateChildSceneNode("Node_"+nomEntite, new Mogre.Vector3(0.0f, 0.0f, 0.25f));
-            node.AttachObject(ent);
-            return ent;
-        }
-
-        private static void AnimationMarche(ref SceneNode node,ref SceneManager scm)
-        {
-            //animation robot
-            Entity ent = scm.CreateEntity("Knot1", "knot.mesh");
-            node = scm.RootSceneNode.CreateChildSceneNode("Knot1Node", new Mogre.Vector3(0.0f, -10.0f, 25.0f));
-            node.AttachObject(ent);
-            node.Scale(0.1f, 0.1f, 0.1f);
-            //
-            ent = scm.CreateEntity("Knot2", "knot.mesh");
-            node = scm.RootSceneNode.CreateChildSceneNode("Knot2Node", new Mogre.Vector3(550.0f, -10.0f, 50.0f));
-            node.AttachObject(ent);
-            node.Scale(0.1f, 0.1f, 0.1f);
-            //
-            ent = scm.CreateEntity("Knot3", "knot.mesh");
-            node = scm.RootSceneNode.CreateChildSceneNode("Knot3Node", new Mogre.Vector3(-100.0f, -10.0f, -200.0f));
-            node.AttachObject(ent);
-            node.Scale(0.1f, 0.1f, 0.1f);
         }
         #endregion
     }

@@ -284,7 +284,7 @@ namespace BaseMogre
                 }
                 else
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(20);
                 }
             }
         }
