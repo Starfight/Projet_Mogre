@@ -20,6 +20,16 @@ namespace BaseMogre
         /// Chance de pouvoir construire une maison (1 sur cette valeur)
         /// </summary>
         private const int CHANCEPOURUNEMAISON = 10;
+
+        /// <summary>
+        /// ataque des robots
+        /// </summary>
+        private const int ATK = 5;
+
+        /// <summary>
+        /// défense des robots
+        /// </summary>
+        private const int DEF = 5;
         #endregion
 
         #region Variables
@@ -31,10 +41,8 @@ namespace BaseMogre
 
         #region constructeurs
         public OgreOuvrier(ref SceneManager scm, Vector3 position)
-            : base(ref scm, position, 5, 5)
-        {
-            this._pointsDeVie = PVMAX;
-            
+            : base(ref scm, position, ATK, DEF,PVMAX)
+        {            
             //init
             _currentMaison.Reset();
         }
@@ -63,8 +71,15 @@ namespace BaseMogre
                 }
                 //Evite la collision
                 else if (((kq.Classe == Classe.Cube) && (_cube != null))|| //si un l'ogre possède déjà un cube
-                        (kq.Classe == Classe.Ogre))                        //si l'ogre rencontre un autre ogre 
+                        (kq.Classe == Classe.Ogre) || (kq.Classe == Classe.Robot))                        //si l'ogre rencontre un autre ogre 
                 {
+                    if (kq.Classe == Classe.Robot)
+                    {
+                        int atk = Environnement.getInstance().getAttaque(kq.Nom);
+                        if (atk != -1)
+                            this.Combat(atk);
+                        Log.writeNewLine("contact " +this._nomEntity+" vs " + kq.Classe.ToString() + " " + this._pointsDeVie + " pv restants à l'ogre ouvrier");
+                    }
                     EviteCollision(kq.Position);
                 }
                 //Rencontre d'une maison

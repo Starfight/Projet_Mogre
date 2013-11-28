@@ -41,15 +41,7 @@ namespace BaseMogre
         /// </summary>
         protected Cube _cube;
 
-        /// <summary>
-        /// puissance d'attaque de l'ogre
-        /// </summary>
-        private int _atk;
 
-        /// <summary>
-        /// défense de l'ogre
-        /// </summary>
-        private int _def;
         #endregion
 
         #region Constructeur
@@ -57,13 +49,11 @@ namespace BaseMogre
         {
             this._cube = null;
         }
-        public Ogres(ref SceneManager scm,Vector3 position,int atk, int def)
-            : base(ref scm, position, NAMEDEFAULT + _COUNT, NAMEMESHOGRE)
+        public Ogres(ref SceneManager scm,Vector3 position,int atk, int def,int pv)
+            : base(ref scm, position, NAMEDEFAULT + _COUNT, NAMEMESHOGRE, atk, def, pv)
         {
             _COUNT++;
             this._cube = null;
-            this._atk = atk;
-            this._def = def;
         }
         #endregion
 

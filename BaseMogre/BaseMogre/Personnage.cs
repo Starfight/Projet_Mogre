@@ -88,9 +88,14 @@ namespace BaseMogre
         private FrameListener.FrameStartedHandler _fListener;
 
         /// <summary>
-        /// Liste des objets possédés
+        /// puissance d'attaque de l'ogre
         /// </summary>
-        //private List<Objet> _objetsPerso;
+        private int _atk;
+
+        /// <summary>
+        /// défense de l'ogre
+        /// </summary>
+        private int _def;
 
         /// <summary>
         /// Queue pour la communication
@@ -98,9 +103,24 @@ namespace BaseMogre
         protected Queue<KnowledgeQuery> _listComInput;
         #endregion
 
-        #region Constructeur
-        public Personnage(ref SceneManager scm, Vector3 position, String nomPersonnage, String nomMesh)
+        #region getteur
+        /// <summary>
+        /// get l'attaque
+        /// </summary>
+        public int Attaque
         {
+            get { return _atk; }
+        }
+        #endregion
+
+        #region Constructeur
+        public Personnage(ref SceneManager scm, Vector3 position, String nomPersonnage, String nomMesh, int attaque, int defense,int pdv)
+        {
+            //assignation des variables
+            this._atk = attaque;
+            this._def = defense;
+            this._pointsDeVie = pdv;
+
             //Création de l'Entity et du Scenenode à la position
             _entity = scm.CreateEntity(nomPersonnage, nomMesh);
             _node = scm.RootSceneNode.CreateChildSceneNode(NAMENODE + nomPersonnage, position);
@@ -196,55 +216,24 @@ namespace BaseMogre
             if (_threadMission.ThreadState == ThreadState.Running)
                 _threadMission.Join();
         }
-
-        /* méthodes pour l'inventaire
-         *A voir pour la supression
+        
         /// <summary>
-        /// méthodes de recherche dans l'inventaire
+        /// méthode lorsque le personnage est touché
         /// </summary>
-        /// <param name="t">type d'objet recherché</param>
-        /// <returns>si ou ou non il posséde un objet</returns>
-        public bool possedeObjet(Type t)
+        /// <returns>true si il est encore en vie/ false sinon</returns>
+        public bool Combat(int atk)
         {
-            foreach(Objet obj in this._objetsPerso)
-            {
-                if(t == obj.GetType())
-                    return true;
-            }
-            return false;
+            if(atk-this._def>0)
+                this._pointsDeVie -= (atk-this._def);
+            else
+                this._pointsDeVie --;
+
+            if (this._pointsDeVie <= 0)
+                return false;
+            return true;
         }
 
-        /// <summary>
-        /// Permet de récuperer un objet dans l'inventaire
-        /// </summary>
-        /// <param name="t">type de l'objet voulu</param>
-        /// <returns>null ou l'objet voulu</returns>
-        public Objet getObjet(Type t)
-        {
-            Objet O = null;
-            foreach (Objet obj in this._objetsPerso)
-            {
-                if (t == obj.GetType())
-                {
-                    O= obj;
-                    break;
-                }
-            }
-            if (O != null)
-                this._objetsPerso.Remove(O);
-            return O;
-        }
 
-        /// <summary>
-        /// ajout d'un objet à l'inventaire
-        /// </summary>
-        /// <param name="o">objet à ajouter</param>
-        public void addObjet(Objet o)
-        {
-            if (o != null)
-                this._objetsPerso.Add(o);
-        }
-         */
         #endregion
 
         #region Methodes abstract

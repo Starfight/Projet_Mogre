@@ -344,6 +344,19 @@ namespace BaseMogre
             return cubeOut;
         }
 
+        public int getAttaque(String nomPerso)
+        {
+            Personnage pOut = null;
+            if(_ListPersonnages.ContainsKey(nomPerso))
+            {
+                _ListPersonnages.TryGetValue(nomPerso, out pOut);
+                if (pOut != null)
+                    return pOut.Attaque;
+            }
+            return -1;
+
+        }
+
         /// <summary>
         /// Donne le cube à la maison
         /// </summary>
