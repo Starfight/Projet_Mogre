@@ -55,11 +55,6 @@ namespace BaseMogre
             //Compteur de robots
             _COUNT++;            
 
-            //Initialisation de l'animation
-            _robotAnim = _entity.GetAnimationState("Idle");
-            _robotAnim.Loop = true;
-            _robotAnim.Enabled = true;
-
             //Initialisation des caractéristiques
             _pointsDeVie = PVMAX;
         }
@@ -68,46 +63,55 @@ namespace BaseMogre
         #region Méthodes privées
         protected override bool Update(FrameEvent fEvt)
         {
-            //Au changement de direction
-            if (_DestinationChanged)
+            if (_combat)
             {
-                //Modification de la direction et de la distance
-                _vDirection = Destination - Position;
-                _distance = _vDirection.Length;
-                _vDirection.Normalise();
-
-                //Rotation
-                Vector3 src = _node.Orientation * Vector3.UNIT_X;
-                Quaternion quat = src.GetRotationTo(_vDirection);
-                _node.Rotate(quat);
-
-                //Remise à zero du booleen
-                _DestinationChanged = false;
-
-                //Démarrage de l'animation
-                _robotAnim = _entity.GetAnimationState("Walk");
-                _robotAnim.Loop = true;
-                _robotAnim.Enabled = true;
-            }
-
-            //Mise à jour de la position
-            if (_distance > 10)
-            {
-                //Position
-                float move = VITESSE * (fEvt.timeSinceLastFrame);
-                _node.Translate(_vDirection * move);
-                _distance -= move;
-
                 //Animation
-                _robotAnim.AddTime(fEvt.timeSinceLastFrame * VITESSE / 20);
+                _robotAnim.AddTime(fEvt.timeSinceLastFrame);
             }
-            else if (!_needToDecide)
+            else
             {
-                //Stoppe l'animation
-                _robotAnim = _entity.GetAnimationState("Idle");
+                //Au changement de direction
+                if (_DestinationChanged)
+                {
+                    //Modification de la direction et de la distance
+                    _vDirection = Destination - Position;
+                    _distance = _vDirection.Length;
+                    _vDirection.Normalise();
 
-                //Indique qu'il faut prendre une décision
-                _needToDecide = true;
+                    //Rotation
+                    Vector3 src = _node.Orientation * Vector3.UNIT_X;
+                    Quaternion quat = src.GetRotationTo(_vDirection);
+                    _node.Rotate(quat);
+
+                    //Remise à zero du booleen
+                    _DestinationChanged = false;
+
+                    //Démarrage de l'animation
+                    _robotAnim = _entity.GetAnimationState("Walk");
+                    _robotAnim.Loop = true;
+                    _robotAnim.Enabled = true;
+                }
+
+                //Mise à jour de la position
+                if (_distance > 10)
+                {
+                    //Position
+                    float move = VITESSE * (fEvt.timeSinceLastFrame);
+                    _node.Translate(_vDirection * move);
+                    _distance -= move;
+
+                    //Animation
+                    _robotAnim.AddTime(fEvt.timeSinceLastFrame * VITESSE / 30);
+                }
+                else if (!_needToDecide)
+                {
+                    //Stoppe l'animation
+                    _robotAnim.Enabled = false;
+                    _robotAnim = _entity.GetAnimationState("Idle");
+
+                    //Indique qu'il faut prendre une décision
+                    _needToDecide = true;
+                }
             }
 
             return true;
@@ -123,10 +127,24 @@ namespace BaseMogre
             {
                 KnowledgeQuery kq = _listComInput.Dequeue();
 
-                //Evite la collision avec un autre robot ou un cube
-                if ((kq.Classe == Classe.Robot)||(kq.Classe == Classe.Cube))
+                //Hors combat
+                if (!_combat)
                 {
-                    EviteCollision(kq.Position);
+                    //Evite la collision avec un autre robot ou un cube
+                    if ((kq.Classe == Classe.Robot) || (kq.Classe == Classe.Cube))
+                    {
+                        EviteCollision(kq.Position);
+                    }
+                    else if (kq.Classe == Classe.Ogre)
+                    {
+                        //Stoppe le robot
+                        _combat = true;
+
+                        //Met en animation de combat
+                        _robotAnim.Enabled = false;
+                        _robotAnim = _entity.GetAnimationState("Shoot");
+                        _robotAnim.Enabled = true;
+                    }
                 }
             }
             else

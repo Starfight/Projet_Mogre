@@ -58,6 +58,11 @@ namespace BaseMogre
         protected volatile bool _needToDecide;
 
         /// <summary>
+        /// Indique si le personnage est en combat
+        /// </summary>
+        protected volatile bool _combat;
+
+        /// <summary>
         /// Booleen pour stopper les threads
         /// </summary>
         protected volatile bool _stop;
@@ -125,6 +130,8 @@ namespace BaseMogre
             //Queue pour la com
             _listComInput = new Queue<KnowledgeQuery>();
 
+            //Combat
+            _combat = false;
             //Prise de décision
             _needToDecide = true;
             //Démarage du thread

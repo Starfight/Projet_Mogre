@@ -86,7 +86,8 @@ namespace BaseMogre
 
             //Création de l'environnement
             Environnement.createEnvironnement(ref mgr, 15, 15, 25);
-            //Cube C = new Cube(ref mgr, new Mogre.Vector3(100, 0, 0), TypeCube.Bois);
+            
+            //Test
             Tour M = new Tour(ref mgr, new Mogre.Vector3(100, -60, 0));
             for (int i = 0; i < 11; i++)
             {
@@ -96,6 +97,15 @@ namespace BaseMogre
             {
                 M.ajoutDeBloc(new Cube(ref mgr, new Mogre.Vector3(0, 0, 0), TypeCube.Pierre));
             }
+
+            /*SceneNode myNode = mgr.RootSceneNode.CreateChildSceneNode();
+            BillboardSet mySet = mgr.CreateBillboardSet("mySet");
+            Billboard myBillboard = mySet.CreateBillboard(new Mogre.Vector3(50, 0, 20));
+            myBillboard.SetDimensions(100, 100);
+            mySet.SetMaterialName("Texture/Coeur");
+            myNode.AttachObject(mySet);
+            myNode.Position = new Mogre.Vector3(0, 100, 0);*/
+
             //Initialisation des événements de la souris
             this.MouseMove += new MouseEventHandler(OgreForm_MouseMove);
             this.MouseDown += new MouseEventHandler(OgreForm_MouseDown);
