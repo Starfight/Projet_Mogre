@@ -13,13 +13,22 @@ namespace BaseMogre
         /// Caractéristique des PV
         /// </summary>
         private const int PVMAX = 20;
+
+        /// <summary>
+        /// attaque des ogres batisseurs
+        /// </summary>
+        private const int ATK = 3;
+
+        /// <summary>
+        /// défense des ogres batisseurs
+        /// </summary>
+        private const int DEF = 15;
         #endregion
 
         #region constructeurs
         public OgreBatisseur(ref SceneManager scm, Vector3 position)
-            : base(ref scm, position, 5, 5)
+            : base(ref scm, position, ATK, DEF, PVMAX)
         {
-            this._pointsDeVie = PVMAX;
         }
         #endregion
 

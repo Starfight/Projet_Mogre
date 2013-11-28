@@ -34,6 +34,17 @@ namespace BaseMogre
         /// Vitesse des robots
         /// </summary>
         private const float VITESSE = 50;
+
+        /// <summary>
+        /// ataque des robots
+        /// </summary>
+        private const int ATK = 10;
+
+        /// <summary>
+        /// défense des robots
+        /// </summary>
+        private const int DEF = 10;
+        
         #endregion
 
         #region Variables
@@ -50,7 +61,7 @@ namespace BaseMogre
         /// <param name="scm">Scenemanager d'intégration du robot</param>
         /// <param name="position">Position de départ</param>
         public Robot(ref SceneManager scm, Vector3 position)
-            : base(ref scm, position, NAMEDEFAULT + _COUNT, NAMEMESHROBOT)
+            : base(ref scm, position, NAMEDEFAULT + _COUNT, NAMEMESHROBOT,ATK,DEF,PVMAX)
         {
             //Compteur de robots
             _COUNT++;            
@@ -145,6 +156,13 @@ namespace BaseMogre
                         _robotAnim = _entity.GetAnimationState("Shoot");
                         _robotAnim.Enabled = true;
                     }
+                }
+                if(kq.Classe == Classe.Ogre)
+                {
+                    int atk = Environnement.getInstance().getAttaque(kq.Nom);
+                    if (atk != -1)
+                        this.Combat(atk);
+                    Log.writeNewLine("contact " + this._nomEntity + " vs " + kq.Classe.ToString() + " " + this._pointsDeVie + " pv restants au robot");
                 }
             }
             else
