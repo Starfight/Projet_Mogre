@@ -155,14 +155,13 @@ namespace BaseMogre
                         _robotAnim.Enabled = false;
                         _robotAnim = _entity.GetAnimationState("Shoot");
                         _robotAnim.Enabled = true;
+
+                        //Attaque
+                        int atk = Environnement.getInstance().getAttaque(kq.Nom);
+                        if (atk != -1)
+                            this.Combat(atk);
+                        Log.writeNewLine("contact " + this._nomEntity + " vs " + kq.Classe.ToString() + " " + this._pointsDeVie + " pv restants au robot");
                     }
-                }
-                if(kq.Classe == Classe.Ogre)
-                {
-                    int atk = Environnement.getInstance().getAttaque(kq.Nom);
-                    if (atk != -1)
-                        this.Combat(atk);
-                    Log.writeNewLine("contact " + this._nomEntity + " vs " + kq.Classe.ToString() + " " + this._pointsDeVie + " pv restants au robot");
                 }
             }
             else
