@@ -88,6 +88,7 @@ namespace BaseMogre
             Environnement.createEnvironnement(ref mgr, 15, 15, 25);
             
             //Test
+            /*
             Tour M = new Tour(ref mgr, new Mogre.Vector3(100, -60, 0));
             for (int i = 0; i < 11; i++)
             {
@@ -97,7 +98,7 @@ namespace BaseMogre
             {
                 M.ajoutDeBloc(new Cube(ref mgr, new Mogre.Vector3(0, 0, 0), TypeCube.Pierre));
             }
-
+            */
             /*SceneNode myNode = mgr.RootSceneNode.CreateChildSceneNode();
             BillboardSet mySet = mgr.CreateBillboardSet("mySet");
             Billboard myBillboard = mySet.CreateBillboard(new Mogre.Vector3(50, 0, 20));
