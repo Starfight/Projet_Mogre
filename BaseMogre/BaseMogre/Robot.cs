@@ -161,6 +161,9 @@ namespace BaseMogre
                         if (atk != -1)
                             this.Combat(atk);
                         Log.writeNewLine("contact " + this._nomEntity + " vs " + kq.Classe.ToString() + " " + this._pointsDeVie + " pv restants au robot");
+
+                        _combat = false;
+                        
                     }
                 }
             }
@@ -168,6 +171,8 @@ namespace BaseMogre
             {
                 Destination = Environnement.getRandomHorizontalVecteur();
             }
+            
+            
         }
         #endregion
 
