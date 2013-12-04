@@ -76,8 +76,20 @@ namespace BaseMogre
         {
             if (_combat)
             {
-                //Animation
-                _robotAnim.AddTime(fEvt.timeSinceLastFrame);
+                if (!_robotAnim.HasEnded) //Animation
+                {
+                    _robotAnim.AddTime(fEvt.timeSinceLastFrame);
+                }
+                else //fin du combat
+                {
+                    _combat = false;
+
+                    //Redémarrage de l'animation
+                    _robotAnim.Enabled = false;
+                    _robotAnim = _entity.GetAnimationState("Walk");
+                    _robotAnim.Loop = true;
+                    _robotAnim.Enabled = true;
+                }
             }
             else
             {
@@ -150,20 +162,19 @@ namespace BaseMogre
                     {
                         //Stoppe le robot
                         _combat = true;
-
+                        
                         //Met en animation de combat
                         _robotAnim.Enabled = false;
                         _robotAnim = _entity.GetAnimationState("Shoot");
+                        _robotAnim.TimePosition = 0;
+                        _robotAnim.Loop = false;
                         _robotAnim.Enabled = true;
-
+                        
                         //Attaque
                         int atk = Environnement.getInstance().getAttaque(kq.Nom);
                         if (atk != -1)
                             this.Combat(atk);
-                        Log.writeNewLine("contact " + this._nomEntity + " vs " + kq.Classe.ToString() + " " + this._pointsDeVie + " pv restants au robot");
-
-                        _combat = false;
-                        
+                        Log.writeNewLine("contact " + this._nomEntity + " vs " + kq.Classe.ToString() + " " + this._pointsDeVie + " pv restants au robot");                        
                     }
                 }
             }
