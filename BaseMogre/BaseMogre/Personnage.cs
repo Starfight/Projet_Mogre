@@ -222,6 +222,13 @@ namespace BaseMogre
             _stop = true;
             if (_threadMission.ThreadState == ThreadState.Running)
                 _threadMission.Join();
+
+            //Arrêt du listener
+            Root.Singleton.FrameStarted -= _fListener;
+
+            //Detruit le scenenode et l'entity
+            _node.RemoveAndDestroyAllChildren();
+            _scm.DestroySceneNode(_node);
         }
         
         /// <summary>
