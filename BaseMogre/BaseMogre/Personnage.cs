@@ -216,7 +216,7 @@ namespace BaseMogre
         /// <summary>
         /// Implémentation de l'interface IDisposable pour l'arrêt des threads
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
             //Stoppe le thread
             _stop = true;
@@ -247,6 +247,17 @@ namespace BaseMogre
             return true;
         }
 
+        /// <summary>
+        /// Si le personnage est vivant
+        /// </summary>
+        /// <returns>True si vivant, false sinon</returns>
+        public bool isAlive()
+        {
+            if (_pointsDeVie > 0)
+                return true;
+            else
+                return false;
+        }
 
         #endregion
 

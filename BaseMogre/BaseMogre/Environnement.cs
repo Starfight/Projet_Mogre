@@ -344,19 +344,6 @@ namespace BaseMogre
             return cubeOut;
         }
 
-        public int getAttaque(String nomPerso)
-        {
-            Personnage pOut = null;
-            if(_ListPersonnages.ContainsKey(nomPerso))
-            {
-                _ListPersonnages.TryGetValue(nomPerso, out pOut);
-                if (pOut != null)
-                    return pOut.Attaque;
-            }
-            return -1;
-
-        }
-
         /// <summary>
         /// Donne le cube à la maison
         /// </summary>
@@ -404,7 +391,7 @@ namespace BaseMogre
             int iPerso = 1;
             KeyValuePair<String, Personnage>[] tabPerso = _ListPersonnages.ToArray();
             foreach (KeyValuePair<String, Personnage> kvpPerso in _ListPersonnages)
-            {
+            {                
                 //Détection des collisions avec les cubes
                 foreach (KeyValuePair<String, Cube> kvpCube in _listCubes)
                 {
@@ -466,8 +453,8 @@ namespace BaseMogre
                             _hsetCollisions.Add(name);
 
                             //Messages
-                            KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, tabPerso[i].Value.getClasse(), tabPerso[i].Key, tabPerso[i].Value.Position);
-                            KnowledgeQuery kq2 = new KnowledgeQuery(tabPerso[i].Key, kvpPerso.Value.getClasse(), kvpPerso.Key, kvpPerso.Value.Position);
+                            KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, tabPerso[i].Value.getClasse(), tabPerso[i].Key, tabPerso[i].Value.Position, tabPerso[i].Value.Attaque.ToString());
+                            KnowledgeQuery kq2 = new KnowledgeQuery(tabPerso[i].Key, kvpPerso.Value.getClasse(), kvpPerso.Key, kvpPerso.Value.Position, kvpPerso.Value.Attaque.ToString());
                             _ListOfComOutput.Enqueue(kq);
                             _ListOfComOutput.Enqueue(kq2);
                         }
@@ -479,6 +466,17 @@ namespace BaseMogre
                 }
 
                 iPerso++;
+            }
+
+            //Detection des persos morts
+            for (int i = 0; i < tabPerso.Length; i++)
+            {
+                //Suppression
+                if (!tabPerso[i].Value.isAlive())
+                {
+                    _ListPersonnages[tabPerso[i].Key].Dispose();
+                    _ListPersonnages.Remove(tabPerso[i].Key);
+                }
             }
 
             

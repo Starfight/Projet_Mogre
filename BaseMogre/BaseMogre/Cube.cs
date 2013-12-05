@@ -9,7 +9,7 @@ namespace BaseMogre
     /// <summary>
     /// A titre indicatif, avec ce scale les cubes font 30x30x30 px
     /// </summary>
-    class Cube : Objet
+    class Cube : IDisposable
     {
         #region Constantes/Variables statiques
         /// <summary>
@@ -154,6 +154,18 @@ namespace BaseMogre
         public void Translate(Vector3 vec)
         {
             _node.Translate(vec);
+        }
+        #endregion
+
+        #region Méthode d'interface
+        /// <summary>
+        /// Implémentation de l'interface IDisposable pour la suppression du cube
+        /// </summary>
+        public void Dispose()
+        {
+            //Detruit le scenenode et l'entity
+            _node.RemoveAndDestroyAllChildren();
+            _scm.DestroySceneNode(_node);
         }
         #endregion
     }

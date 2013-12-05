@@ -71,14 +71,17 @@ namespace BaseMogre
                 }
                 //Evite la collision
                 else if (((kq.Classe == Classe.Cube) && (_cube != null))|| //si un l'ogre possède déjà un cube
-                        (kq.Classe == Classe.Ogre) || (kq.Classe == Classe.Robot))                        //si l'ogre rencontre un autre ogre 
+                        (kq.Classe == Classe.Ogre) ||                      //si l'ogre rencontre un autre ogre
+                        (kq.Classe == Classe.Robot))                       //si l'ogre rencontre un robot     
                 {
                     if (kq.Classe == Classe.Robot)
                     {
-                        int atk = Environnement.getInstance().getAttaque(kq.Nom);
-                        if (atk != -1)
+                        int atk;
+                        if (int.TryParse(kq.Parametre, out atk))
+                        {
                             this.Combat(atk);
-                        Log.writeNewLine("contact " +this._nomEntity+" vs " + kq.Classe.ToString() + " " + this._pointsDeVie + " pv restants à l'ogre ouvrier");
+                            Log.writeNewLine("contact " + this._nomEntity + " vs " + kq.Classe.ToString() + " " + this._pointsDeVie + " pv restants à l'ogre ouvrier");
+                        }
                     }
                     EviteCollision(kq.Position);
                 }

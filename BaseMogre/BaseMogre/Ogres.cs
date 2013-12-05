@@ -155,6 +155,18 @@ namespace BaseMogre
             return false;
         }
 
+        /// <summary>
+        /// Implémentation de Dispose pour la suppression du cube
+        /// </summary>
+        public override void Dispose()
+        {
+            if (_cube != null)
+            {
+                _cube.Dispose();
+            }
+            base.Dispose();
+        }
+
         public override Classe getClasse()
         {
             return Classe.Ogre;
