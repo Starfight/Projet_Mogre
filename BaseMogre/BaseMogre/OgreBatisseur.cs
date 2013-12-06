@@ -23,16 +23,31 @@ namespace BaseMogre
         /// défense des ogres batisseurs
         /// </summary>
         private const int DEF = 15;
+
+        /// <summary>
+        /// Chance de pouvoir construire une tour (1 sur cette valeur)
+        /// </summary>
+        private const int CHANCEPOURUNETOUR = 10;
+        #endregion
+
+        #region variable
+        TourInfo _tourCible;
         #endregion
 
         #region constructeurs
         public OgreBatisseur(ref SceneManager scm, Vector3 position)
             : base(ref scm, position, ATK, DEF, PVMAX)
         {
+            _tourCible.Reset();
         }
         #endregion
 
         #region méthodes privées
+        private void SetTour(TourInfo T)
+        {
+            _tourCible = T;
+        }
+
         protected override void Decision()
         {
             //TODO

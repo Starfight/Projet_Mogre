@@ -69,6 +69,12 @@ namespace BaseMogre
         private Mutex _mutMaison;
 
         /// <summary>
+        /// Liste des tours
+        /// </summary>
+        private Dictionary<String, Maison> _ListTours;
+        private Mutex _mutTours;
+
+        /// <summary>
         /// HashSet pour les collisions
         /// </summary>
         private HashSet<String> _hsetCollisions;

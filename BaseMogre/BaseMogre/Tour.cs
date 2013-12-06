@@ -9,10 +9,6 @@ namespace BaseMogre
     class Tour:Batiment
     {
         #region Constantes/Variables statiques
-        /// <summary>
-        /// Compteur de maison
-        /// </summary>
-        private static int _COUNT = 0;
 
         /// <summary>
         /// Nom de base
@@ -30,9 +26,8 @@ namespace BaseMogre
         #endregion
 
         public Tour(ref SceneManager scm,Vector3 position)
-            : base(ref scm, position, NAMEDEFAULT + _COUNT, 100,50,50)
+            : base(ref scm, position, NAMEDEFAULT , 100,50,50)
         {
-            _COUNT++;
             _nombreCube = 1;
         }
 
@@ -93,5 +88,36 @@ namespace BaseMogre
             }
         }
 
+    }
+
+    /// <summary>
+    /// Structure informelle pour les tous
+    /// </summary>
+    public struct TourInfo
+    {
+        public String nom;
+        public Vector3 position;
+
+        public TourInfo(String iNom, Vector3 iPosition)
+        {
+            nom = iNom;
+            position = iPosition;
+        }
+        public bool isEmpty()
+        {
+            if ((nom == null) && (position == Vector3.ZERO))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public void Reset()
+        {
+            nom = null;
+            position = new Vector3(0, 0, 0);
+        }
     }
 }
