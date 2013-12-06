@@ -85,7 +85,7 @@ namespace BaseMogre
             CreateInputHandler();
 
             //Création de l'environnement
-            Environnement.createEnvironnement(ref mgr, 15, 15, 25);
+            Environnement.createEnvironnement(ref mgr, 15, 0, 25);
             
             //Test
             /*

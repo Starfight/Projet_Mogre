@@ -49,6 +49,8 @@ namespace BaseMogre
         #endregion
 
         #region Variables
+        private int _UpdateForNaissance;
+
         /// <summary>
         /// Liste des personnages
         /// </summary>
@@ -114,6 +116,7 @@ namespace BaseMogre
         #region Constructeur/Destructeur
         private Environnement(ref SceneManager scm)
         {
+            _UpdateForNaissance = 0;
             _scm = scm;
             _ListPersonnages = new Dictionary<string, Personnage>();
             _ListMaisons = new Dictionary<string, Maison>();
@@ -369,12 +372,45 @@ namespace BaseMogre
 
         #region Méthodes privées
         /// <summary>
+        /// méthode d'ajout d'un ogre dans l'env via les maisons
+        /// </summary>
+        /// <param name="typeOgre">type de l'ogre a créer</param>
+        /// <param name="position">endroit ou il apparait</param>
+        private void AddOgreToEnv(Type typeOgre, Vector3 position)
+        {
+            if (typeOgre == typeof(OgreOuvrier))
+            {
+                OgreOuvrier o = new OgreOuvrier(ref _scm, position);
+                _ListPersonnages.Add(o.NomEntity, o);
+            }
+            else
+            {
+                OgreBatisseur o = new OgreBatisseur(ref _scm, position);
+                _ListPersonnages.Add(o.NomEntity, o);
+            }
+
+        }
+
+        /// <summary>
         /// Appelé à la MAJ de la frame
         /// </summary>
         /// <param name="fEvt"></param>
         /// <returns></returns>
         private bool Update(FrameEvent fEvt)
         {
+            if( _UpdateForNaissance >= 2000)
+            {
+                foreach(KeyValuePair<String, Maison> kvpMaison in _ListMaisons)
+                {
+                    this.AddOgreToEnv(kvpMaison.Value.NaissanceOgre(), kvpMaison.Value.Position);
+                }
+                _UpdateForNaissance = 0;
+            }
+            else
+            {
+                _UpdateForNaissance++;
+            }
+
             //Regarde s'il y a des cubes à renouveler
             while (_listCubesToDelete.Count != 0)
             {

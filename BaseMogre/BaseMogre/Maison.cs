@@ -20,11 +20,12 @@ namespace BaseMogre
         /// </summary>
         private static String NAMEDEFAULT = "maison";
 
-        private Mutex _depotCube;
-
+        private static Random RND = new Random();
         #endregion
 
         #region variables
+        private Mutex _depotCube;
+
         private PositionCubes _positionFuture;
 
         private SceneNode _nodeBaseMaison;
@@ -63,6 +64,23 @@ namespace BaseMogre
             }
             _depotCube.ReleaseMutex();
             return false;
+        }
+
+        /// <summary>
+        /// méthode de random pour savoir quel type d'ogre va naitre 1/5 pour que ca soit un batisseur
+        /// </summary>
+        /// <returns>le type d'ogre à créer</returns>
+        public Type NaissanceOgre()
+        {
+            if (RND.Next(5) == 0)
+            {
+                //return typeof(OgreBatisseur);
+                return typeof(OgreOuvrier);
+            }
+            else
+            {
+                return typeof(OgreOuvrier);
+            }
         }
 
         private void SetNextCubePosition()
