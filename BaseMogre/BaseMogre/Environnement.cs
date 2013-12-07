@@ -45,11 +45,16 @@ namespace BaseMogre
         /// </summary>
         private const int MAXLONGUEURTERRAIN = 1000;
 
+        /// <summary>
+        /// Apparition d'un ogre dans une maison en seconde
+        /// </summary>
+        private const int TEMPSDAPPARITIONOGRE = 60;
+
         private static Random rnd = new Random();
         #endregion
 
         #region Variables
-        private int _UpdateForNaissance;
+        private float _UpdateForNaissance;
 
         /// <summary>
         /// Liste des personnages
@@ -60,7 +65,7 @@ namespace BaseMogre
         /// Liste des cubes
         /// </summary>
         private Dictionary<String, Cube> _listCubes;
-        private HashSet<String> _listCubesToDelete;
+        private Mutex _mutCubes;
 
         /// <summary>
         /// Liste des maisons
@@ -128,7 +133,7 @@ namespace BaseMogre
             _ListMaisons = new Dictionary<string, Maison>();
             _mutMaison = new Mutex();
             _listCubes = new Dictionary<string, Cube>();
-            _listCubesToDelete = new HashSet<string>();
+            _mutCubes = new Mutex();
             _ListOfComInput = new Queue<KnowledgeQuery>();
             _ListOfComOutput = new Queue<KnowledgeQuery>();
             _hsetCollisions = new HashSet<string>();
@@ -343,12 +348,20 @@ namespace BaseMogre
         public Cube getCube(String nomCube)
         {
             Cube cubeOut = null;
-            if ((_listCubes.ContainsKey(nomCube))&&(!_listCubesToDelete.Contains(nomCube)))
+            if (_listCubes.ContainsKey(nomCube))
             {
                 _listCubes.TryGetValue(nomCube, out cubeOut);
                 //Enlève le cube de la liste
                 if (cubeOut != null)
-                    _listCubesToDelete.Add(nomCube);
+                {
+                    _mutCubes.WaitOne();
+                    _listCubes.Remove(nomCube);
+
+                    //Ajoute un cube sur le terrain
+                    Cube c = new Cube(ref _scm, getPositionAntiCollisionCube(DISTANCECUBEACUBE), getRandomTypeCube());
+                    _listCubes.Add(c.NomEntity, c);
+                    _mutCubes.ReleaseMutex();
+                }
             }
             return cubeOut;
         }
@@ -404,7 +417,7 @@ namespace BaseMogre
         /// <returns></returns>
         private bool Update(FrameEvent fEvt)
         {
-            if( _UpdateForNaissance >= 2000)
+            if (_UpdateForNaissance >= TEMPSDAPPARITIONOGRE)
             {
                 foreach(KeyValuePair<String, Maison> kvpMaison in _ListMaisons)
                 {
@@ -414,19 +427,7 @@ namespace BaseMogre
             }
             else
             {
-                _UpdateForNaissance++;
-            }
-
-            //Regarde s'il y a des cubes à renouveler
-            while (_listCubesToDelete.Count != 0)
-            {
-                //Enlève le cube pris par l'ogre
-                _listCubes.Remove(_listCubesToDelete.First());
-                _listCubesToDelete.Remove(_listCubesToDelete.First());
-
-                //Ajoute un cube sur le terrain
-                Cube c = new Cube(ref _scm, getPositionAntiCollisionCube(DISTANCECUBEACUBE), getRandomTypeCube());
-                _listCubes.Add(c.NomEntity, c);
+                _UpdateForNaissance+=fEvt.timeSinceLastFrame;
             }
 
             //Detection des collisions avec les personnages
@@ -435,6 +436,7 @@ namespace BaseMogre
             foreach (KeyValuePair<String, Personnage> kvpPerso in _ListPersonnages)
             {                
                 //Détection des collisions avec les cubes
+                _mutCubes.WaitOne();
                 foreach (KeyValuePair<String, Cube> kvpCube in _listCubes)
                 {
                     float distanceAuCarre = (kvpPerso.Value.Position - kvpCube.Value.Position).SquaredLength;
@@ -456,6 +458,7 @@ namespace BaseMogre
                         _hsetCollisions.Remove(name);
                     }
                 }
+                _mutCubes.ReleaseMutex();
 
                 //Detection des collisions avec les maisons
                 _mutMaison.WaitOne();
