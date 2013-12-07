@@ -9,11 +9,21 @@ namespace BaseMogre
     public static class Log
     {
         static string log_path = "resultats.log";
+        private static object threadlock;
+
+        static Log()
+        {
+            threadlock = new object(); 
+        }
+
         public static bool writeNewLine(string texte)
         {
             try
             {
-                   File.AppendAllText(log_path, DateTime.Now.ToString() + " => " + texte + Environment.NewLine);
+                lock (threadlock)
+                {
+                    File.AppendAllText(log_path, DateTime.Now.ToString() + " => " + texte + Environment.NewLine);
+                }
             }
             catch (Exception)
             {
@@ -30,7 +40,10 @@ namespace BaseMogre
                 {
                     chaine += S + Environment.NewLine;
                 }
-                File.AppendAllText(log_path, chaine);
+                lock (threadlock)
+                {
+                    File.AppendAllText(log_path, chaine);
+                }
             }
             catch (Exception)
             {

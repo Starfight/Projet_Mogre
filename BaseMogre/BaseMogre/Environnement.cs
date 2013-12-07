@@ -74,9 +74,9 @@ namespace BaseMogre
         private Mutex _mutMaison;
 
         /// <summary>
-        /// Liste des tours
+        /// Tour unique
         /// </summary>
-        private Dictionary<String, Maison> _ListTours;
+        private Tour _tour;
         private Mutex _mutTours;
 
         /// <summary>

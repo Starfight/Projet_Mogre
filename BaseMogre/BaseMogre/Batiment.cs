@@ -36,10 +36,6 @@ namespace BaseMogre
         /// </summary>
         protected SceneManager _scm;
 
-        /// <summary>
-        /// Entity représentant le batiment
-        /// </summary>
-        protected Entity _entity;
 
         /// <summary>
         /// Scenenode du batiment
@@ -116,9 +112,7 @@ namespace BaseMogre
         public Batiment(ref SceneManager scm, Vector3 position, String nomBatiment,int PdV,int nbCubeBois, int NbCubePierre)
         {
             //Création de l'Entity et du Scenenode à la position
-            //_entity = scm.CreateEntity()
             _node = scm.RootSceneNode.CreateChildSceneNode(NAMENODE + nomBatiment, position);
-            //_node.AttachObject(_entity);
             
             //Enregistrement du Scenemanager
             _scm = scm;
