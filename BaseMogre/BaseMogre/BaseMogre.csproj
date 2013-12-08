@@ -71,6 +71,12 @@
     <Compile Include="OgreBatisseur.cs" />
     <Compile Include="OgreOuvrier.cs" />
     <Compile Include="Ogres.cs" />
+    <Compile Include="FormParametresEnv.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormParametresEnv.Designer.cs">
+      <DependentUpon>FormParametresEnv.cs</DependentUpon>
+    </Compile>
     <Compile Include="Personnage.cs" />
     <Compile Include="Porte.cs" />
     <Compile Include="Program.cs" />
@@ -79,6 +85,9 @@
     <Compile Include="Tour.cs" />
     <EmbeddedResource Include="OgreForm.resx">
       <DependentUpon>OgreForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormParametresEnv.resx">
+      <DependentUpon>FormParametresEnv.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

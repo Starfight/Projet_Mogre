@@ -60,7 +60,7 @@ namespace BaseMogre
         public TourInfo getInfo()
         {
             TourInfo t = new TourInfo(this.NomEntity, this.Position);
-            return t;
+            return t; 
         }
 
         private void SetNextCubePosition()

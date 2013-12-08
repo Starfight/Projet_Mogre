@@ -334,10 +334,15 @@ namespace BaseMogre
             _stop = true;
             _ComThread.Join();
 
+            //Arrêt du listener
+            Root.Singleton.FrameStarted -= _fListener;
+
             //fini les threads de tous les personnages
-            foreach (KeyValuePair<String, Personnage> kvp in _ListPersonnages)
+            KeyValuePair<String, Personnage>[] tabPerso = _ListPersonnages.ToArray();
+            for (int i = 0; i < tabPerso.Length; i++)
             {
-                kvp.Value.Dispose();
+                _ListPersonnages.Remove(tabPerso[i].Key);
+                tabPerso[i].Value.Dispose();
             }
         }
 

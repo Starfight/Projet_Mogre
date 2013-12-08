@@ -26,6 +26,7 @@ namespace BaseMogre
         const float ROTATE = 0.2f;
         Point mLastPosition;
         bool mouseMove=false;
+        FormParametresEnv fParam;
         #endregion
 
         #region Constructeur
@@ -83,9 +84,6 @@ namespace BaseMogre
 
             //Attache les handler
             CreateInputHandler();
-
-            //Création de l'environnement
-            Environnement.createEnvironnement(ref mgr, 15, 5, 25);
             
             //Test
             /*
@@ -176,7 +174,8 @@ namespace BaseMogre
             mRoot.Dispose();
             mRoot = null;
             //Fini le thread de l'environnement
-            Environnement.getInstance().Dispose();
+            if (Environnement.getInstance() != null)
+                Environnement.getInstance().Dispose();
         }
 
         void OgreForm_Resize(object sender, EventArgs e)
@@ -232,6 +231,24 @@ namespace BaseMogre
         {
             cam.Position += cam.Orientation * mTranslation * evt.timeSinceLastFrame;
             return true;
+        }
+        #endregion
+
+        #region Gestion Interface
+        //Bouton quitter
+        private void bQuitter_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        
+        //bouton nouveau
+        private void bNewEnv_Click(object sender, EventArgs e)
+        {
+            if (fParam != null)
+                fParam.Close();
+
+            fParam = new FormParametresEnv(ref mgr);
+            fParam.Show();
         }
         #endregion
     }
