@@ -344,6 +344,29 @@ namespace BaseMogre
                 _ListPersonnages.Remove(tabPerso[i].Key);
                 tabPerso[i].Value.Dispose();
             }
+
+            //supprime les cubes
+            KeyValuePair<String, Cube>[] tabCubes = _listCubes.ToArray();
+            for (int i = 0; i < tabCubes.Length; i++)
+            {
+                _listCubes.Remove(tabCubes[i].Key);
+                tabCubes[i].Value.Dispose();
+            }
+
+            //supprime les maisons
+            KeyValuePair<String, Maison>[] tabMaisons = _ListMaisons.ToArray();
+            for (int i = 0; i < tabMaisons.Length; i++)
+            {
+                _ListMaisons.Remove(tabMaisons[i].Key);
+                tabMaisons[i].Value.Dispose();
+            }
+
+            //supprime la tour
+            if (_tour != null)
+            {
+                _tour.Dispose();
+                _tour = null;
+            }
         }
 
         /// <summary>
@@ -568,7 +591,7 @@ namespace BaseMogre
 
             
 
-            return true;
+            return !_stop;
         }
 
         /// <summary>

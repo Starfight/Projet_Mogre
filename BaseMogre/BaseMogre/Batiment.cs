@@ -6,7 +6,7 @@ using Mogre;
 
 namespace BaseMogre
 {
-    class Batiment
+    class Batiment: IDisposable
     {
         #region Constantes/Variables statiques
         /// <summary>
@@ -162,6 +162,21 @@ namespace BaseMogre
                 return true;
             else
                 return false;
+        }
+
+        /// <summary>
+        /// Implémentation de l'interface IDisposable pour les batiment
+        /// </summary>
+        public void Dispose()
+        {
+            //Suppression des cubes
+            for (int i = 0; i < _listeDesCubes.Count; i++)
+            {
+                Cube c = _listeDesCubes.First();
+                _listeDesCubes.Remove(c);
+                c.Dispose();
+            }
+            _scm.DestroySceneNode(_node);
         }
     }
 }
