@@ -105,7 +105,7 @@ namespace BaseMogre
                 _needToDecide = true;
             }
             
-            return true;
+            return !_stop;
         }
         #endregion
 

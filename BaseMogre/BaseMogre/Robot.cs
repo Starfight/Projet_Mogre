@@ -137,7 +137,7 @@ namespace BaseMogre
                 }
             }
 
-            return true;
+            return !_stop;
         }
 
         /// <summary>

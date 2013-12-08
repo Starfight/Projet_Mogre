@@ -27,7 +27,8 @@ namespace BaseMogre
         Cube,
         Robot,
         Ogre,
-        Maison
+        Maison,
+        Tour
     }
 
     public struct KnowledgeQuery

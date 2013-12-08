@@ -132,6 +132,7 @@ namespace BaseMogre
             _ListPersonnages = new Dictionary<string, Personnage>();
             _ListMaisons = new Dictionary<string, Maison>();
             _mutMaison = new Mutex();
+            _mutTours = new Mutex();
             _listCubes = new Dictionary<string, Cube>();
             _mutCubes = new Mutex();
             _ListOfComInput = new Queue<KnowledgeQuery>();
@@ -367,22 +368,26 @@ namespace BaseMogre
         }
 
         /// <summary>
-        /// Donne le cube à la maison
+        /// Donne le cube à un bâtiment
         /// </summary>
         /// <param name="c">Cube donné</param>
-        /// <param name="nomMaison">Nom de la maison</param>
+        /// <param name="nomMaison">Nom du bâtiment</param>
         /// <returns>True si le cube a été transféré, false sinon</returns>
-        public bool giveCube(Cube c, String nomMaison)
+        public bool giveCube(Cube c, String nomBatiment)
         {
             bool isOk = false;
 
             Maison m = null;
-            if (_ListMaisons.ContainsKey(nomMaison))
+            if (_ListMaisons.ContainsKey(nomBatiment))
             {
-                _ListMaisons.TryGetValue(nomMaison, out m);
+                _ListMaisons.TryGetValue(nomBatiment, out m);
                 //Ajoute le cube à la maison
                 if (m != null)
                     isOk = m.ajoutDeBloc(c);
+            }
+            else if (_tour.NomEntity == nomBatiment)
+            {
+                isOk = _tour.ajoutDeBloc(c);
             }
 
             return isOk;
@@ -404,7 +409,11 @@ namespace BaseMogre
             }
             else
             {
-                OgreBatisseur o = new OgreBatisseur(ref _scm, position);
+                OgreBatisseur o;
+                if (_tour!=null)
+                    o = new OgreBatisseur(ref _scm, position, _tour.getInfo());
+                else
+                    o = new OgreBatisseur(ref _scm, position);
                 _ListPersonnages.Add(o.NomEntity, o);
             }
 
@@ -419,10 +428,13 @@ namespace BaseMogre
         {
             if (_UpdateForNaissance >= TEMPSDAPPARITIONOGRE)
             {
+                _mutMaison.WaitOne();
                 foreach(KeyValuePair<String, Maison> kvpMaison in _ListMaisons)
                 {
-                    this.AddOgreToEnv(kvpMaison.Value.NaissanceOgre(), kvpMaison.Value.Position);
+                    if (kvpMaison.Value.isFinish())
+                        this.AddOgreToEnv(kvpMaison.Value.NaissanceOgre(), kvpMaison.Value.Position);
                 }
+                _mutMaison.ReleaseMutex();
                 _UpdateForNaissance = 0;
             }
             else
@@ -484,6 +496,31 @@ namespace BaseMogre
                     }
                 }
                 _mutMaison.ReleaseMutex();
+
+                //Collision tour
+                _mutTours.WaitOne();
+                if (_tour != null)
+                {
+                    float distanceAuCarre = (kvpPerso.Value.Position - _tour.Position).SquaredLength;
+                    string name = kvpPerso.Key + _tour.NomEntity;
+                    if (distanceAuCarre < DISTANCECOLLISIONMAISON)
+                    {
+                        if (!_hsetCollisions.Contains(name))
+                        {
+                            //Collision
+                            _hsetCollisions.Add(name);
+
+                            //Message
+                            KnowledgeQuery kq = new KnowledgeQuery(kvpPerso.Key, Classe.Tour, _tour.NomEntity, _tour.Position, _tour.isFinish().ToString());
+                            _ListOfComOutput.Enqueue(kq);
+                        }
+                    }
+                    else if (_hsetCollisions.Contains(name))
+                    {
+                        _hsetCollisions.Remove(name);
+                    }
+                }
+                _mutTours.ReleaseMutex();
 
                 //Détection des collisions avec les autres persos
                 for (int i = iPerso; i < tabPerso.Length; i++)
@@ -588,6 +625,25 @@ namespace BaseMogre
                     _mutMaison.WaitOne();
                     _ListMaisons.Add(m.NomEntity, m);
                     _mutMaison.ReleaseMutex();
+                }
+            }
+            else if ((iKQ.Classe == Classe.Tour)&&(_tour==null))
+            {
+                //Vérification
+                bool ok = true;
+                foreach (KeyValuePair<String, Maison> kvp in _ListMaisons)
+                {
+                    float distanceAuCarre = (kvp.Value.Position - iKQ.Position).SquaredLength;
+                    if (distanceAuCarre < DISTANCEMAISONAMAISON)
+                        ok = false;
+                }
+
+                //Création
+                if (ok)
+                {
+                    _mutTours.WaitOne();
+                    _tour = new Tour(ref _scm, iKQ.Position);
+                    _mutTours.ReleaseMutex();
                 }
             }
         }

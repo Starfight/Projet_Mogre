@@ -57,6 +57,12 @@ namespace BaseMogre
             return false;
         }
 
+        public TourInfo getInfo()
+        {
+            TourInfo t = new TourInfo(this.NomEntity, this.Position);
+            return t;
+        }
+
         private void SetNextCubePosition()
         {
             switch (_nombreCube)
@@ -91,7 +97,7 @@ namespace BaseMogre
     }
 
     /// <summary>
-    /// Structure informelle pour les tous
+    /// Structure informelle pour les tour
     /// </summary>
     public struct TourInfo
     {
