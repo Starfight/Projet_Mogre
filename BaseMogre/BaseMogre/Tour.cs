@@ -29,6 +29,7 @@ namespace BaseMogre
             : base(ref scm, position, NAMEDEFAULT , 100,50,50)
         {
             _nombreCube = 1;
+            Log.writeNewLine("Tour commencée en (" + this.Position.x + "," + this.Position.y + "," + this.Position.z + ")");
         }
 
         public bool ajoutDeBloc(Cube C)
