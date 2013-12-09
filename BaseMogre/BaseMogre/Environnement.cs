@@ -434,6 +434,7 @@ namespace BaseMogre
             {
                 OgreOuvrier o = new OgreOuvrier(ref _scm, position);
                 _ListPersonnages.Add(o.NomEntity, o);
+                Log.writeNewLine("Nouvel ogre ouvrier créé");
             }
             else
             {
@@ -443,6 +444,7 @@ namespace BaseMogre
                 else
                     o = new OgreBatisseur(ref _scm, position);
                 _ListPersonnages.Add(o.NomEntity, o);
+                Log.writeNewLine("Nouvel ogre batisseur créé");
             }
 
         }

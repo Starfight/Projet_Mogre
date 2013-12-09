@@ -44,6 +44,7 @@ namespace BaseMogre
             _COUNT++;
             _positionFuture = new PositionCubes(this.Position.x+30, 0, this.Position.z-30);
             _depotCube = new Mutex();
+            Log.writeNewLine("Maison commencée en (" + this.Position.x + "," + this.Position.y + "," + this.Position.z + ")");
         }
 
         public bool ajoutDeBloc(Cube C)
@@ -152,6 +153,7 @@ namespace BaseMogre
                     break;
                 case 1:
                     _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
+                    Log.writeNewLine("Maison finie en ("+this.Position.x+","+this.Position.y+","+this.Position.z+")");
                     break;
             }
         }
