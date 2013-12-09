@@ -227,7 +227,8 @@ namespace BaseMogre
             Root.Singleton.FrameStarted -= _fListener;
 
             //Detruit le scenenode et l'entity
-            _node.RemoveAndDestroyAllChildren();
+            _node.DetachObject(_entity);
+            _scm.DestroyEntity(_entity);
             _scm.DestroySceneNode(_node);
         }
         
