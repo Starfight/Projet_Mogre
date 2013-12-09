@@ -434,7 +434,7 @@ namespace BaseMogre
             {
                 OgreOuvrier o = new OgreOuvrier(ref _scm, position);
                 _ListPersonnages.Add(o.NomEntity, o);
-                Log.writeNewLine("Nouvel ogre ouvrier créé");
+                Log.writeNewLine("Nouvel ogre ouvrier créé :" + o.NomEntity);
             }
             else
             {
@@ -444,7 +444,7 @@ namespace BaseMogre
                 else
                     o = new OgreBatisseur(ref _scm, position);
                 _ListPersonnages.Add(o.NomEntity, o);
-                Log.writeNewLine("Nouvel ogre batisseur créé");
+                Log.writeNewLine("Nouvel ogre batisseur créé : " + o.NomEntity);
             }
 
         }
@@ -456,6 +456,7 @@ namespace BaseMogre
         /// <returns></returns>
         private bool Update(FrameEvent fEvt)
         {
+            //fait naitre les nouveau ogres
             if (_UpdateForNaissance >= TEMPSDAPPARITIONOGRE)
             {
                 _mutMaison.WaitOne();
@@ -586,6 +587,7 @@ namespace BaseMogre
                 //Suppression
                 if (!tabPerso[i].Value.isAlive())
                 {
+                    Log.writeNewLine("Le personnage : " + tabPerso[i].Value.NomEntity + " est mort.");
                     _ListPersonnages[tabPerso[i].Key].Dispose();
                     _ListPersonnages.Remove(tabPerso[i].Key);
                 }
