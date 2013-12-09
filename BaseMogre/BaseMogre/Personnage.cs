@@ -180,7 +180,7 @@ namespace BaseMogre
         /// <summary>
         /// Destination du personnage
         /// </summary>
-        protected virtual Vector3 Destination
+        protected Vector3 Destination
         {
             get { return _destination; }
             set

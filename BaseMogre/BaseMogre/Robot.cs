@@ -21,11 +21,6 @@ namespace BaseMogre
         private const String NAMEDEFAULT = "robot";
 
         /// <summary>
-        /// Valeur pour que le robot touche le sol
-        /// </summary>
-        private const float ALIGNEMENTTERRAIN = -15;
-
-        /// <summary>
         /// Caractéristique des PV
         /// </summary>
         private const int PVMAX = 20;
@@ -60,21 +55,6 @@ namespace BaseMogre
         #endregion
 
         #region Propriété
-        protected override Vector3 Destination
-        {
-            get
-            {
-                Vector3 d = base.Destination;
-                d.y = 0;
-                return d;
-            }
-            set
-            {
-                value.y = ALIGNEMENTTERRAIN;
-                base.Destination = value;
-            }
-        }
-
         public override Vector3 Position
         {
             get
