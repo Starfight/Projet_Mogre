@@ -173,7 +173,7 @@ namespace BaseMogre
             }
 
             //Création des robots
-            vect = new Vector3(-350, 0, 1100);
+            vect = new Vector3(-350, -15, 1100);
             for (int i = 0; i < iNbRobots; i++)
             {
                 vect = this.creer_vecteur(i, inc, vect);

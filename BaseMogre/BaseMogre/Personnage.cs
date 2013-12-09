@@ -173,14 +173,14 @@ namespace BaseMogre
         /// <summary>
         /// Position du personnage
         /// </summary>
-        public Vector3 Position
+        public virtual Vector3 Position
         {
             get { return _node.Position; }
         }
         /// <summary>
         /// Destination du personnage
         /// </summary>
-        protected Vector3 Destination
+        protected virtual Vector3 Destination
         {
             get { return _destination; }
             set
