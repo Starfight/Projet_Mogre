@@ -175,7 +175,11 @@ namespace BaseMogre
         /// </summary>
         public virtual Vector3 Position
         {
-            get { return _node.Position; }
+            get 
+            {
+                lock(_node)
+                    return _node.Position;
+            }
         }
         /// <summary>
         /// Destination du personnage
@@ -186,6 +190,7 @@ namespace BaseMogre
             set
             {
                 _destination = value;
+                Log.writeNewLine("Le personnage "+_nomEntity+" a changé sa destination vers le point x="+_destination.x.ToString("0.00")+" ; z="+_destination.z.ToString("0.00"));
                 //Indique des modification à faire 
                 _DestinationChanged = true;
             }
@@ -312,9 +317,9 @@ namespace BaseMogre
         /// <param name="pos">Position de l'objet en collision</param>
         protected void EviteCollision(Vector3 pos)
         {
-            Vector3 v = (Position - pos);
+            Vector3 v =(Position - pos);
             v.Normalise();
-            Destination = v * ESQUIVE_COLLISION;
+            Destination = Position + v * Environnement.getRandomEcart();
         }
         #endregion
     }

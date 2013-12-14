@@ -126,7 +126,7 @@ namespace BaseMogre
                         else
                         {
                             //Donne une nouvelle destination aléatoire
-                            Destination = Environnement.getRandomHorizontalVecteur();
+                            Destination = Environnement.getRandomDestination(Position);
                         }
                     }
                     //Sinon recherche d'une position idéale
@@ -138,7 +138,7 @@ namespace BaseMogre
                 else
                 {
                     //Donne une nouvelle destination aléatoire
-                    Destination = Environnement.getRandomHorizontalVecteur();
+                    Destination = Environnement.getRandomDestination(Position);
                 }
             }
         }

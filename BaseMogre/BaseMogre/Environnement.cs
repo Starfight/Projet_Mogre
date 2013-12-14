@@ -50,6 +50,12 @@ namespace BaseMogre
         /// </summary>
         private const int TEMPSDAPPARITIONOGRE = 60;
 
+        /// <summary>
+        /// Ecart fait lors d'un déplacement, d'une collision, etc
+        /// </summary>
+        private const int ECARTMIN = 50;
+        private const int ECARTMAX = 200;
+
         private static Random rnd = new Random();
         #endregion
 
@@ -163,8 +169,8 @@ namespace BaseMogre
             int inc;
 
             //Création des ogres
-            inc = 100;
-            Vector3 vect = new Vector3(-350, 0, -1100);
+            inc = 200;
+            Vector3 vect = new Vector3(-1100, 0, -1100);
             for (int i = 0; i < iNbOgres; i++)
             {
                 vect = this.creer_vecteur(i, inc, vect);
@@ -173,7 +179,7 @@ namespace BaseMogre
             }
 
             //Création des robots
-            vect = new Vector3(-350, Map.ALIGNEMENTTERRAIN, 1100);
+            vect = new Vector3(-1100, Map.ALIGNEMENTTERRAIN, 1100);
             for (int i = 0; i < iNbRobots; i++)
             {
                 vect = this.creer_vecteur(i, inc, vect);
@@ -280,15 +286,46 @@ namespace BaseMogre
         /// <summary>
         /// Renvoi un vecteur aléatoire sur le plan horizontal
         /// </summary>
-        /// <param name="min">Minimum en x et z</param>
-        /// <param name="max">Maximum en x et z</param>
         /// <returns>Vecteur aléatoire</returns>
         public static Vector3 getRandomHorizontalVecteur()
-        {
+        {            
             int x = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN+1);
             int y = 0;
             int z = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN+1);
             return new Vector3(x, y, z);
+        }
+
+        /// <summary>
+        /// Destination aléatoire
+        /// </summary>
+        /// <param name="pos">Position de départ (pour ne pas dépasser les limites du terrain)</param>
+        /// <returns>Nouvelle Destination</returns>
+        public static Vector3 getRandomDestination(Vector3 pos)
+        {
+            Vector3 nPos;
+            do
+            {
+                float x = rnd.Next(-45, 46);
+                float y = 0;
+                float z = rnd.Next(-45, 46);
+                Vector3 dir = new Vector3(x, y, z);
+                dir.Normalise();
+
+                int lenght = getRandomEcart();
+                nPos = pos + (dir * lenght);
+            } while (System.Math.Max(System.Math.Abs(nPos.x), System.Math.Abs(nPos.z))>MAXLONGUEURTERRAIN);            
+
+            return nPos;
+        }
+
+        /// <summary>
+        /// Fourni un ecart à multiplier par un vecteur de direction
+        /// </summary>
+        /// <returns></returns>
+        public static int getRandomEcart()
+        {
+            int ecart = rnd.Next(ECARTMIN, ECARTMAX);
+            return ecart;
         }
 
         /// <summary>

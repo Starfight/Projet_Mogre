@@ -126,7 +126,7 @@ namespace BaseMogre
                     else
                     {
                         //Donne une nouvelle destination aléatoire
-                        Destination = Environnement.getRandomHorizontalVecteur();
+                        Destination = Environnement.getRandomDestination(Position);
                     }
                 }
                 //Si il a repéré une maison et qu'il a un cube 
@@ -138,7 +138,7 @@ namespace BaseMogre
                 else
                 {
                     //Donne une nouvelle destination aléatoire
-                    Destination = Environnement.getRandomHorizontalVecteur();
+                    Destination = Environnement.getRandomDestination(Position);
                 }
             }
         }

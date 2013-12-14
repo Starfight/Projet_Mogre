@@ -194,7 +194,7 @@ namespace BaseMogre
             }
             else
             {
-                Destination = Environnement.getRandomHorizontalVecteur();
+                Destination = Environnement.getRandomDestination(Position);
             }
             
             
