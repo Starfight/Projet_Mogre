@@ -167,7 +167,7 @@ namespace BaseMogre
         /// <summary>
         /// Implémentation de l'interface IDisposable pour les batiment
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
             //Suppression des cubes
             for (int i = 0; i < _listeDesCubes.Count; i++)

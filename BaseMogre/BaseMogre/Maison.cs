@@ -28,23 +28,36 @@ namespace BaseMogre
 
         private PositionCubes _positionFuture;
 
+        private Entity _entityMaison;
         private SceneNode _nodeBaseMaison;
         #endregion
 
+        #region Constructeur
         public Maison(ref SceneManager scm,Vector3 position)
             : base(ref scm, position, NAMEDEFAULT + _COUNT, 20,11,12)
         {
-            Entity entity = scm.CreateEntity("base_maison" + _COUNT, "cube.mesh");
+            _entityMaison = scm.CreateEntity("base_maison" + _COUNT, "cube.mesh");
             _nodeBaseMaison = scm.RootSceneNode.CreateChildSceneNode("base_maison_node" + _COUNT, position);
             _nodeBaseMaison.SetPosition(position.x, position.y - 12, position.z);
             _nodeBaseMaison.Scale(new Vector3(1, 0.05f, 1));
-            _nodeBaseMaison.AttachObject(entity);
-            entity.SetMaterialName("Texture/BaseMaison");
+            _nodeBaseMaison.AttachObject(_entityMaison);
+            _entityMaison.SetMaterialName("Texture/BaseMaison");
            
             _COUNT++;
             _positionFuture = new PositionCubes(this.Position.x+30, 0, this.Position.z-30);
             _depotCube = new Mutex();
             Log.writeNewLine("Maison commencée en (" + this.Position.x + "," + this.Position.y + "," + this.Position.z + ")");
+        }
+        #endregion
+
+        #region Méthodes publiques
+        public override void Dispose()
+        {
+            _nodeBaseMaison.DetachObject(_entityMaison);
+            _scm.DestroyEntity(_entityMaison);
+            _scm.DestroySceneNode(_nodeBaseMaison);
+            
+            base.Dispose();
         }
 
         public bool ajoutDeBloc(Cube C)
@@ -83,7 +96,9 @@ namespace BaseMogre
                 return typeof(OgreOuvrier);
             }
         }
+        #endregion
 
+        #region Méthodes privées
         private void SetNextCubePosition()
         {
             switch (_nbCubeBoisNecessaire + _nbCubePierreNecessaire)
@@ -157,7 +172,7 @@ namespace BaseMogre
                     break;
             }
         }
-
+        #endregion
     }
 
     /// <summary>
