@@ -121,6 +121,11 @@ namespace BaseMogre
         {
             get { return _atk; }
         }
+        public Vector3 GetDestination
+        {
+            get { return _destination; }
+        }
+
         public Quaternion Orientation
         {
             get { return _node.Orientation; }

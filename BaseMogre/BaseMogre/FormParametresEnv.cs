@@ -13,11 +13,13 @@ namespace BaseMogre
     public partial class FormParametresEnv : Form
     {
         private SceneManager _scm;
+        private Camera _cam;
 
-        public FormParametresEnv(ref SceneManager scm)
+        public FormParametresEnv(ref SceneManager scm, ref Camera cam)
         {
             InitializeComponent();
             _scm = scm;
+            _cam = cam;
         }
 
         private void bValidate_Click(object sender, EventArgs e)
@@ -30,7 +32,7 @@ namespace BaseMogre
             int nbCubes = Convert.ToInt32(nupNbcubes.Value);
 
             //Création de l'environnement
-            Environnement.createEnvironnement(ref _scm, nbOgres, nbRobots, nbCubes);
+            Environnement.createEnvironnement(ref _scm, nbOgres, nbRobots, nbCubes, ref this._cam);
 
             this.Close();
         }

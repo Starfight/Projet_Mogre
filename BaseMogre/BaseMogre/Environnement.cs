@@ -59,7 +59,11 @@ namespace BaseMogre
         private static Random rnd = new Random();
         #endregion
 
+        private Camera cam;
+
         #region Variables
+        
+
         /// <summary>
         /// nombre de secondes depuis la derniere naissance
         /// </summary>
@@ -134,8 +138,9 @@ namespace BaseMogre
         #endregion
 
         #region Constructeur/Destructeur
-        private Environnement(ref SceneManager scm)
+        private Environnement(ref SceneManager scm, ref Camera cam)
         {
+            this.cam = cam;
             _UpdateForNaissance = 0;
             _scm = scm;
             _ListPersonnages = new Dictionary<string, Personnage>();
@@ -265,9 +270,9 @@ namespace BaseMogre
         /// <param name="scm">SceneManager de référence</param>
         /// <param name="nbogres">Nombre d'ogres ouvriers</param>
         /// <param name="nbrobots">Nombre de robots</param>
-        public static void createEnvironnement(ref SceneManager scm, int nbogres, int nbrobots, int nbcubes)
+        public static void createEnvironnement(ref SceneManager scm, int nbogres, int nbrobots, int nbcubes,ref Camera cam)
         {
-            ENV_DEFAULT = new Environnement(ref scm);
+            ENV_DEFAULT = new Environnement(ref scm, ref cam);
             ENV_DEFAULT.initPersonnages(nbogres, nbrobots);
             ENV_DEFAULT.initCubes(nbcubes);
 
@@ -466,10 +471,10 @@ namespace BaseMogre
         /// </summary>
         /// <param name="c">caméra qui doit être suivie</param>
         /// <param name="indice">indice correspondant à l'objet que l'on veux suivre</param>
-        public bool attachedCamera(ref Camera c,int indice)
+        public bool attachedCamera(int indice)
         {
             bool fin = false;
-            c.SetPosition(c.Position.x + 2, c.Position.y, c.Position.z);
+            cam.SetPosition(cam.Position.x + 2, cam.Position.y, cam.Position.z);
             if (indice > _ListPersonnages.Count)
             {
                 indice = _ListPersonnages.Count - 1;
@@ -479,8 +484,8 @@ namespace BaseMogre
             {
                 if(indice == 0)
                 {
-                    c.SetPosition(kvpPerso.Value.Position.x,kvpPerso.Value.Position.y+250,kvpPerso.Value.Position.z);
-                    //c.Orientation = kvpPerso.Value.Orientation;//ca bug si je laisse ca enclencher
+                    cam.Position = kvpPerso.Value.Position + new Vector3(300, 300, 300) ;
+                    cam.LookAt(kvpPerso.Value.Position);
                     break;
                 }
                 else

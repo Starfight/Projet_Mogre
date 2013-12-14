@@ -189,10 +189,12 @@ namespace BaseMogre
             {
                 case Keys.Z:
                 case Keys.S:
+                    attachedCam = false;
                     mTranslation.z = 0;
                     break;
                 case Keys.Q:
                 case Keys.D:
+                    attachedCam = false;
                     mTranslation.x = 0;
                     break;
                 case Keys.N:
@@ -231,7 +233,7 @@ namespace BaseMogre
             cam.Position += cam.Orientation * mTranslation * evt.timeSinceLastFrame;
             if (attachedCam)
             {
-                bool end = Environnement.getInstance().attachedCamera(ref cam, indiceObjetSuivi);
+                bool end = Environnement.getInstance().attachedCamera(indiceObjetSuivi);
                 if (end)
                 {
                     indiceObjetSuivi = 0;
@@ -254,7 +256,7 @@ namespace BaseMogre
             if (fParam != null)
                 fParam.Close();
 
-            fParam = new FormParametresEnv(ref mgr);
+            fParam = new FormParametresEnv(ref mgr, ref cam);
             fParam.Show();
         }
         #endregion
