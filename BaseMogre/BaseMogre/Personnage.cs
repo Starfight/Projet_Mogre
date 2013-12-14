@@ -121,6 +121,10 @@ namespace BaseMogre
         {
             get { return _atk; }
         }
+        public Quaternion Orientation
+        {
+            get { return _node.Orientation; }
+        }
         #endregion
 
         #region Constructeur

@@ -60,6 +60,9 @@ namespace BaseMogre
         #endregion
 
         #region Variables
+        /// <summary>
+        /// nombre de secondes depuis la derniere naissance
+        /// </summary>
         private float _UpdateForNaissance;
 
         /// <summary>
@@ -456,6 +459,37 @@ namespace BaseMogre
             }
 
             return isOk;
+        }
+
+        /// <summary>
+        /// gestion de la camera si elle est attachée
+        /// </summary>
+        /// <param name="c">caméra qui doit être suivie</param>
+        /// <param name="indice">indice correspondant à l'objet que l'on veux suivre</param>
+        public bool attachedCamera(ref Camera c,int indice)
+        {
+            bool fin = false;
+            c.SetPosition(c.Position.x + 2, c.Position.y, c.Position.z);
+            if (indice > _ListPersonnages.Count)
+            {
+                indice = _ListPersonnages.Count - 1;
+                fin = true;
+            }
+            foreach (KeyValuePair<String, Personnage> kvpPerso in _ListPersonnages)
+            {
+                if(indice == 0)
+                {
+                    c.SetPosition(kvpPerso.Value.Position.x,kvpPerso.Value.Position.y+250,kvpPerso.Value.Position.z);
+                    //c.Orientation = kvpPerso.Value.Orientation;//ca bug si je laisse ca enclencher
+                    break;
+                }
+                else
+                {
+                    indice--;
+                }
+            }
+            return fin;
+            
         }
         #endregion
 
