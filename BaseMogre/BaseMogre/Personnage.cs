@@ -19,6 +19,11 @@ namespace BaseMogre
         /// Distance pour esquiver une collision
         /// </summary>
         protected const int ESQUIVE_COLLISION = 200;
+
+        /// <summary>
+        /// Une chance sur la variable pour partir loin
+        /// </summary>
+        protected const int CHANCEPOURPARTIRLOIN = 10;
         #endregion
 
         #region Variables
@@ -177,8 +182,15 @@ namespace BaseMogre
         {
             get 
             {
-                lock(_node)
+                //Permet d'outre passer le bug du _node détruit dans un autre thread
+                try
+                {
                     return _node.Position;
+                }
+                catch
+                {
+                    return Vector3.ZERO;
+                }
             }
         }
         /// <summary>

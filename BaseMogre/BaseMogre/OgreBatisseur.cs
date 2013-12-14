@@ -137,8 +137,16 @@ namespace BaseMogre
                 }
                 else
                 {
-                    //Donne une nouvelle destination aléatoire
-                    Destination = Environnement.getRandomDestination(Position);
+                    //Donne une chance de partir loin
+                    if (Environnement.getInstance().getUneChanceSur(CHANCEPOURPARTIRLOIN))
+                    {
+                        Destination = Environnement.getRandomHorizontalVecteur();
+                    }
+                    else
+                    {
+                        //Donne une nouvelle destination aléatoire
+                        Destination = Environnement.getRandomDestination(Position);
+                    }
                 }
             }
         }
