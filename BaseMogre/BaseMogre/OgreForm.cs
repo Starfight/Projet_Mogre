@@ -27,6 +27,8 @@ namespace BaseMogre
         Point mLastPosition;
         bool mouseMove=false;
         FormParametresEnv fParam;
+        bool attachedCam = false;
+        int indiceObjetSuivi=-1;
         #endregion
 
         #region Constructeur
@@ -86,17 +88,6 @@ namespace BaseMogre
             CreateInputHandler();
             
             //Test
-            /*
-            Tour M = new Tour(ref mgr, new Mogre.Vector3(100, -60, 0));
-            for (int i = 0; i < 11; i++)
-            {
-                M.ajoutDeBloc(new Cube(ref mgr, new Mogre.Vector3(0, 0, 0), TypeCube.Bois));
-            }
-            for (int i = 0; i <= 11; i++)
-            {
-                M.ajoutDeBloc(new Cube(ref mgr, new Mogre.Vector3(0, 0, 0), TypeCube.Pierre));
-            }
-            */
             /*SceneNode myNode = mgr.RootSceneNode.CreateChildSceneNode();
             BillboardSet mySet = mgr.CreateBillboardSet("mySet");
             Billboard myBillboard = mySet.CreateBillboard(new Mogre.Vector3(50, 0, 20));
@@ -204,6 +195,14 @@ namespace BaseMogre
                 case Keys.D:
                     mTranslation.x = 0;
                     break;
+                case Keys.N:
+                    attachedCam = true;
+                    indiceObjetSuivi++;
+                    break;
+                case Keys.B:
+                    attachedCam = false;
+                    break;
+
             }
         }
 
@@ -230,6 +229,14 @@ namespace BaseMogre
         bool FrameStarted(FrameEvent evt)
         {
             cam.Position += cam.Orientation * mTranslation * evt.timeSinceLastFrame;
+            if (attachedCam)
+            {
+                bool end = Environnement.getInstance().attachedCamera(ref cam, indiceObjetSuivi);
+                if (end)
+                {
+                    indiceObjetSuivi = 0;
+                }
+            }
             return true;
         }
         #endregion
