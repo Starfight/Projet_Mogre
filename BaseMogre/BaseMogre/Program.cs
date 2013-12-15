@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Mogre;
 using MogreFramework;
+using System.IO;
 
 namespace BaseMogre
 {
@@ -15,6 +16,9 @@ namespace BaseMogre
         [STAThread]
         static void Main()
         {
+            //on nettoie les fichiers de log
+            File.WriteAllText("Ogre.log", "", System.Text.Encoding.UTF8);
+            File.WriteAllText("resultats.log", "", System.Text.Encoding.UTF8);
             OgreForm form = new OgreForm();
             form.Init();
             form.Go();
