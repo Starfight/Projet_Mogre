@@ -161,7 +161,7 @@ namespace BaseMogre
                 if (!_combat)
                 {
                     //Evite la collision avec un autre robot ou un cube
-                    if ((kq.Classe == Classe.Robot) || (kq.Classe == Classe.Cube))
+                    if ((kq.Classe == Classe.Robot) || (kq.Classe == Classe.Cube) || (kq.Classe == Classe.Maison))
                     {
                         EviteCollision(kq.Position);
                     }
