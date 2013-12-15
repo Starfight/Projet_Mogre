@@ -121,6 +121,11 @@ namespace BaseMogre
         /// Listener pour le raffraichissement des frames
         /// </summary>
         private FrameListener.FrameStartedHandler _fListener;
+
+        /// <summary>
+        /// Si l'un des camp à gagné
+        /// </summary>
+        private bool _isFini;
         #endregion
 
         #region Getter et Setter
@@ -142,6 +147,7 @@ namespace BaseMogre
             this.cam = cam;
             _UpdateForNaissance = 0;
             _scm = scm;
+            _isFini = false;
             _ListPersonnages = new Dictionary<string, Personnage>();
             _ListMaisons = new Dictionary<string, Maison>();
             _mutMaison = new Mutex();
@@ -471,6 +477,12 @@ namespace BaseMogre
             else if (_tour.NomEntity == nomBatiment)
             {
                 isOk = _tour.ajoutDeBloc(c);
+                //Condition de victoire des ogres
+                if ((_tour.isFinish())&&(!_isFini))
+                {
+                    Log.writeNewLine("Les ogres ont gagnés !");
+                    _isFini = true;
+                }
             }
 
             return isOk;
@@ -561,9 +573,13 @@ namespace BaseMogre
 
             //Detection des collisions avec les personnages
             int iPerso = 1;
+            bool fini = true;
             KeyValuePair<String, Personnage>[] tabPerso = _ListPersonnages.ToArray();
             foreach (KeyValuePair<String, Personnage> kvpPerso in _ListPersonnages)
-            {                
+            {
+                if (kvpPerso.Value.getClasse() == Classe.Ogre)
+                    fini = false;
+
                 //Détection des collisions avec les cubes
                 _mutCubes.WaitOne();
                 foreach (KeyValuePair<String, Cube> kvpCube in _listCubes)
@@ -679,7 +695,12 @@ namespace BaseMogre
                 }
             }
 
-            
+            //Si tout les ogres ont été tués
+            if ((fini)&&(!_isFini))
+            {
+                Log.writeNewLine("Les robots ont gagnés !");
+                _isFini = true;
+            }
 
             return true;
         }
