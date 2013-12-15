@@ -186,10 +186,10 @@ namespace BaseMogre
             }
 
             //Création des robots
-            vect = new Vector3(-1100, Map.ALIGNEMENTTERRAIN, 1100);
+            vect = new Vector3(1100, Map.ALIGNEMENTTERRAIN, 1100);
             for (int i = 0; i < iNbRobots; i++)
             {
-                vect = this.creer_vecteur(i, inc, vect);
+                vect = this.creer_vecteur(i, -inc, vect);
                 Robot r = new Robot(ref _scm, vect);
                 _ListPersonnages.Add(r.NomEntity, r);
             }
@@ -240,7 +240,8 @@ namespace BaseMogre
         /// <returns>Type de cube</returns>
         private TypeCube getRandomTypeCube()
         {
-            int z = rnd.Next(2);
+            int z;
+            lock (rnd) z=rnd.Next(2);
             if (z == 0)
                 return TypeCube.Bois;
             else
@@ -295,10 +296,14 @@ namespace BaseMogre
         /// </summary>
         /// <returns>Vecteur aléatoire</returns>
         public static Vector3 getRandomHorizontalVecteur()
-        {            
-            int x = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN+1);
-            int y = 0;
-            int z = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN+1);
+        {
+            int x, y, z;
+            lock (rnd)
+            {
+                x = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN + 1);
+                y = 0;
+                z = rnd.Next(-MAXLONGUEURTERRAIN, MAXLONGUEURTERRAIN + 1);
+            }
             return new Vector3(x, y, z);
         }
 
@@ -312,9 +317,13 @@ namespace BaseMogre
             Vector3 nPos;
             do
             {
-                float x = rnd.Next(-45, 46);
-                float y = 0;
-                float z = rnd.Next(-45, 46);
+                float x, y, z;
+                lock (rnd)
+                {
+                    x = rnd.Next(-45, 46);
+                    y = 0;
+                    z = rnd.Next(-45, 46);
+                }
                 Vector3 dir = new Vector3(x, y, z);
                 dir.Normalise();
 
@@ -331,7 +340,8 @@ namespace BaseMogre
         /// <returns></returns>
         public static int getRandomEcart()
         {
-            int ecart = rnd.Next(ECARTMIN, ECARTMAX);
+            int ecart;
+            lock (rnd) ecart = rnd.Next(ECARTMIN, ECARTMAX);
             return ecart;
         }
 
@@ -342,7 +352,8 @@ namespace BaseMogre
         /// <returns>True si chanceux, false sinon</returns>
         public bool getUneChanceSur(int nb)
         {
-            int z = rnd.Next(nb);
+            int z;
+            lock (rnd) z = rnd.Next(nb);
             if (z < 1)
                 return true;
             else
