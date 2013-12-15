@@ -38,6 +38,9 @@ namespace BaseMogre
         public OgreBatisseur(ref SceneManager scm, Vector3 position, TourInfo tourcible = new TourInfo())
             : base(ref scm, position, ATK, DEF, PVMAX)
         {
+            //Plus gros pour les différentier
+            _node.Scale(new Vector3(1.5f,1.5f,1.5f));
+
             //Attribution de la tour si existante
             if (_tourCible.isEmpty())
                 _tourCible.Reset();

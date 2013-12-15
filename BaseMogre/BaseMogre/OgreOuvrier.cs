@@ -133,6 +133,12 @@ namespace BaseMogre
                 else if ((!_currentMaison.isEmpty()) && (_cube != null))
                 {
                     Destination = _currentMaison.position;
+
+                    //Solution paliative pour éviter que les ogres se retrouvent coincé dans une maison
+                    if ((Destination - Position).SquaredLength < 100)
+                    {
+                        EviteCollision(_currentMaison.position);
+                    }
                 }
                 //Sinon
                 else

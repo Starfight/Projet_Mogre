@@ -33,7 +33,7 @@ namespace BaseMogre
         /// <summary>
         /// Distance minimale entre 2 cubes (au carré)
         /// </summary>
-        private const int DISTANCECUBEACUBE = 1000;
+        private const int DISTANCECUBEACUBE = 10000;
 
         /// <summary>
         /// Distance minimale entre 2 maisons (au carré)
@@ -236,6 +236,14 @@ namespace BaseMogre
                     if (distanceAuCarre < marge)
                         ok = false;
                 }
+                _mutMaison.WaitOne();
+                foreach (KeyValuePair<String, Maison> kvp in _ListMaisons)
+                {
+                    float distanceAuCarre = (kvp.Value.Position - v).SquaredLength;
+                    if (distanceAuCarre < marge)
+                        ok = false;
+                }
+                _mutMaison.ReleaseMutex();
             } while (!ok);
             return v;
         }
