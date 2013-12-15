@@ -31,11 +31,6 @@ namespace BaseMogre
         private static int _COUNT = 0;
 
         /// <summary>
-        /// Vitesse des robots
-        /// </summary>
-        private const float VITESSE = 50;
-
-        /// <summary>
         /// ataque des robots
         /// </summary>
         private const int ATK = 10;
@@ -90,7 +85,7 @@ namespace BaseMogre
             {
                 if (!_robotAnim.HasEnded) //Animation
                 {
-                    _robotAnim.AddTime(fEvt.timeSinceLastFrame);
+                    _robotAnim.AddTime(fEvt.timeSinceLastFrame * Variables.VITESSEROBOT / 50);
                 }
                 else //fin du combat
                 {
@@ -131,12 +126,12 @@ namespace BaseMogre
                 if (_distance > 10)
                 {
                     //Position
-                    float move = VITESSE * (fEvt.timeSinceLastFrame);
+                    float move = Variables.VITESSEROBOT * (fEvt.timeSinceLastFrame);
                     _node.Translate(_vDirection * move);
                     _distance -= move;
 
                     //Animation
-                    _robotAnim.AddTime(fEvt.timeSinceLastFrame * VITESSE / 30);
+                    _robotAnim.AddTime(fEvt.timeSinceLastFrame * Variables.VITESSEROBOT / 30);
                 }
                 else if (!_needToDecide)
                 {

@@ -58,11 +58,10 @@ namespace BaseMogre
 
         private static Random rnd = new Random();
         #endregion
-
-        private Camera cam;
+ 
 
         #region Variables
-        
+        private Camera cam;
 
         /// <summary>
         /// nombre de secondes depuis la derniere naissance

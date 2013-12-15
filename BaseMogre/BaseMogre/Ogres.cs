@@ -20,11 +20,6 @@ namespace BaseMogre
         private const String NAMEDEFAULT = "ogres";
 
         /// <summary>
-        /// Vitesse des ogres
-        /// </summary>
-        protected const float VITESSE = 50;
-
-        /// <summary>
         /// Compteur d'ogre
         /// </summary>
         private static int _COUNT = 0;
@@ -89,7 +84,7 @@ namespace BaseMogre
             if (_distance > 10)
             {
                 //Position ogre
-                float move = VITESSE * (fEvt.timeSinceLastFrame);
+                float move = Variables.VITESSEOGRE * (fEvt.timeSinceLastFrame);
                 _node.Translate(_vDirection * move);
                 _distance -= move;
 

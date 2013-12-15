@@ -28,14 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OgreForm));
             this.bQuitter = new System.Windows.Forms.Button();
             this.bNewEnv = new System.Windows.Forms.Button();
+            this.bRalentir = new System.Windows.Forms.Button();
+            this.bPausePlay = new System.Windows.Forms.Button();
+            this.bAccelerer = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bQuitter
             // 
             this.bQuitter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bQuitter.Location = new System.Drawing.Point(198, 226);
+            this.bQuitter.Location = new System.Drawing.Point(278, 263);
             this.bQuitter.Name = "bQuitter";
             this.bQuitter.Size = new System.Drawing.Size(75, 23);
             this.bQuitter.TabIndex = 0;
@@ -46,7 +50,7 @@
             // bNewEnv
             // 
             this.bNewEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bNewEnv.Location = new System.Drawing.Point(198, 197);
+            this.bNewEnv.Location = new System.Drawing.Point(278, 234);
             this.bNewEnv.Name = "bNewEnv";
             this.bNewEnv.Size = new System.Drawing.Size(75, 23);
             this.bNewEnv.TabIndex = 1;
@@ -54,11 +58,50 @@
             this.bNewEnv.UseVisualStyleBackColor = true;
             this.bNewEnv.Click += new System.EventHandler(this.bNewEnv_Click);
             // 
+            // bRalentir
+            // 
+            this.bRalentir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bRalentir.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bRalentir.BackgroundImage")));
+            this.bRalentir.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.bRalentir.Location = new System.Drawing.Point(12, 241);
+            this.bRalentir.Name = "bRalentir";
+            this.bRalentir.Size = new System.Drawing.Size(48, 48);
+            this.bRalentir.TabIndex = 2;
+            this.bRalentir.UseVisualStyleBackColor = true;
+            this.bRalentir.Click += new System.EventHandler(this.bRalentir_Click);
+            // 
+            // bPausePlay
+            // 
+            this.bPausePlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bPausePlay.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bPausePlay.BackgroundImage")));
+            this.bPausePlay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.bPausePlay.Location = new System.Drawing.Point(66, 241);
+            this.bPausePlay.Name = "bPausePlay";
+            this.bPausePlay.Size = new System.Drawing.Size(48, 48);
+            this.bPausePlay.TabIndex = 3;
+            this.bPausePlay.UseVisualStyleBackColor = true;
+            this.bPausePlay.Click += new System.EventHandler(this.bPausePlay_Click);
+            // 
+            // bAccelerer
+            // 
+            this.bAccelerer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bAccelerer.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bAccelerer.BackgroundImage")));
+            this.bAccelerer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.bAccelerer.Location = new System.Drawing.Point(120, 241);
+            this.bAccelerer.Name = "bAccelerer";
+            this.bAccelerer.Size = new System.Drawing.Size(48, 48);
+            this.bAccelerer.TabIndex = 4;
+            this.bAccelerer.UseVisualStyleBackColor = true;
+            this.bAccelerer.Click += new System.EventHandler(this.bAccelerer_Click);
+            // 
             // OgreForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(364, 298);
+            this.Controls.Add(this.bAccelerer);
+            this.Controls.Add(this.bPausePlay);
+            this.Controls.Add(this.bRalentir);
             this.Controls.Add(this.bNewEnv);
             this.Controls.Add(this.bQuitter);
             this.KeyPreview = true;
@@ -72,6 +115,9 @@
 
         private System.Windows.Forms.Button bQuitter;
         private System.Windows.Forms.Button bNewEnv;
+        private System.Windows.Forms.Button bRalentir;
+        private System.Windows.Forms.Button bPausePlay;
+        private System.Windows.Forms.Button bAccelerer;
 
     }
 }

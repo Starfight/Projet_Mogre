@@ -29,6 +29,7 @@ namespace BaseMogre
         FormParametresEnv fParam;
         bool attachedCam = false;
         int indiceObjetSuivi=-1;
+        bool pause = false;
         #endregion
 
         #region Constructeur
@@ -258,6 +259,39 @@ namespace BaseMogre
 
             fParam = new FormParametresEnv(ref mgr, ref cam);
             fParam.Show();
+        }
+
+        //Bouton accelerer
+        private void bAccelerer_Click(object sender, EventArgs e)
+        {
+            Variables.VITESSEOGRE *= 2;
+            Variables.VITESSEROBOT *= 2;
+        }
+
+        //bouton ralentir
+        private void bRalentir_Click(object sender, EventArgs e)
+        {
+            Variables.VITESSEOGRE /= 2;
+            Variables.VITESSEROBOT /= 2;
+        }
+
+        //bouton play/pause
+        private void bPausePlay_Click(object sender, EventArgs e)
+        {
+            if (pause)
+            {
+                Variables.VITESSEOGRE = Variables.VITESSEDEFAULT;
+                Variables.VITESSEROBOT = Variables.VITESSEDEFAULT;
+                bPausePlay.BackgroundImage = new Bitmap("../../Media/boutons/icon-ios7-pause-64.png");
+                pause = false;
+            }
+            else
+            {
+                Variables.VITESSEOGRE = 0;
+                Variables.VITESSEROBOT = 0;
+                bPausePlay.BackgroundImage = new Bitmap("../../Media/boutons/icon-ios7-play-64.png");
+                pause = true;
+            }
         }
         #endregion
     }
