@@ -13,7 +13,9 @@ namespace BaseMogre
 
         static Log()
         {
-            threadlock = new object(); 
+            threadlock = new object();
+            if (File.Exists(log_path))
+                File.Delete(log_path);
         }
 
         public static bool writeNewLine(string texte)
