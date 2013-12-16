@@ -205,6 +205,10 @@ namespace BaseMogre
                 case Keys.B:
                     attachedCam = false;
                     break;
+                case Keys.G:
+                    cam.SetPosition(0, 3500, 0);
+                    cam.LookAt(1, -1, 1);
+                    break;
 
             }
         }
@@ -231,7 +235,24 @@ namespace BaseMogre
 
         bool FrameStarted(FrameEvent evt)
         {
+            int mapDemiSize = 2400;
             cam.Position += cam.Orientation * mTranslation * evt.timeSinceLastFrame;
+            //blocage en X
+            if (cam.Position.x < -mapDemiSize)
+                cam.SetPosition(-mapDemiSize, cam.Position.y, cam.Position.z);
+            if (cam.Position.x > mapDemiSize)
+                cam.SetPosition(mapDemiSize, cam.Position.y, cam.Position.z);
+            //blocage en Y
+            if (cam.Position.y <100)
+                cam.SetPosition(cam.Position.x, 100, cam.Position.z);
+            if (cam.Position.y > 4000)
+                cam.SetPosition(cam.Position.x, 4000, cam.Position.z);
+            //blocage en Z
+            if (cam.Position.z < -mapDemiSize)
+                cam.SetPosition(cam.Position.x, cam.Position.y, -mapDemiSize);
+            if (cam.Position.z > mapDemiSize)
+                cam.SetPosition(cam.Position.x, cam.Position.y, mapDemiSize);
+
             if (attachedCam)
             {
                 bool end = Environnement.getInstance().attachedCamera(indiceObjetSuivi);
