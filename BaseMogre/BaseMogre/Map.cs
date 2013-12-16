@@ -26,11 +26,22 @@ namespace BaseMogre
             scm.RootSceneNode.CreateChildSceneNode().AttachObject(groundEnt);
             groundEnt.SetMaterialName("Texture/Grass");
 
+            //repartition circulaire
+            /*
             for (int i = 0; i <= 360; i += 10)
             {
                 int id = rnd.Next(3) + 1;
                 float x = (float)System.Math.Cos(System.Math.PI * i / 180) * 1500;
                 float z = (float)System.Math.Sin(System.Math.PI * i / 180) * 1500;
+                createShrooms(ref scm, id, new Vector3(x, ALIGNEMENTTERRAIN, z));
+            }
+             */
+            //Disposition "aléatoire" pour faire plus fun
+            for (int i = 0; i <= 360; i ++)
+            {
+                int id = rnd.Next(3) + 1;
+                float x = rnd.Next(-2500, 2500);
+                float z = rnd.Next(-2500, 2500);
                 createShrooms(ref scm, id, new Vector3(x, ALIGNEMENTTERRAIN, z));
             }
         }
@@ -46,7 +57,7 @@ namespace BaseMogre
             Entity entity = scm.CreateEntity("Mushroom" + MUSHCOUNT, "shroom1_"+index+".mesh");
             SceneNode node = scm.RootSceneNode.CreateChildSceneNode("Node_Mushroom" + MUSHCOUNT, position);
             node.AttachObject(entity);
-            node.Scale(new Vector3(50, 50, 50));
+            node.Scale(new Vector3(5, 5, 5));
 
             MUSHCOUNT++;
         }
