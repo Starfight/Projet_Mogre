@@ -37,7 +37,7 @@ namespace BaseMogre
             }
              */
             //Disposition "aléatoire" pour faire plus fun
-            for (int i = 0; i <= 360; i ++)
+            for (int i = 0; i <= 200; i ++)
             {
                 int id = rnd.Next(3) + 1;
                 float x = rnd.Next(-2500, 2500);
@@ -57,7 +57,7 @@ namespace BaseMogre
             Entity entity = scm.CreateEntity("Mushroom" + MUSHCOUNT, "shroom1_"+index+".mesh");
             SceneNode node = scm.RootSceneNode.CreateChildSceneNode("Node_Mushroom" + MUSHCOUNT, position);
             node.AttachObject(entity);
-            node.Scale(new Vector3(5, 5, 5));
+            node.Scale(new Vector3(2, 2, 2));//réduction de la taille des champignons
 
             MUSHCOUNT++;
         }
