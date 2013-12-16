@@ -163,11 +163,13 @@ namespace BaseMogre
         #region événement form
         void OgreForm_Disposed(object sender, EventArgs e)
         {
-            mRoot.Dispose();
-            mRoot = null;
             //Fini le thread de l'environnement
             if (Environnement.getInstance() != null)
                 Environnement.getInstance().Dispose();
+
+            //détruit le root
+            mRoot.Dispose();
+            mRoot = null;
         }
 
         void OgreForm_Resize(object sender, EventArgs e)

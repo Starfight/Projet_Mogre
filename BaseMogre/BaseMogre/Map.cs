@@ -12,6 +12,7 @@ namespace BaseMogre
         public const float ALIGNEMENTTERRAIN = -15;
 
         private static int MUSHCOUNT = 0;
+        private static int TREECOUNT = 0;
 
         private static Random rnd = new Random(); 
 
@@ -27,15 +28,15 @@ namespace BaseMogre
             groundEnt.SetMaterialName("Texture/Grass");
 
             //repartition circulaire
-            /*
-            for (int i = 0; i <= 360; i += 10)
+            for (int i = 0; i <= 360; i +=2)
             {
-                int id = rnd.Next(3) + 1;
-                float x = (float)System.Math.Cos(System.Math.PI * i / 180) * 1500;
-                float z = (float)System.Math.Sin(System.Math.PI * i / 180) * 1500;
-                createShrooms(ref scm, id, new Vector3(x, ALIGNEMENTTERRAIN, z));
+                int id = rnd.Next(2) + 1;
+                int rayon = rnd.Next(1500, 2500);
+                float x = (float)System.Math.Cos(System.Math.PI * i / 180) * rayon;
+                float z = (float)System.Math.Sin(System.Math.PI * i / 180) * rayon;
+                createTree(ref scm, id, new Vector3(x, ALIGNEMENTTERRAIN, z));
             }
-             */
+
             //Disposition "aléatoire" pour faire plus fun
             for (int i = 0; i <= 200; i ++)
             {
@@ -60,6 +61,18 @@ namespace BaseMogre
             node.Scale(new Vector3(2, 2, 2));//réduction de la taille des champignons
 
             MUSHCOUNT++;
+        }
+
+        private static void createTree(ref SceneManager scm, int index, Vector3 position)
+        {
+            //Création de l'Entity et du Scenenode à la position
+            Entity entity = scm.CreateEntity("Tree" + TREECOUNT, "tree" + index + ".mesh");
+            SceneNode node = scm.RootSceneNode.CreateChildSceneNode("Node_Tree" + TREECOUNT, position);
+            node.AttachObject(entity);
+            int scaleTree = rnd.Next(20, 31);
+            node.Scale(new Vector3(scaleTree, scaleTree, scaleTree));
+
+            TREECOUNT++;
         }
     }
 }
