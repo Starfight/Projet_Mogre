@@ -329,6 +329,7 @@ namespace BaseMogre
         public static Vector3 getRandomDestination(Vector3 pos)
         {
             Vector3 nPos;
+            int nEssais = 10;
             do
             {
                 float x, y, z;
@@ -343,7 +344,12 @@ namespace BaseMogre
 
                 int lenght = getRandomEcart();
                 nPos = pos + (dir * lenght);
-            } while (System.Math.Max(System.Math.Abs(nPos.x), System.Math.Abs(nPos.z))>MAXLONGUEURTERRAIN);            
+
+                nEssais--;
+            } while ((System.Math.Max(System.Math.Abs(nPos.x), System.Math.Abs(nPos.z))>MAXLONGUEURTERRAIN)||(nEssais>0));
+
+            if (nEssais == 0)
+                nPos = getRandomHorizontalVecteur();
 
             return nPos;
         }
