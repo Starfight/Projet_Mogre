@@ -346,9 +346,9 @@ namespace BaseMogre
                 nPos = pos + (dir * lenght);
 
                 nEssais--;
-            } while ((System.Math.Max(System.Math.Abs(nPos.x), System.Math.Abs(nPos.z))>MAXLONGUEURTERRAIN)||(nEssais>0));
+            } while ((System.Math.Max(System.Math.Abs(nPos.x), System.Math.Abs(nPos.z))>MAXLONGUEURTERRAIN)&&(nEssais>0));
 
-            if (nEssais == 0)
+            if (nEssais <= 0)
                 nPos = getRandomHorizontalVecteur();
 
             return nPos;
