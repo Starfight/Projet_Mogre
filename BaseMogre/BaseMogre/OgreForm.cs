@@ -211,7 +211,6 @@ namespace BaseMogre
                     cam.SetPosition(0, 3500, 0);
                     cam.LookAt(1, -1, 1);
                     break;
-
             }
         }
 
@@ -289,6 +288,7 @@ namespace BaseMogre
         {
             Variables.VITESSEOGRE *= 2;
             Variables.VITESSEROBOT *= 2;
+            labelVitesse.Text = "Vitesse : " + (Variables.VITESSEOGRE / 50).ToString() + "x";
         }
 
         //bouton ralentir
@@ -296,6 +296,7 @@ namespace BaseMogre
         {
             Variables.VITESSEOGRE /= 2;
             Variables.VITESSEROBOT /= 2;
+            labelVitesse.Text = "Vitesse : " + (Variables.VITESSEOGRE / 50).ToString() + "x";
         }
 
         //bouton play/pause
@@ -307,6 +308,7 @@ namespace BaseMogre
                 Variables.VITESSEROBOT = Variables.VITESSEDEFAULT;
                 bPausePlay.BackgroundImage = new Bitmap("../../Media/boutons/icon-ios7-pause-64.png");
                 pause = false;
+                labelVitesse.Text = "Vitesse : " + (Variables.VITESSEOGRE / 50).ToString() + "x";
             }
             else
             {
@@ -314,6 +316,7 @@ namespace BaseMogre
                 Variables.VITESSEROBOT = 0;
                 bPausePlay.BackgroundImage = new Bitmap("../../Media/boutons/icon-ios7-play-64.png");
                 pause = true;
+                labelVitesse.Text = "Vitesse : 0x";
             }
         }
         #endregion

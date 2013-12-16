@@ -34,6 +34,7 @@
             this.bRalentir = new System.Windows.Forms.Button();
             this.bPausePlay = new System.Windows.Forms.Button();
             this.bAccelerer = new System.Windows.Forms.Button();
+            this.labelVitesse = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // bQuitter
@@ -94,11 +95,22 @@
             this.bAccelerer.UseVisualStyleBackColor = true;
             this.bAccelerer.Click += new System.EventHandler(this.bAccelerer_Click);
             // 
+            // labelVitesse
+            // 
+            this.labelVitesse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelVitesse.AutoSize = true;
+            this.labelVitesse.Location = new System.Drawing.Point(13, 222);
+            this.labelVitesse.Name = "labelVitesse";
+            this.labelVitesse.Size = new System.Drawing.Size(61, 13);
+            this.labelVitesse.TabIndex = 5;
+            this.labelVitesse.Text = "Vitesse : 1x";
+            // 
             // OgreForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(364, 298);
+            this.Controls.Add(this.labelVitesse);
             this.Controls.Add(this.bAccelerer);
             this.Controls.Add(this.bPausePlay);
             this.Controls.Add(this.bRalentir);
@@ -106,8 +118,9 @@
             this.Controls.Add(this.bQuitter);
             this.KeyPreview = true;
             this.Name = "OgreForm";
-            this.Text = "Form1";
+            this.Text = "Ogres VS Robots";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -118,6 +131,7 @@
         private System.Windows.Forms.Button bRalentir;
         private System.Windows.Forms.Button bPausePlay;
         private System.Windows.Forms.Button bAccelerer;
+        private System.Windows.Forms.Label labelVitesse;
 
     }
 }
