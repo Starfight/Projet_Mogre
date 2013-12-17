@@ -70,16 +70,10 @@ namespace BaseMogre
         public Robot(ref SceneManager scm, Vector3 position)
             : base(ref scm, position, NAMEDEFAULT + _COUNT, NAMEMESHROBOT,ATK,DEF,PVMAX)
         {
-            Light L = new Light("pointLight");
-            L.DiffuseColour = ColourValue.Red;
-            L.SpecularColour = ColourValue.Red;
-            L.Position = position;
             //Compteur de robots
-            _COUNT++;            
-            this._node.AttachObject(L);
+            _COUNT++;
             //Initialisation des caractéristiques
-            _pointsDeVie = PVMAX;
-            
+            _pointsDeVie = PVMAX;            
         }
         #endregion
 

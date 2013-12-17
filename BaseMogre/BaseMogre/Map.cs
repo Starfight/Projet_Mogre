@@ -18,14 +18,18 @@ namespace BaseMogre
 
         public static void CreationPlan(ref SceneManager scm)
         {
-            scm.AmbientLight = ColourValue.White;
+            //scm.AmbientLight = ColourValue.White;
             scm.SetSkyDome(true, "Examples/CloudySky", 5, 8);
+            //scm.AmbientLight = ColourValue.Black;
+            scm.ShadowTechnique = ShadowTechnique.SHADOWTYPE_TEXTURE_MODULATIVE;
 
             Plane plane = new Plane(Mogre.Vector3.UNIT_Y, ALIGNEMENTTERRAIN);
             MeshManager.Singleton.CreatePlane("ground", ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME, plane, 5000, 5000, 20, 20, true, 1, 150, 150, Mogre.Vector3.UNIT_Z);
             Entity groundEnt = scm.CreateEntity("GroundEntity", "ground");
             scm.RootSceneNode.CreateChildSceneNode().AttachObject(groundEnt);
             groundEnt.SetMaterialName("Texture/Grass");
+            //groundEnt.SetMaterialName("Examples/Rockwall");
+            groundEnt.CastShadows = false;
 
             //repartition circulaire
             for (int i = 0; i <= 360; i +=2)
@@ -59,7 +63,6 @@ namespace BaseMogre
             SceneNode node = scm.RootSceneNode.CreateChildSceneNode("Node_Mushroom" + MUSHCOUNT, position);
             node.AttachObject(entity);
             node.Scale(new Vector3(2, 2, 2));//réduction de la taille des champignons
-
             MUSHCOUNT++;
         }
 
@@ -71,7 +74,7 @@ namespace BaseMogre
             node.AttachObject(entity);
             int scaleTree = rnd.Next(20, 31);
             node.Scale(new Vector3(scaleTree, scaleTree, scaleTree));
-
+            entity.CastShadows = false;
             TREECOUNT++;
         }
     }

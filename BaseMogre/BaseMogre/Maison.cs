@@ -42,7 +42,7 @@ namespace BaseMogre
             _nodeBaseMaison.Scale(new Vector3(1, 0.05f, 1));
             _nodeBaseMaison.AttachObject(_entityMaison);
             _entityMaison.SetMaterialName("Texture/BaseMaison");
-           
+            _entityMaison.CastShadows = false;
             _COUNT++;
             _positionFuture = new PositionCubes(this.Position.x+30, 0, this.Position.z-30);
             _depotCube = new Mutex();
