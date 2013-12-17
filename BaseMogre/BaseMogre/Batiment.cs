@@ -170,7 +170,7 @@ namespace BaseMogre
         public virtual void Dispose()
         {
             //Suppression des cubes
-            for (int i = 0; i < _listeDesCubes.Count; i++)
+            while(_listeDesCubes.Count>0)
             {
                 Cube c = _listeDesCubes.First();
                 _listeDesCubes.Remove(c);
