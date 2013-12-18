@@ -12,7 +12,14 @@ namespace BaseMogre
     class Environnement : IComKnowledgeQuery, IDisposable
     {
         #region Variables Statiques
+        /// <summary>
+        /// environnement de base
+        /// </summary>
         private static Environnement ENV_DEFAULT;
+
+        /// <summary>
+        /// base du nom de l'environnement
+        /// </summary>
         private const String ENV_NAME = "Environnement";
 
         /// <summary>
@@ -51,16 +58,21 @@ namespace BaseMogre
         private const int TEMPSDAPPARITIONOGRE = 60;
 
         /// <summary>
-        /// Ecart fait lors d'un déplacement, d'une collision, etc
+        /// Ecart MIN-MAX fait lors d'un déplacement, d'une collision, etc
         /// </summary>
         private const int ECARTMIN = 50;
         private const int ECARTMAX = 200;
 
+        /// <summary>
+        /// Objet pour les random de la classe
+        /// </summary>
         private static Random rnd = new Random();
         #endregion
- 
 
         #region Variables
+        /// <summary>
+        /// caméra du monde
+        /// </summary>
         private Camera cam;
 
         /// <summary>
@@ -74,19 +86,19 @@ namespace BaseMogre
         private Dictionary<String, Personnage> _ListPersonnages;
 
         /// <summary>
-        /// Liste des cubes
+        /// Liste des cubes et mutex associé
         /// </summary>
         private Dictionary<String, Cube> _listCubes;
         private Mutex _mutCubes;
 
         /// <summary>
-        /// Liste des maisons
+        /// Liste des maisons et mutex associé
         /// </summary>
         private Dictionary<String, Maison> _ListMaisons;
         private Mutex _mutMaison;
 
         /// <summary>
-        /// Tour unique
+        /// Tour unique et mutex associé
         /// </summary>
         private Tour _tour;
         private Mutex _mutTours;
@@ -102,7 +114,7 @@ namespace BaseMogre
         private SceneManager _scm;
 
         /// <summary>
-        /// Piles FIFO pour la communication
+        /// Piles FIFO pour la communication IN et OUT
         /// </summary>
         private Queue<KnowledgeQuery> _ListOfComInput;
         private Queue<KnowledgeQuery> _ListOfComOutput;
@@ -144,6 +156,7 @@ namespace BaseMogre
         #region Constructeur/Destructeur
         private Environnement(ref SceneManager scm, ref Camera cam)
         {
+            //initialisation de l'environnement
             this.cam = cam;
             _UpdateForNaissance = 0;
             _scm = scm;
@@ -163,6 +176,9 @@ namespace BaseMogre
             Root.Singleton.FrameStarted += _fListener;
         }
 
+        /// <summary>
+        /// Destructeur
+        /// </summary>
         ~Environnement()
         {
             //fini le thread
@@ -262,6 +278,13 @@ namespace BaseMogre
                 return TypeCube.Pierre;
         }
 
+        /// <summary>
+        /// génération d'un vecteur relatif à un précédent pour le placement en ligne
+        /// </summary>
+        /// <param name="i">numéro de l'objet</param>
+        /// <param name="inc">décalage à ajouter</param>
+        /// <param name="ancien">vecteur du précédent objet</param>
+        /// <returns>vecteur suivant</returns>
         private Vector3 creer_vecteur(int i, int inc, Vector3 ancien)
         {
             if ((i % 10 == 0) && (i != 0))

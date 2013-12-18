@@ -8,16 +8,24 @@ namespace BaseMogre
 {
     public static class Log
     {
+        #region attributs statics
+        /// <summary>
+        /// Chemin d'accés au fichier de log
+        /// </summary>
         static string log_path = "resultats.log";
+
+        /// <summary>
+        /// objet pour le verrouillage de l'écriture dans le fichier
+        /// </summary>
         private static object threadlock;
+        #endregion
 
-        static Log()
-        {
-            threadlock = new object();
-            if (File.Exists(log_path))
-                File.Delete(log_path);
-        }
-
+        #region Méthodes
+        /// <summary>
+        /// écriture d'une ligne dans le fichier
+        /// </summary>
+        /// <param name="texte">texte à acrire</param>
+        /// <returns>réussite ou echec de l'ecriture</returns>
         public static bool writeNewLine(string texte)
         {
             try
@@ -33,6 +41,12 @@ namespace BaseMogre
             }
             return true;
         }
+
+        /// <summary>
+        /// écriture de plusieurs lignes dans le fichier
+        /// </summary>
+        /// <param name="textes">tableau de textes a ecrire</param>
+        /// <returns>réussite ou echec de l'ecriture</returns>
         public static bool writeNewLine(string[] textes)
         {
             string chaine = DateTime.Now.ToString() + " => " + Environment.NewLine;
@@ -53,5 +67,16 @@ namespace BaseMogre
             }
             return true;
         }
+
+        /// <summary>
+        /// RAZ du fichier de log
+        /// </summary>
+        public static Log()
+        {
+            threadlock = new object();
+            if (File.Exists(log_path))
+                File.Delete(log_path);
+        }
+        #endregion
     }
 }

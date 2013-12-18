@@ -18,15 +18,23 @@ namespace BaseMogre
         #endregion
 
         #region variables
+        /// <summary>
+        /// Future positin d'un cube
+        /// </summary>
         private PositionCubes _positionFuture;
+
+        /// <summary>
+        /// compteur de cube servant au switch de construction
+        /// </summary>
         private int _nombreCube;
+
+        /// <summary>
+        /// Mutex pour la protection contre le dépot de 2 cubes simultanés
+        /// </summary>
         private Mutex _depotCube;
         #endregion
 
-        #region Getters et Setters
-
-        #endregion
-
+        #region constructeur
         public Tour(ref SceneManager scm,Vector3 position)
             : base(ref scm, position, NAMEDEFAULT , 100,50,50)
         {
@@ -35,19 +43,33 @@ namespace BaseMogre
             _depotCube = new Mutex();
             Log.writeNewLine("Tour commencée en (" + this.Position.x + "," + this.Position.y + "," + this.Position.z + ")");
         }
+        #endregion
 
+        #region méthodes public
+        /// <summary>
+        /// Ajout d'un cube dans la tour
+        /// </summary>
+        /// <param name="C">Cube à ajouter</param>
+        /// <returns>réussite ou échec de l'ajout du cube</returns>
         public bool ajoutDeBloc(Cube C)
         {
+            //verrouillage du mutex
             _depotCube.WaitOne();
+
+            //test de la possibilité d'ajout du cube à la tour
             bool possible = this.ajoutCube(C);
+            
             if (possible)
             {
+                //positionnement du cube
                 C.Position = _positionFuture.PositionToVector();
 
+                //orientation du cube
                 Vector3 src = C.Orientation * Vector3.UNIT_Z;
                 Quaternion quat = src.GetRotationTo(Vector3.UNIT_Z);
                 C.Rotate(quat);
 
+                //définition de la position suivante
                 if (_nombreCube == 9)
                 {
                     _nombreCube = 0;
@@ -57,20 +79,33 @@ namespace BaseMogre
                 {
                     SetNextCubePosition();
                 }
+
                 _nombreCube++;
+
+                //déverouillage du mutex
                 _depotCube.ReleaseMutex();
                 return true;
             }
+            //déverouillage du mutex
             _depotCube.ReleaseMutex();
             return false;
         }
 
+        /// <summary>
+        /// Informations sur la tour à destination d'un ogre
+        /// </summary>
+        /// <returns>informations accessibles à l'ogre</returns>
         public TourInfo getInfo()
         {
             TourInfo t = new TourInfo(this.NomEntity, this.Position);
             return t; 
         }
+        #endregion
 
+        #region méthodes privées
+        /// <summary>
+        /// Méthode de définition de la future position d'un cube
+        /// </summary>
         private void SetNextCubePosition()
         {
             switch (_nombreCube)
@@ -101,37 +136,6 @@ namespace BaseMogre
                     break;
             }
         }
-
-    }
-
-    /// <summary>
-    /// Structure informelle pour les tour
-    /// </summary>
-    public struct TourInfo
-    {
-        public String nom;
-        public Vector3 position;
-
-        public TourInfo(String iNom, Vector3 iPosition)
-        {
-            nom = iNom;
-            position = iPosition;
-        }
-        public bool isEmpty()
-        {
-            if ((nom == null) && (position == Vector3.ZERO))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public void Reset()
-        {
-            nom = null;
-            position = new Vector3(0, 0, 0);
-        }
+        #endregion
     }
 }

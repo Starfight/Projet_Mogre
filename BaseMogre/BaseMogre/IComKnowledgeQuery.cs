@@ -16,12 +16,18 @@ namespace BaseMogre
         Result send(KnowledgeQuery iKQ);
     }
 
+    /// <summary>
+    /// types de résultats
+    /// </summary>
     public enum Result
     {
         FAIL,
         OK
     }
 
+    /// <summary>
+    /// Classes utilisées
+    /// </summary>
     public enum Classe
     {
         Cube,
@@ -31,6 +37,9 @@ namespace BaseMogre
         Tour
     }
 
+    /// <summary>
+    /// structure d'une requette
+    /// </summary>
     public struct KnowledgeQuery
     {
         #region Variables

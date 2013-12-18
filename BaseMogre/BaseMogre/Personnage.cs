@@ -113,25 +113,6 @@ namespace BaseMogre
         protected Queue<KnowledgeQuery> _listComInput;
         #endregion
 
-        #region getteur
-        /// <summary>
-        /// get l'attaque
-        /// </summary>
-        public int Attaque
-        {
-            get { return _atk; }
-        }
-        public Vector3 GetDestination
-        {
-            get { return _destination; }
-        }
-
-        public Quaternion Orientation
-        {
-            get { return _node.Orientation; }
-        }
-        #endregion
-
         #region Constructeur
         public Personnage(ref SceneManager scm, Vector3 position, String nomPersonnage, String nomMesh, int attaque, int defense,int pdv)
         {
@@ -177,6 +158,7 @@ namespace BaseMogre
         #endregion
 
         #region Getters et Setters
+
         /// <summary>
         /// Nom de l'entité
         /// </summary>
@@ -184,6 +166,7 @@ namespace BaseMogre
         {
             get { return _nomEntity; }
         }
+
         /// <summary>
         /// Position du personnage
         /// </summary>
@@ -202,6 +185,7 @@ namespace BaseMogre
                 }
             }
         }
+        
         /// <summary>
         /// Destination du personnage
         /// </summary>
@@ -217,14 +201,21 @@ namespace BaseMogre
             }
         }
 
-        //public List<Objet> ObjetsPerso
-        //{
-        //  get { return _objetsPerso; }
-        //  set { _objetsPerso = value; }
-        //}
+        /// <summary>
+        /// get l'attaque
+        /// </summary>
+        public int Attaque
+        {
+            get { return _atk; }
+        }
         #endregion
 
         #region methodes publiques
+        /// <summary>
+        /// ajout de la requete à la liste de communication
+        /// </summary>
+        /// <param name="iKQ">requéte</param>
+        /// <returns>résultat de l'envoi</returns>
         public Result send(KnowledgeQuery iKQ)
         {
             if (iKQ.NomPerso != null)

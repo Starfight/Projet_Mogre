@@ -20,15 +20,31 @@ namespace BaseMogre
         /// </summary>
         private static String NAMEDEFAULT = "maison";
 
+        /// <summary>
+        /// Random pour la naissance d'un ogre batisseur
+        /// </summary>
         private static Random RND = new Random();
         #endregion
 
         #region variables
+        /// <summary>
+        /// Mutex de protection pour le dépot d'un cube
+        /// </summary>
         private Mutex _depotCube;
 
+        /// <summary>
+        /// position du future cube
+        /// </summary>
         private PositionCubes _positionFuture;
 
+        /// <summary>
+        /// entité représentant la maison (le pied)
+        /// </summary>
         private Entity _entityMaison;
+
+        /// <summary>
+        /// Node du pied de la maison
+        /// </summary>
         private SceneNode _nodeBaseMaison;
         #endregion
 
@@ -36,21 +52,36 @@ namespace BaseMogre
         public Maison(ref SceneManager scm,Vector3 position)
             : base(ref scm, position, NAMEDEFAULT + _COUNT, 20,11,12)
         {
+            //création de l'entity et du node de la maison
             _entityMaison = scm.CreateEntity("base_maison" + _COUNT, "cube.mesh");
             _nodeBaseMaison = scm.RootSceneNode.CreateChildSceneNode("base_maison_node" + _COUNT, position);
+
+            //réglage de la position et de l'échelle
             _nodeBaseMaison.SetPosition(position.x, position.y - 12, position.z);
             _nodeBaseMaison.Scale(new Vector3(1, 0.05f, 1));
+
+            //laison entity /node
             _nodeBaseMaison.AttachObject(_entityMaison);
+
+            //application du matiérail à la base de la maison
             _entityMaison.SetMaterialName("Texture/BaseMaison");
-            _entityMaison.CastShadows = false;
+            
             _COUNT++;
+            
+            //définition de l'emplacement du prochain cube
             _positionFuture = new PositionCubes(this.Position.x+30, 0, this.Position.z-30);
+            
             _depotCube = new Mutex();
+
+            //écriture dans les logs qu'un maison est crée
             Log.writeNewLine("Maison commencée en (" + this.Position.x + "," + this.Position.y + "," + this.Position.z + ")");
         }
         #endregion
 
         #region Méthodes publiques
+        /// <summary>
+        /// Implémentation de l'interface IDisposable pour l'arrêt des threads
+        /// </summary>
         public override void Dispose()
         {
             _nodeBaseMaison.DetachObject(_entityMaison);
@@ -60,22 +91,36 @@ namespace BaseMogre
             base.Dispose();
         }
 
+        /// <summary>
+        /// Ajout d'un cube dans la maison
+        /// </summary>
+        /// <param name="C">Cube à ajouter</param>
+        /// <returns>réussite ou échec de l'ajout du cube</returns>
         public bool ajoutDeBloc(Cube C)
         {
+            //vérouillage du mutex
             _depotCube.WaitOne();
+
+            //test de la possibilité d'ajout du cube à la maison
             bool possible = this.ajoutCube(C);
             if (possible)
             {
+                //positionnement du cube
                 C.Position = _positionFuture.PositionToVector();
 
+                //rotation du cub
                 Vector3 src = C.Orientation * Vector3.UNIT_Z;
                 Quaternion quat = src.GetRotationTo(Vector3.UNIT_Z);
                 C.Rotate(quat);
 
+                //définiton de la position suivante
                 SetNextCubePosition();
+
+                //déverouillage du mutex
                 _depotCube.ReleaseMutex();
                 return true;
             }
+            //déverouillage du mutex
             _depotCube.ReleaseMutex();
             return false;
         }
@@ -98,6 +143,9 @@ namespace BaseMogre
         #endregion
 
         #region Méthodes privées
+        /// <summary>
+        /// méthode servant à définir l'emplacement du prochain cube
+        /// </summary>
         private void SetNextCubePosition()
         {
             switch (_nbCubeBoisNecessaire + _nbCubePierreNecessaire)
@@ -172,59 +220,5 @@ namespace BaseMogre
             }
         }
         #endregion
-    }
-
-    /// <summary>
-    /// Structure informelle pour les maisons
-    /// </summary>
-    public struct MaisonInfo
-    {
-        public String nom;
-        public Vector3 position;
-
-        public MaisonInfo(String iNom, Vector3 iPosition)
-        {
-            nom = iNom;
-            position = iPosition;
-        }
-        public bool isEmpty()
-        {
-            if ((nom == null) && (position == Vector3.ZERO))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public void Reset()
-        {
-            nom = null;
-            position = new Vector3(0, 0, 0);
-        }
-    }
-
-    public struct PositionCubes
-    {
-        float _x;
-        float _y;
-        float _z;
-        public PositionCubes(float x, float y, float z)
-        {
-            this._x = x;
-            this._y = y;
-            this._z = z;
-        }
-        public void ChangeValeurs(float x, float y, float z)
-        {
-            this._x += x;
-            this._y += y;
-            this._z += z;
-        }
-        public Vector3 PositionToVector()
-        {
-            return new Vector3(_x, _y, _z);
-        }
     }
 }

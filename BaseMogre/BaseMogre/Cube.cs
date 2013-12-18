@@ -22,6 +22,9 @@ namespace BaseMogre
         /// </summary>
         private static int _COUNT = 0;
 
+        /// <summary>
+        /// Largeur du cube en Pixels
+        /// </summary>
         public static float _SIZE = 30;
         #endregion
 
@@ -171,7 +174,9 @@ namespace BaseMogre
         #endregion
     }
 
-
+    /// <summary>
+    /// énumérateur contenant les types de cubes possibles
+    /// </summary>
     public enum TypeCube
     {
         Bois,

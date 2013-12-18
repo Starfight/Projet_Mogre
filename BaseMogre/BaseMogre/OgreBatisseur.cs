@@ -31,7 +31,10 @@ namespace BaseMogre
         #endregion
 
         #region variable
-        TourInfo _tourCible;
+        /// <summary>
+        /// Informations sur la tour cible
+        /// </summary>
+        private TourInfo _tourCible;
         #endregion
 
         #region constructeurs
@@ -50,6 +53,9 @@ namespace BaseMogre
         #endregion
 
         #region méthodes privées
+        /// <summary>
+        /// Prise de décision
+        /// </summary>
         protected override void Decision()
         {
             //S'il y a des messages à traiter

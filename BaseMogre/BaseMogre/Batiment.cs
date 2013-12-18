@@ -36,7 +36,6 @@ namespace BaseMogre
         /// </summary>
         protected SceneManager _scm;
 
-
         /// <summary>
         /// Scenenode du batiment
         /// </summary>
@@ -102,13 +101,16 @@ namespace BaseMogre
         {
             get { return _node.Orientation; }
         }
+        #endregion
 
+        #region variables
         /// <summary>
-        /// Contient tous les cubes utilisés ( comem ca on pourra faire des trucs rigolos avec si le batiment casse :D
+        /// Contient tous les cubes utilisés
         /// </summary>
         public List<Cube> _listeDesCubes;
         #endregion
 
+        #region constructeur
         public Batiment(ref SceneManager scm, Vector3 position, String nomBatiment,int PdV,int nbCubeBois, int NbCubePierre)
         {
             //Création de l'Entity et du Scenenode à la position
@@ -127,7 +129,9 @@ namespace BaseMogre
             _nbCubePierreNecessaire = NbCubePierre;
             _listeDesCubes = new List<Cube>();
         }
+        #endregion
 
+        #region méthodes protected
         /// <summary>
         /// Ajoute un cube et le retire de ce qu'il reste à ajouter
         /// </summary>
@@ -151,7 +155,9 @@ namespace BaseMogre
             }
             return false;
         }
+        #endregion
 
+        #region méthodes public
         /// <summary>
         /// Si la maison est finie
         /// </summary>
@@ -178,5 +184,6 @@ namespace BaseMogre
             }
             _scm.DestroySceneNode(_node);
         }
+        #endregion
     }
 }

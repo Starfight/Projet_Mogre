@@ -49,7 +49,10 @@ namespace BaseMogre
         private AnimationState _robotAnim;
         #endregion
 
-        #region Propriété
+        #region getteur
+        /// <summary>
+        /// get la position du robot
+        /// </summary>
         public override Vector3 Position
         {
             get
@@ -78,6 +81,11 @@ namespace BaseMogre
         #endregion
 
         #region Méthodes privées
+        /// <summary>
+        /// Mise à jour du robot
+        /// </summary>
+        /// <param name="fEvt"></param>
+        /// <returns>réussite de la mise à jour</returns>
         protected override bool Update(FrameEvent fEvt)
         {
             if (_combat)
@@ -205,6 +213,10 @@ namespace BaseMogre
         #endregion
 
         #region Méthodes publiques
+        /// <summary>
+        /// retourne le type de la classe pour les requetes
+        /// </summary>
+        /// <returns>type de la classe</returns>
         public override Classe getClasse()
         {
             return Classe.Robot;

@@ -35,8 +35,6 @@ namespace BaseMogre
         /// Cube détenu par l'ogre
         /// </summary>
         protected Cube _cube;
-
-
         #endregion
 
         #region Constructeur
@@ -53,6 +51,11 @@ namespace BaseMogre
         #endregion
 
         #region Méthodes privées
+        /// <summary>
+        /// Mise à jour de l'ogre
+        /// </summary>
+        /// <param name="fEvt"></param>
+        /// <returns>réuissite de l'update</returns>
         protected override bool Update(FrameEvent fEvt)
         {
             //Au changement de direction
@@ -104,7 +107,7 @@ namespace BaseMogre
         }
         #endregion
 
-        #region méthodes
+        #region méthodes publiques
         /// <summary>
         /// méthode permettant de récupérer le cube de l'ogre et le supprimme (de l'ogre)
         /// </summary>
@@ -115,6 +118,7 @@ namespace BaseMogre
             this._cube = null;
             return c;
         }
+        
         /// <summary>
         /// méthode de ramassage d'un cube par l'ogre
         /// </summary>
@@ -138,6 +142,7 @@ namespace BaseMogre
             }
             return false;
         }
+        
         /// <summary>
         /// méthode permettant de tester le cube que posséde l'ogre
         /// </summary>
@@ -162,6 +167,10 @@ namespace BaseMogre
             base.Dispose();
         }
 
+        /// <summary>
+        /// retourne le type de la classe pour les requetes
+        /// </summary>
+        /// <returns>type de la classe</returns>
         public override Classe getClasse()
         {
             return Classe.Ogre;
