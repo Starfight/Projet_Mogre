@@ -75,3 +75,16 @@ material Texture/Coeur
 		}
 	}
 }
+
+material "1 - Default"
+{
+   technique
+   {
+      pass
+      {
+         ambient 0 0.645 0.245
+         diffuse 0 0.245 0.245 
+         specular 0 0.145 0.145 120
+      }
+   }
+}
