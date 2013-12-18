@@ -84,17 +84,21 @@ namespace BaseMogre
         {
             switch (_nombreCube)
             {
-                case 8: case 2: case 1:
+                case 8:
+                case 2:
+                case 1:
                     _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
                     break;
                 case 7:
-                    _positionFuture.ChangeValeurs(Cube._SIZE,0,0);
+                    _positionFuture.ChangeValeurs(Cube._SIZE, 0, 0);
                     break;
-                case 6: case 5:
+                case 6:
+                case 5:
                     _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
                     break;
-                case 4: case 3:
-                    _positionFuture.ChangeValeurs(-Cube._SIZE,0, 0);
+                case 4:
+                case 3:
+                    _positionFuture.ChangeValeurs(-Cube._SIZE, 0, 0);
                     break;
             }
         }
