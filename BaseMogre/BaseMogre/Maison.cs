@@ -88,8 +88,7 @@ namespace BaseMogre
         {
             if (RND.Next(5) == 0)
             {
-                //return typeof(OgreBatisseur);
-                return typeof(OgreOuvrier);
+                return typeof(OgreBatisseur);
             }
             else
             {

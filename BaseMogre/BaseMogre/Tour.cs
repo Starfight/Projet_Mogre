@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Mogre;
+using System.Threading;
 
 namespace BaseMogre
 {
@@ -19,6 +20,7 @@ namespace BaseMogre
         #region variables
         private PositionCubes _positionFuture;
         private int _nombreCube;
+        private Mutex _depotCube;
         #endregion
 
         #region Getters et Setters
@@ -29,11 +31,14 @@ namespace BaseMogre
             : base(ref scm, position, NAMEDEFAULT , 100,50,50)
         {
             _nombreCube = 1;
+            _positionFuture = new PositionCubes(this.Position.x + 30, 0, this.Position.z - 30);
+            _depotCube = new Mutex();
             Log.writeNewLine("Tour commencée en (" + this.Position.x + "," + this.Position.y + "," + this.Position.z + ")");
         }
 
         public bool ajoutDeBloc(Cube C)
         {
+            _depotCube.WaitOne();
             bool possible = this.ajoutCube(C);
             if (possible)
             {
@@ -53,8 +58,10 @@ namespace BaseMogre
                     SetNextCubePosition();
                 }
                 _nombreCube++;
+                _depotCube.ReleaseMutex();
                 return true;
             }
+            _depotCube.ReleaseMutex();
             return false;
         }
 
