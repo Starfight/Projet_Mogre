@@ -20,7 +20,16 @@ namespace BaseMogre
         /// <summary>
         /// Vitesse par défaut
         /// </summary>
-        public static float VITESSEDEFAULT = 50;
+        public const float VITESSEDEFAULT = 50;
 
+        /// <summary>
+        /// Apparition d'un ogre dans une maison en seconde
+        /// </summary>
+        public static int TEMPSDAPPARITIONOGRE = 60;
+
+        /// <summary>
+        /// Temps par défaut
+        /// </summary>
+        public const int TEMPSDAPPARITIONDEFAULT = 60;
     }
 }

@@ -71,7 +71,7 @@ namespace BaseMogre
         /// <summary>
         /// RAZ du fichier de log
         /// </summary>
-        public static Log()
+        static Log()
         {
             threadlock = new object();
             if (File.Exists(log_path))

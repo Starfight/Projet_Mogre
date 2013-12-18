@@ -74,7 +74,7 @@ namespace BaseMogre
                         (kq.Classe == Classe.Ogre) ||                      //si l'ogre rencontre un autre ogre
                         (kq.Classe == Classe.Robot))                       //si l'ogre rencontre un robot     
                 {
-                    if (kq.Classe == Classe.Robot)
+                    if (kq.Classe == Classe.Robot) //combat
                     {
                         int atk;
                         if (int.TryParse(kq.Parametre, out atk))
@@ -83,29 +83,38 @@ namespace BaseMogre
                             Log.writeNewLine("contact " + this._nomEntity + " vs " + kq.Classe.ToString() + " " + this._pointsDeVie + " pv restants à l'ogre ouvrier");
                         }
                     }
+                    else if ((kq.Classe == Classe.Ogre)&&(!_currentMaison.isEmpty())) //transmet une info sur la maison en cours
+                    {
+                        KnowledgeQuery kqToSend = new KnowledgeQuery(kq.Nom, Classe.Maison, _currentMaison.nom, _currentMaison.position, "info");
+                        Environnement.getInstance().send(kqToSend);
+                    }
                     EviteCollision(kq.Position);
                 }
                 //Rencontre d'une maison
                 else if (kq.Classe == Classe.Maison) 
                 {
-                    //Si la maison n'est pas complète
-                    if (kq.Parametre == "False")
+                    
+                    if ((kq.Parametre == "False")|| //Si la maison n'est pas complète
+                        (kq.Parametre == "info")) //Si c'est une info
                     {
                         _currentMaison = new MaisonInfo(kq.Nom, kq.Position);
-                        if (_cube != null)
+                        if (kq.Parametre == "False")
                         {
-                            //Essaie de donner le cube à la maison
-                            if (Environnement.getInstance().giveCube(_cube, _currentMaison.nom))
+                            if (_cube != null)
                             {
-                                _cube = null;
-                            }
-                            else //Si le cube n'est pas accepté
-                            {
-                                _currentMaison.Reset();
+                                //Essaie de donner le cube à la maison
+                                if (Environnement.getInstance().giveCube(_cube, _currentMaison.nom))
+                                {
+                                    _cube = null;
+                                }
+                                else //Si le cube n'est pas accepté
+                                {
+                                    _currentMaison.Reset();
+                                }
                             }
                         }
                     }
-                    else if(kq.Nom==_currentMaison.nom) //Si la maison est complète
+                    else if ((kq.Parametre == "True")&&(kq.Nom==_currentMaison.nom)) //Si la maison est complète
                     {
                         _currentMaison.Reset();
                     }

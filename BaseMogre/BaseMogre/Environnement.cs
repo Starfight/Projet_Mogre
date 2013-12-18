@@ -53,11 +53,6 @@ namespace BaseMogre
         private const int MAXLONGUEURTERRAIN = 1000;
 
         /// <summary>
-        /// Apparition d'un ogre dans une maison en seconde
-        /// </summary>
-        private const int TEMPSDAPPARITIONOGRE = 60;
-
-        /// <summary>
         /// Ecart MIN-MAX fait lors d'un déplacement, d'une collision, etc
         /// </summary>
         private const int ECARTMIN = 50;
@@ -592,7 +587,7 @@ namespace BaseMogre
         private bool Update(FrameEvent fEvt)
         {
             //fait naitre les nouveau ogres
-            if (_UpdateForNaissance >= TEMPSDAPPARITIONOGRE)
+            if (_UpdateForNaissance >= Variables.TEMPSDAPPARITIONOGRE)
             {
                 _mutMaison.WaitOne();
                 foreach(KeyValuePair<String, Maison> kvpMaison in _ListMaisons)
@@ -782,44 +777,53 @@ namespace BaseMogre
         /// <param name="iKQ"></param>
         private void ProcessKQ(KnowledgeQuery iKQ)
         {
-            //Demande de maison
-            if (iKQ.Classe == Classe.Maison)
+            //Transmet une information
+            if (iKQ.Parametre == "info")
             {
-                //Vérification
-                bool ok = true;
-                foreach (KeyValuePair<String, Maison> kvp in _ListMaisons)
-                {
-                    float distanceAuCarre = (kvp.Value.Position - iKQ.Position).SquaredLength;
-                    if (distanceAuCarre < DISTANCEMAISONAMAISON)
-                        ok = false;
-                }
-
-                //Création
-                if (ok)
-                {
-                    Maison m = new Maison(ref _scm, iKQ.Position);
-                    _mutMaison.WaitOne();
-                    _ListMaisons.Add(m.NomEntity, m);
-                    _mutMaison.ReleaseMutex();
-                }
+                KnowledgeQuery kq = new KnowledgeQuery(iKQ.NomPerso, iKQ.Classe, iKQ.Nom, iKQ.Position, iKQ.Parametre);
+                _ListOfComOutput.Enqueue(kq);
             }
-            else if ((iKQ.Classe == Classe.Tour)&&(_tour==null))
+            else
             {
-                //Vérification
-                bool ok = true;
-                foreach (KeyValuePair<String, Maison> kvp in _ListMaisons)
+                //Demande de maison
+                if (iKQ.Classe == Classe.Maison)
                 {
-                    float distanceAuCarre = (kvp.Value.Position - iKQ.Position).SquaredLength;
-                    if (distanceAuCarre < DISTANCEMAISONAMAISON)
-                        ok = false;
-                }
+                    //Vérification
+                    bool ok = true;
+                    foreach (KeyValuePair<String, Maison> kvp in _ListMaisons)
+                    {
+                        float distanceAuCarre = (kvp.Value.Position - iKQ.Position).SquaredLength;
+                        if (distanceAuCarre < DISTANCEMAISONAMAISON)
+                            ok = false;
+                    }
 
-                //Création
-                if (ok)
+                    //Création
+                    if (ok)
+                    {
+                        Maison m = new Maison(ref _scm, iKQ.Position);
+                        _mutMaison.WaitOne();
+                        _ListMaisons.Add(m.NomEntity, m);
+                        _mutMaison.ReleaseMutex();
+                    }
+                }
+                else if ((iKQ.Classe == Classe.Tour) && (_tour == null))
                 {
-                    _mutTours.WaitOne();
-                    _tour = new Tour(ref _scm, iKQ.Position);
-                    _mutTours.ReleaseMutex();
+                    //Vérification
+                    bool ok = true;
+                    foreach (KeyValuePair<String, Maison> kvp in _ListMaisons)
+                    {
+                        float distanceAuCarre = (kvp.Value.Position - iKQ.Position).SquaredLength;
+                        if (distanceAuCarre < DISTANCEMAISONAMAISON)
+                            ok = false;
+                    }
+
+                    //Création
+                    if (ok)
+                    {
+                        _mutTours.WaitOne();
+                        _tour = new Tour(ref _scm, iKQ.Position);
+                        _mutTours.ReleaseMutex();
+                    }
                 }
             }
         }
