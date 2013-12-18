@@ -22,7 +22,7 @@ namespace BaseMogre
         /// <summary>
         /// défense des ogres batisseurs
         /// </summary>
-        private const int DEF = 15;
+        private const int DEF = 5;
 
         /// <summary>
         /// Chance de pouvoir construire une tour (1 sur cette valeur)

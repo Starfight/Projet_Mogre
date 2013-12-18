@@ -156,21 +156,27 @@ namespace BaseMogre
         /// <returns>bool si c'est bon false si on a pas besoin du cube</returns>
         protected virtual bool ajoutCube(Cube C)//peut etre passer la référence ici, je sais pas trop
         {
+            bool ok = false;
             if (C.Type == TypeCube.Bois && _nbCubeBoisNecessaire > 0)
             {
                 _nbCubeBoisNecessaire--;
                 _listeDesCubes.Add(C);
                 C.Deplacable = false;
-                return true;
+                ok = true;
             }
             if (C.Type == TypeCube.Pierre && _nbCubePierreNecessaire > 0)
             {
                 _nbCubePierreNecessaire--;
                 _listeDesCubes.Add(C);
                 C.Deplacable = false;
-                return true;
+                ok = true;
             }
-            return false;
+            if ((ok)&&(isFinish()))
+            {
+                Log.writeNewLine("Bâtiment " + NomEntity + " terminé.");
+            }
+
+            return ok;
         }
         #endregion
 

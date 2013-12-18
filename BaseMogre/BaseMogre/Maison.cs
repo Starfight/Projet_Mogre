@@ -104,12 +104,12 @@ namespace BaseMogre
         /// <returns>le type d'ogre à créer</returns>
         public Type NaissancePerso()
         {
-            int chance = RND.Next(10);
-            if (chance <= 1)
+            int chance = RND.Next(5);
+            if (chance == 0)
             {
                 return typeof(OgreBatisseur);
             }
-            else if (chance == 9)
+            else if (chance == 1)
             {
                 return typeof(Robot);
             }

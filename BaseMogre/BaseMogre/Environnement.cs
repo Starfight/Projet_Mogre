@@ -135,6 +135,15 @@ namespace BaseMogre
         private bool _isFini;
         #endregion
 
+        #region Evenement
+        public delegate void FinishEventHandler(String message);
+
+        /// <summary>
+        /// Evenement qui se déclenche à la fin 
+        /// </summary>
+        public static event FinishEventHandler FinishEvent;
+        #endregion
+
         #region Getter et Setter
         public Vector3 PositionEntrepotPierre
         {
@@ -312,6 +321,8 @@ namespace BaseMogre
             ENV_DEFAULT._ComThread = new Thread(ENV_DEFAULT.ProcessComInOut);
             ENV_DEFAULT._stop = false;
             ENV_DEFAULT._ComThread.Start();
+
+            Log.writeNewLine("Simulation commencée !");
         }
 
         /// <summary>
@@ -427,6 +438,9 @@ namespace BaseMogre
             _stop = true;
             _ComThread.Join();
 
+            //Efface le message
+            FinishEvent("");
+
             //Arrêt du listener
             Root.Singleton.FrameStarted -= _fListener;
 
@@ -514,6 +528,7 @@ namespace BaseMogre
                 {
                     Log.writeNewLine("Les ogres ont gagnés !");
                     _isFini = true;
+                    FinishEvent("Les ogres ont gagnés !");
                 }
             }
 
@@ -741,6 +756,7 @@ namespace BaseMogre
             {
                 Log.writeNewLine("Les robots ont gagnés !");
                 _isFini = true;
+                FinishEvent("Les robots ont gagnés !");
             }
 
             return true;

@@ -31,7 +31,7 @@ namespace BaseMogre
         private static int _COUNT = 0;
 
         /// <summary>
-        /// ataque des robots
+        /// attaque des robots
         /// </summary>
         private const int ATK = 10;
 

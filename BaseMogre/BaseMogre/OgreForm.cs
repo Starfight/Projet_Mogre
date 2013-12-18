@@ -87,6 +87,7 @@ namespace BaseMogre
 
             //Attache les handler
             CreateInputHandler();
+            Environnement.FinishEvent += Environnement_FinishEvent;
 
             /*Tour T = new Tour(ref mgr, new Mogre.Vector3(0, 0, 0));
             for (int i = 0; i < 20; i++)
@@ -110,6 +111,24 @@ namespace BaseMogre
             this.MouseDown += new MouseEventHandler(OgreForm_MouseDown);
             this.MouseUp += new MouseEventHandler(OgreForm_MouseUp);
             
+        }
+
+        /// <summary>
+        /// Fonction executée lorsque la partie est finie
+        /// </summary>
+        /// <param name="message"></param>
+        void Environnement_FinishEvent(string message)
+        {      
+            lblFinish.Text = message;
+            if ((message != "") && (!pause))
+            {
+                bPausePlay_Click(this, null);
+                lblFinish.Visible = true;
+            }
+            else
+            {
+                lblFinish.Visible = false;
+            }
         }
 
         #region événement pour la rotation de la caméra

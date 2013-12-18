@@ -35,6 +35,7 @@
             this.bPausePlay = new System.Windows.Forms.Button();
             this.bAccelerer = new System.Windows.Forms.Button();
             this.labelVitesse = new System.Windows.Forms.Label();
+            this.lblFinish = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // bQuitter
@@ -105,11 +106,25 @@
             this.labelVitesse.TabIndex = 5;
             this.labelVitesse.Text = "Vitesse : 1x";
             // 
+            // lblFinish
+            // 
+            this.lblFinish.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.lblFinish.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblFinish.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFinish.Location = new System.Drawing.Point(0, 0);
+            this.lblFinish.Margin = new System.Windows.Forms.Padding(3);
+            this.lblFinish.Name = "lblFinish";
+            this.lblFinish.Size = new System.Drawing.Size(364, 51);
+            this.lblFinish.TabIndex = 6;
+            this.lblFinish.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblFinish.Visible = false;
+            // 
             // OgreForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(364, 298);
+            this.Controls.Add(this.lblFinish);
             this.Controls.Add(this.labelVitesse);
             this.Controls.Add(this.bAccelerer);
             this.Controls.Add(this.bPausePlay);
@@ -132,6 +147,7 @@
         private System.Windows.Forms.Button bPausePlay;
         private System.Windows.Forms.Button bAccelerer;
         private System.Windows.Forms.Label labelVitesse;
+        private System.Windows.Forms.Label lblFinish;
 
     }
 }
