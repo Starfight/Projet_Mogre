@@ -122,11 +122,11 @@ namespace BaseMogre
         #endregion
 
         #region constructeur
-        public Batiment(ref SceneManager scm, Vector3 position, String nomBatiment,int PdV,int nbCubeBois, int NbCubePierre)
+        public Batiment(ref SceneManager scm, Vector3 position, String nomBatiment,int PdV,int nbCubeBois=0, int NbCubePierre=0)
         {
             //Création de l'Entity et du Scenenode à la position
             _node = scm.RootSceneNode.CreateChildSceneNode(NAMENODE + nomBatiment, position);
-            
+
             //Enregistrement du Scenemanager
             _scm = scm;
 
@@ -138,31 +138,6 @@ namespace BaseMogre
             _position = position;
             _nbCubeBoisNecessaire = nbCubeBois;
             _nbCubePierreNecessaire = NbCubePierre;
-            _listeDesCubes = new List<Cube>();
-
-            //préparation du mutex
-            _depotCube = new Mutex();
-
-            //définition de la position du cube
-            _positionFuture = new PositionCubes(this.Position.x + 30, 0, this.Position.z - 30);
-        }
-
-        public Batiment(ref SceneManager scm, Vector3 position, String nomBatiment, int PdV)
-        {
-            //Création de l'Entity et du Scenenode à la position
-            _node = scm.RootSceneNode.CreateChildSceneNode(NAMENODE + nomBatiment, position);
-
-            //Enregistrement du Scenemanager
-            _scm = scm;
-
-            //Enregistrement du nom du personnage
-            _nomEntity = nomBatiment;
-
-            //Enregistrement des variables
-            _pointsDeVie = PdV;
-            _position = position;
-            _nbCubeBoisNecessaire = 0;
-            _nbCubePierreNecessaire = 0;
             _listeDesCubes = new List<Cube>();
 
             //préparation du mutex
