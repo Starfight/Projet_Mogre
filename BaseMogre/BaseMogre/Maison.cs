@@ -102,11 +102,16 @@ namespace BaseMogre
         /// méthode de random pour savoir quel type d'ogre va naitre 1/5 pour que ca soit un batisseur
         /// </summary>
         /// <returns>le type d'ogre à créer</returns>
-        public Type NaissanceOgre()
+        public Type NaissancePerso()
         {
-            if (RND.Next(5) == 0)
+            int chance = RND.Next(10);
+            if (chance <= 1)
             {
                 return typeof(OgreBatisseur);
+            }
+            else if (chance == 9)
+            {
+                return typeof(Robot);
             }
             else
             {

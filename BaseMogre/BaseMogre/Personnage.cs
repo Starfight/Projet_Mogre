@@ -195,7 +195,6 @@ namespace BaseMogre
             set
             {
                 _destination = value;
-                Log.writeNewLine("Le personnage "+_nomEntity+" a changé sa destination vers le point x="+_destination.x.ToString("0.00")+" ; z="+_destination.z.ToString("0.00"));
                 //Indique des modification à faire 
                 _DestinationChanged = true;
             }

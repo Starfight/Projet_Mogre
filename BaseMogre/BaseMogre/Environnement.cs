@@ -556,11 +556,17 @@ namespace BaseMogre
         /// <summary>
         /// méthode d'ajout d'un ogre dans l'env via les maisons
         /// </summary>
-        /// <param name="typeOgre">type de l'ogre a créer</param>
+        /// <param name="type">type de l'ogre a créer</param>
         /// <param name="position">endroit ou il apparait</param>
-        private void AddOgreToEnv(Type typeOgre, Vector3 position)
+        private void AddPersoToEnv(Type type, Vector3 position)
         {
-            if (typeOgre == typeof(OgreOuvrier))
+            if (type == typeof(Robot))
+            {
+                Robot r = new Robot(ref _scm, position);
+                _ListPersonnages.Add(r.NomEntity, r);
+                Log.writeNewLine("Nouveau robot créé :" + r.NomEntity);
+            }
+            else if (type == typeof(OgreOuvrier))
             {
                 OgreOuvrier o = new OgreOuvrier(ref _scm, position);
                 _ListPersonnages.Add(o.NomEntity, o);
@@ -569,7 +575,7 @@ namespace BaseMogre
             else
             {
                 OgreBatisseur o;
-                if (_tour!=null)
+                if (_tour != null)
                     o = new OgreBatisseur(ref _scm, position, _tour.getInfo());
                 else
                     o = new OgreBatisseur(ref _scm, position);
@@ -586,21 +592,24 @@ namespace BaseMogre
         /// <returns></returns>
         private bool Update(FrameEvent fEvt)
         {
-            //fait naitre les nouveau ogres
-            if (_UpdateForNaissance >= Variables.TEMPSDAPPARITIONOGRE)
+            //fait naitre les nouveau personnages
+            if (!_isFini)
             {
-                _mutMaison.WaitOne();
-                foreach(KeyValuePair<String, Maison> kvpMaison in _ListMaisons)
+                if (_UpdateForNaissance >= Variables.TEMPSDAPPARITION)
                 {
-                    if (kvpMaison.Value.isFinish())
-                        this.AddOgreToEnv(kvpMaison.Value.NaissanceOgre(), kvpMaison.Value.Position);
+                    _mutMaison.WaitOne();
+                    foreach (KeyValuePair<String, Maison> kvpMaison in _ListMaisons)
+                    {
+                        if (kvpMaison.Value.isFinish())
+                            this.AddPersoToEnv(kvpMaison.Value.NaissancePerso(), kvpMaison.Value.Position);
+                    }
+                    _mutMaison.ReleaseMutex();
+                    _UpdateForNaissance = 0;
                 }
-                _mutMaison.ReleaseMutex();
-                _UpdateForNaissance = 0;
-            }
-            else
-            {
-                _UpdateForNaissance+=fEvt.timeSinceLastFrame;
+                else
+                {
+                    _UpdateForNaissance += fEvt.timeSinceLastFrame;
+                }
             }
 
             //Detection des collisions avec les personnages
@@ -790,6 +799,7 @@ namespace BaseMogre
                 {
                     //Vérification
                     bool ok = true;
+                    _mutMaison.WaitOne();
                     foreach (KeyValuePair<String, Maison> kvp in _ListMaisons)
                     {
                         float distanceAuCarre = (kvp.Value.Position - iKQ.Position).SquaredLength;
@@ -801,21 +811,22 @@ namespace BaseMogre
                     if (ok)
                     {
                         Maison m = new Maison(ref _scm, iKQ.Position);
-                        _mutMaison.WaitOne();
                         _ListMaisons.Add(m.NomEntity, m);
-                        _mutMaison.ReleaseMutex();
                     }
+                    _mutMaison.ReleaseMutex();
                 }
                 else if ((iKQ.Classe == Classe.Tour) && (_tour == null))
                 {
                     //Vérification
                     bool ok = true;
+                    _mutMaison.WaitOne();
                     foreach (KeyValuePair<String, Maison> kvp in _ListMaisons)
                     {
                         float distanceAuCarre = (kvp.Value.Position - iKQ.Position).SquaredLength;
                         if (distanceAuCarre < DISTANCEMAISONAMAISON)
                             ok = false;
                     }
+                    _mutMaison.ReleaseMutex();
 
                     //Création
                     if (ok)

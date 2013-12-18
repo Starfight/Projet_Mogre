@@ -296,7 +296,7 @@ namespace BaseMogre
         {
             Variables.VITESSEOGRE *= 2;
             Variables.VITESSEROBOT *= 2;
-            Variables.TEMPSDAPPARITIONOGRE /= 2;
+            Variables.TEMPSDAPPARITION /= 2;
             labelVitesse.Text = "Vitesse : " + (Variables.VITESSEOGRE / 50).ToString() + "x";
         }
 
@@ -305,7 +305,7 @@ namespace BaseMogre
         {
             Variables.VITESSEOGRE /= 2;
             Variables.VITESSEROBOT /= 2;
-            Variables.TEMPSDAPPARITIONOGRE *= 2;
+            Variables.TEMPSDAPPARITION *= 2;
             labelVitesse.Text = "Vitesse : " + (Variables.VITESSEOGRE / 50).ToString() + "x";
         }
 
@@ -316,7 +316,7 @@ namespace BaseMogre
             {
                 Variables.VITESSEOGRE = Variables.VITESSEDEFAULT;
                 Variables.VITESSEROBOT = Variables.VITESSEDEFAULT;
-                Variables.TEMPSDAPPARITIONOGRE = Variables.TEMPSDAPPARITIONDEFAULT;
+                Variables.TEMPSDAPPARITION = Variables.TEMPSDAPPARITIONDEFAULT;
                 bPausePlay.BackgroundImage = new Bitmap("../../Media/boutons/icon-ios7-pause-64.png");
                 pause = false;
                 labelVitesse.Text = "Vitesse : " + (Variables.VITESSEOGRE / 50).ToString() + "x";
@@ -325,7 +325,7 @@ namespace BaseMogre
             {
                 Variables.VITESSEOGRE = 0;
                 Variables.VITESSEROBOT = 0;
-                Variables.TEMPSDAPPARITIONOGRE = 99999;
+                Variables.TEMPSDAPPARITION = 99999;
                 bPausePlay.BackgroundImage = new Bitmap("../../Media/boutons/icon-ios7-play-64.png");
                 pause = true;
                 labelVitesse.Text = "Vitesse : 0x";

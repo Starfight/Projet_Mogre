@@ -25,7 +25,7 @@ namespace BaseMogre
         /// <summary>
         /// Apparition d'un ogre dans une maison en seconde
         /// </summary>
-        public static int TEMPSDAPPARITIONOGRE = 60;
+        public static int TEMPSDAPPARITION = 60;
 
         /// <summary>
         /// Temps par défaut
