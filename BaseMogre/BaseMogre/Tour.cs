@@ -19,19 +19,9 @@ namespace BaseMogre
 
         #region variables
         /// <summary>
-        /// Future positin d'un cube
-        /// </summary>
-        private PositionCubes _positionFuture;
-
-        /// <summary>
         /// compteur de cube servant au switch de construction
         /// </summary>
         private int _nombreCube;
-
-        /// <summary>
-        /// Mutex pour la protection contre le dépot de 2 cubes simultanés
-        /// </summary>
-        private Mutex _depotCube;
         #endregion
 
         #region constructeur
@@ -39,8 +29,6 @@ namespace BaseMogre
             : base(ref scm, position, NAMEDEFAULT , 100,50,50)
         {
             _nombreCube = 1;
-            _positionFuture = new PositionCubes(this.Position.x + 30, 0, this.Position.z - 30);
-            _depotCube = new Mutex();
             Log.writeNewLine("Tour commencée en (" + this.Position.x + "," + this.Position.y + "," + this.Position.z + ")");
         }
         #endregion
@@ -51,24 +39,10 @@ namespace BaseMogre
         /// </summary>
         /// <param name="C">Cube à ajouter</param>
         /// <returns>réussite ou échec de l'ajout du cube</returns>
-        public bool ajoutDeBloc(Cube C)
+        public override bool ajoutDeBloc(Cube C)
         {
-            //verrouillage du mutex
-            _depotCube.WaitOne();
-
-            //test de la possibilité d'ajout du cube à la tour
-            bool possible = this.ajoutCube(C);
-            
-            if (possible)
+            if (base.ajoutDeBloc(C))
             {
-                //positionnement du cube
-                C.Position = _positionFuture.PositionToVector();
-
-                //orientation du cube
-                Vector3 src = C.Orientation * Vector3.UNIT_Z;
-                Quaternion quat = src.GetRotationTo(Vector3.UNIT_Z);
-                C.Rotate(quat);
-
                 //définition de la position suivante
                 if (_nombreCube == 9)
                 {
@@ -110,29 +84,17 @@ namespace BaseMogre
         {
             switch (_nombreCube)
             {
-                case 8:
+                case 8: case 2: case 1:
                     _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
                     break;
                 case 7:
                     _positionFuture.ChangeValeurs(Cube._SIZE,0,0);
                     break;
-                case 6:
+                case 6: case 5:
                     _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
                     break;
-                case 5:
-                    _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
-                    break;
-                case 4:
+                case 4: case 3:
                     _positionFuture.ChangeValeurs(-Cube._SIZE,0, 0);
-                    break;
-                case 3:
-                    _positionFuture.ChangeValeurs(-Cube._SIZE,0, 0);
-                    break;
-                case 2:
-                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
-                    break;
-                case 1:
-                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
                     break;
             }
         }

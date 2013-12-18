@@ -63,7 +63,7 @@ namespace BaseMogre
         /// </summary>
         private static Random rnd = new Random();
         #endregion
-
+        
         #region Variables
         /// <summary>
         /// caméra du monde

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Mogre;
+using System.Threading;
 
 namespace BaseMogre
 {
@@ -16,6 +17,16 @@ namespace BaseMogre
         #endregion
 
         #region Attributs
+        /// <summary>
+        /// Mutex de protection pour le dépot d'un cube
+        /// </summary>
+        protected Mutex _depotCube;
+
+        /// <summary>
+        /// position du future cube
+        /// </summary>
+        protected PositionCubes _positionFuture;
+
         /// <summary>
         /// Nombre de cubes pierre necessaire pour finir
         /// </summary>
@@ -128,6 +139,12 @@ namespace BaseMogre
             _nbCubeBoisNecessaire = nbCubeBois;
             _nbCubePierreNecessaire = NbCubePierre;
             _listeDesCubes = new List<Cube>();
+
+            //préparation du mutex
+            _depotCube = new Mutex();
+
+            //définition de la position du cube
+            _positionFuture = new PositionCubes(this.Position.x + 30, 0, this.Position.z - 30);
         }
         #endregion
 
@@ -183,6 +200,27 @@ namespace BaseMogre
                 c.Dispose();
             }
             _scm.DestroySceneNode(_node);
+        }
+
+        public virtual bool ajoutDeBloc(Cube C)
+        {
+            _depotCube.WaitOne();
+
+            //test de la possibilité d'ajout du cube à la tour
+            bool possible = this.ajoutCube(C);
+
+            if (possible)
+            {
+                //positionnement du cube
+                C.Position = _positionFuture.PositionToVector();
+
+                //orientation du cube
+                Vector3 src = C.Orientation * Vector3.UNIT_Z;
+                Quaternion quat = src.GetRotationTo(Vector3.UNIT_Z);
+                C.Rotate(quat);
+                return true;
+            }
+            return false;
         }
         #endregion
     }

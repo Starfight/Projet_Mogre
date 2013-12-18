@@ -27,16 +27,7 @@ namespace BaseMogre
         #endregion
 
         #region variables
-        /// <summary>
-        /// Mutex de protection pour le dépot d'un cube
-        /// </summary>
-        private Mutex _depotCube;
-
-        /// <summary>
-        /// position du future cube
-        /// </summary>
-        private PositionCubes _positionFuture;
-
+        
         /// <summary>
         /// entité représentant la maison (le pied)
         /// </summary>
@@ -68,11 +59,6 @@ namespace BaseMogre
             
             _COUNT++;
             
-            //définition de l'emplacement du prochain cube
-            _positionFuture = new PositionCubes(this.Position.x+30, 0, this.Position.z-30);
-            
-            _depotCube = new Mutex();
-
             //écriture dans les logs qu'un maison est crée
             Log.writeNewLine("Maison commencée en (" + this.Position.x + "," + this.Position.y + "," + this.Position.z + ")");
         }
@@ -96,30 +82,17 @@ namespace BaseMogre
         /// </summary>
         /// <param name="C">Cube à ajouter</param>
         /// <returns>réussite ou échec de l'ajout du cube</returns>
-        public bool ajoutDeBloc(Cube C)
+        public override bool ajoutDeBloc(Cube C)
         {
-            //vérouillage du mutex
-            _depotCube.WaitOne();
-
-            //test de la possibilité d'ajout du cube à la maison
-            bool possible = this.ajoutCube(C);
-            if (possible)
+            if(base.ajoutDeBloc(C))
             {
-                //positionnement du cube
-                C.Position = _positionFuture.PositionToVector();
-
-                //rotation du cub
-                Vector3 src = C.Orientation * Vector3.UNIT_Z;
-                Quaternion quat = src.GetRotationTo(Vector3.UNIT_Z);
-                C.Rotate(quat);
-
-                //définiton de la position suivante
                 SetNextCubePosition();
 
                 //déverouillage du mutex
                 _depotCube.ReleaseMutex();
                 return true;
             }
+
             //déverouillage du mutex
             _depotCube.ReleaseMutex();
             return false;
@@ -151,71 +124,39 @@ namespace BaseMogre
             switch (_nbCubeBoisNecessaire + _nbCubePierreNecessaire)
             {
                 case 22:
-                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
-                    break;
                 case 21:
-                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
-                    break;
-                case 20:
-                    _positionFuture.ChangeValeurs(-Cube._SIZE, 0, 0);
-                    break;
-                case 19:
-                    _positionFuture.ChangeValeurs(-Cube._SIZE, 0, 0);
-                    break;
-                case 18:
-                    _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
-                    break;
-                case 17:
-                    _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
-                    break;
-                case 16:
-                    _positionFuture.ChangeValeurs(0, Cube._SIZE, 0);
-                    break;
                 case 15:
-                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
-                    break;
                 case 14:
-                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
-                    break;
-                case 13:
-                    _positionFuture.ChangeValeurs(Cube._SIZE, 0, 0);
-                    break;
-                case 12:
-                    _positionFuture.ChangeValeurs(Cube._SIZE, 0, 0);
-                    break;
-                case 11:
-                    _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
-                    break;
-                case 10:
-                    _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
-                    break;
-                case 9:
-                    _positionFuture.ChangeValeurs(0, Cube._SIZE, 0);
-                    break;
                 case 8:
-                    _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
-                    break;
                 case 7:
                     _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
                     break;
+                case 20:
+                case 19:
                 case 6:
-                    _positionFuture.ChangeValeurs(-Cube._SIZE, 0, 0);
-                    break;
                 case 5:
                     _positionFuture.ChangeValeurs(-Cube._SIZE, 0, 0);
                     break;
+                case 18:
+                case 17:
+                case 11:
+                case 10:
                 case 4:
-                    _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
-                    break;
                 case 3:
                     _positionFuture.ChangeValeurs(0, 0, -Cube._SIZE);
                     break;
+                case 16:
+                case 9:
+                    _positionFuture.ChangeValeurs(0, Cube._SIZE, 0);
+                    break;
+                case 13:
+                case 12:
                 case 2:
                     _positionFuture.ChangeValeurs(Cube._SIZE, 0, 0);
                     break;
                 case 1:
                     _positionFuture.ChangeValeurs(0, 0, Cube._SIZE);
-                    Log.writeNewLine("Maison finie en ("+this.Position.x+","+this.Position.y+","+this.Position.z+")");
+                    Log.writeNewLine("Maison finie en (" + this.Position.x + "," + this.Position.y + "," + this.Position.z + ")");
                     break;
             }
         }
