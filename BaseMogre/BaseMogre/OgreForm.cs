@@ -87,6 +87,14 @@ namespace BaseMogre
 
             //Attache les handler
             CreateInputHandler();
+
+            /*Tour T = new Tour(ref mgr, new Mogre.Vector3(0, 0, 0));
+            for (int i = 0; i < 20; i++)
+            {
+                Cube C = new Cube(ref mgr, new Mogre.Vector3(i*10, i*10, i*10), TypeCube.Bois);
+                T.ajoutDeBloc(C);
+                Log.writeNewLine(T.isFinish().ToString());
+            }*/
             
             //Test
             /*SceneNode myNode = mgr.RootSceneNode.CreateChildSceneNode();

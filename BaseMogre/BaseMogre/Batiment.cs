@@ -146,6 +146,31 @@ namespace BaseMogre
             //définition de la position du cube
             _positionFuture = new PositionCubes(this.Position.x + 30, 0, this.Position.z - 30);
         }
+
+        public Batiment(ref SceneManager scm, Vector3 position, String nomBatiment, int PdV)
+        {
+            //Création de l'Entity et du Scenenode à la position
+            _node = scm.RootSceneNode.CreateChildSceneNode(NAMENODE + nomBatiment, position);
+
+            //Enregistrement du Scenemanager
+            _scm = scm;
+
+            //Enregistrement du nom du personnage
+            _nomEntity = nomBatiment;
+
+            //Enregistrement des variables
+            _pointsDeVie = PdV;
+            _position = position;
+            _nbCubeBoisNecessaire = 0;
+            _nbCubePierreNecessaire = 0;
+            _listeDesCubes = new List<Cube>();
+
+            //préparation du mutex
+            _depotCube = new Mutex();
+
+            //définition de la position du cube
+            _positionFuture = new PositionCubes(this.Position.x + 30, 0, this.Position.z - 30);
+        }
         #endregion
 
         #region méthodes protected
@@ -154,7 +179,7 @@ namespace BaseMogre
         /// </summary>
         /// <param name="C">cube à ajouter</param>
         /// <returns>bool si c'est bon false si on a pas besoin du cube</returns>
-        protected bool ajoutCube(Cube C)//peut etre passer la référence ici, je sais pas trop
+        protected virtual bool ajoutCube(Cube C)//peut etre passer la référence ici, je sais pas trop
         {
             if (C.Type == TypeCube.Bois && _nbCubeBoisNecessaire > 0)
             {
@@ -179,7 +204,7 @@ namespace BaseMogre
         /// Si la maison est finie
         /// </summary>
         /// <returns></returns>
-        public bool isFinish()
+        public virtual bool isFinish()
         {
             if (_nbCubeBoisNecessaire + _nbCubePierreNecessaire == 0)
                 return true;

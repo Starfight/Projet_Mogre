@@ -15,6 +15,11 @@ namespace BaseMogre
         /// Nom de base
         /// </summary>
         private static String NAMEDEFAULT = "tour";
+
+        /// <summary>
+        /// Nombre réel de cube nécessaire
+        /// </summary>
+        private static int NOMBREDECUBETOTAL = 20;
         #endregion
 
         #region variables
@@ -26,7 +31,7 @@ namespace BaseMogre
 
         #region constructeur
         public Tour(ref SceneManager scm,Vector3 position)
-            : base(ref scm, position, NAMEDEFAULT , 100,50,50)
+            : base(ref scm, position, NAMEDEFAULT, 100)
         {
             _nombreCube = 1;
             Log.writeNewLine("Tour commencée en (" + this.Position.x + "," + this.Position.y + "," + this.Position.z + ")");
@@ -34,6 +39,23 @@ namespace BaseMogre
         #endregion
 
         #region méthodes public
+        /// <summary>
+        /// redéfinition de l'ajout de cube car la tour est insensible au type de cube qu'on lui donne.
+        /// </summary>
+        /// <param name="C">Cube à ajouter</param>
+        /// <returns>si le cube à été ajouté ou non</returns>
+        protected override bool ajoutCube(Cube C)
+        {
+            if (!this.isFinish())
+            {
+                _listeDesCubes.Add(C);
+                C.Deplacable = false;
+                return true;
+            }
+            else
+                return false;
+        }
+
         /// <summary>
         /// Ajout d'un cube dans la tour
         /// </summary>
@@ -55,7 +77,6 @@ namespace BaseMogre
                 }
 
                 _nombreCube++;
-
                 //déverouillage du mutex
                 _depotCube.ReleaseMutex();
                 return true;
@@ -63,6 +84,18 @@ namespace BaseMogre
             //déverouillage du mutex
             _depotCube.ReleaseMutex();
             return false;
+        }
+
+        /// <summary>
+        /// redéfinition du isFinish pour la tour qui ne prend pas en compte le type de cube.
+        /// </summary>
+        /// <returns></returns>
+        public override bool isFinish()
+        {
+            if (_listeDesCubes.Count == NOMBREDECUBETOTAL)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
