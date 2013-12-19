@@ -757,6 +757,8 @@ namespace BaseMogre
                 Log.writeNewLine("Les robots ont gagnés !");
                 _isFini = true;
                 FinishEvent("Les robots ont gagnés !");
+                Log.writeNewLine("il y a :" + _ListMaisons.Count + " maisons");
+                Log.writeNewLine("il y a :" + _ListPersonnages.Count + " personnages tout confondu");
             }
 
             return true;
