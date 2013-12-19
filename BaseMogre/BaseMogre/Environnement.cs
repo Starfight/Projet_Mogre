@@ -250,12 +250,14 @@ namespace BaseMogre
             {
                 ok = true;
                 v = getRandomHorizontalVecteur();
+                _mutCubes.WaitOne();
                 foreach (KeyValuePair<String, Cube> kvp in _listCubes)
                 {
                     float distanceAuCarre = (kvp.Value.Position - v).SquaredLength;
                     if (distanceAuCarre < marge)
                         ok = false;
                 }
+                _mutCubes.ReleaseMutex();
                 _mutMaison.WaitOne();
                 foreach (KeyValuePair<String, Maison> kvp in _ListMaisons)
                 {
@@ -523,13 +525,6 @@ namespace BaseMogre
             else if (_tour.NomEntity == nomBatiment)
             {
                 isOk = _tour.ajoutDeBloc(c);
-                //Condition de victoire des ogres
-                if ((_tour.isFinish())&&(!_isFini))
-                {
-                    Log.writeNewLine("Les ogres ont gagnés !");
-                    _isFini = true;
-                    FinishEvent("Les ogres ont gagnés !");
-                }
             }
 
             return isOk;
@@ -759,6 +754,16 @@ namespace BaseMogre
                 FinishEvent("Les robots ont gagnés !");
                 Log.writeNewLine("il y a :" + _ListMaisons.Count + " maisons");
                 Log.writeNewLine("il y a :" + _ListPersonnages.Count + " personnages tout confondu");
+            }
+            //Condition de victoire des ogres
+            if (_tour != null)
+            {
+                if ((_tour.isFinish()) && (!_isFini))
+                {
+                    Log.writeNewLine("Les ogres ont gagnés !");
+                    _isFini = true;
+                    FinishEvent("Les ogres ont gagnés !");
+                }
             }
 
             return true;

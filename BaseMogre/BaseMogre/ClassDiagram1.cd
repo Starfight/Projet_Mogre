@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BaseMogre.Batiment" Collapsed="true">
+    <Position X="2" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgABIgASgKAAAgAIEAJAACAAAAAAAAAACQsEAAIAA=</HashCode>
+      <FileName>Batiment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PositionCubes" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BaseMogre.Cube" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAkABAAAagAAAQgAAAAAAACEAAAAAAAAQAEsQAAgAA=</HashCode>
+      <FileName>Cube.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BaseMogre.Environnement" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQ2shABiFDgRQABFAKoUCgAAzFKAAAQAEEAwAAQAAgI=</HashCode>
+      <FileName>Environnement.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Cube" />
+      <Property Name="Personnage" />
+      <Property Name="Tour" />
+      <Property Name="Maison" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BaseMogre.FormParametresEnv" Collapsed="true">
+    <Position X="9" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgASgAABAAACCAAAAKAAAAgAAAAAAAAAQAAAA=</HashCode>
+      <FileName>FormParametresEnv.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseMogre.Log" Collapsed="true">
+    <Position X="10.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Log.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseMogre.Maison" Collapsed="true">
+    <Position X="0.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAEACCAAAAAAAAAAIAgAAAAAQAABAAAAAAAAgAA=</HashCode>
+      <FileName>Maison.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseMogre.Map" Collapsed="true">
+    <Position X="12.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAEACAAAAAIAAAAAAAAAAAAAAEAADA=</HashCode>
+      <FileName>Map.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseMogre.OgreBatisseur" Collapsed="true">
+    <Position X="3.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAIQAAACAQAAAAAAAAAAAAAAAQAAAAAgAAAAAAA=</HashCode>
+      <FileName>OgreBatisseur.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TourInfo" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BaseMogre.OgreForm" Collapsed="true">
+    <Position X="9" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AsAQLAAQACIAEAQAAgmBVEKCMACAIIAAAAADAAAAZAE=</HashCode>
+      <FileName>OgreForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseMogre.OgreOuvrier" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAACAAAAAAAAAAAAAAAAAwAAQAAgAAAAQAA=</HashCode>
+      <FileName>OgreOuvrier.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MaisonInfo" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BaseMogre.Ogres" Collapsed="true">
+    <Position X="4.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAgCiAAAAAAQAAYAAAAAAAAAAAAAAAgAoAAgAA=</HashCode>
+      <FileName>Ogres.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Cube" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BaseMogre.Personnage" Collapsed="true">
+    <Position X="3.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQoABEAACgAQCAkAAEIABICAABgAQAEAQIANAEAIBA=</HashCode>
+      <FileName>Personnage.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Personnage1" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BaseMogre.Program" Collapsed="true">
+    <Position X="10.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseMogre.Robot" Collapsed="true">
+    <Position X="1" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAwAAAAACAACAAAgAAAIAAAAAAAAAQAAAAAgQAAAgAA=</HashCode>
+      <FileName>Robot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseMogre.Tour" Collapsed="true">
+    <Position X="3" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAACAAAAAAAAJAAAQAAAAAADAAAACAAAAAA=</HashCode>
+      <FileName>Tour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseMogre.Variables" Collapsed="true">
+    <Position X="10.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAIAAAgEAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Variables.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseMogre.Properties.Resources" Collapsed="true">
+    <Position X="12.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseMogre.Properties.Settings" Collapsed="true">
+    <Position X="9" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="BaseMogre.KnowledgeQuery" Collapsed="true">
+    <Position X="9" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAACAAAAhAAIIAgAABCAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>IComKnowledgeQuery.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="BaseMogre.MaisonInfo" Collapsed="true">
+    <Position X="6.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAIAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Structures.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="BaseMogre.PositionCubes" Collapsed="true">
+    <Position X="2" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAQAIAA=</HashCode>
+      <FileName>Structures.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="BaseMogre.TourInfo" Collapsed="true">
+    <Position X="5.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAIAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Structures.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="BaseMogre.IComKnowledgeQuery" Collapsed="true">
+    <Position X="9" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IComKnowledgeQuery.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="BaseMogre.TypeCube" Collapsed="true">
+    <Position X="12.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgQAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cube.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BaseMogre.Result" Collapsed="true">
+    <Position X="10.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAACA=</HashCode>
+      <FileName>IComKnowledgeQuery.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BaseMogre.Classe" Collapsed="true">
+    <Position X="9" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAgAAAAAAAAAAAAAAAABAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>IComKnowledgeQuery.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
