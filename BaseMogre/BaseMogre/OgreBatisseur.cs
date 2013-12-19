@@ -45,7 +45,7 @@ namespace BaseMogre
             _node.Scale(new Vector3(1.5f,1.5f,1.5f));
 
             //Attribution de la tour si existante
-            if (_tourCible.isEmpty())
+            if (tourcible.isEmpty())
                 _tourCible.Reset();
             else
                 _tourCible = tourcible;
@@ -123,7 +123,7 @@ namespace BaseMogre
                 //Si l'ogre a un cube
                 if (_cube != null)
                 {
-                    //Si l'ogre a une connaissance de la tour
+                    //Si l'ogre n'a pas connaissance de la tour
                     if (_tourCible.isEmpty())
                     {
                         //Donne une chance de crée une tour
@@ -138,7 +138,7 @@ namespace BaseMogre
                             Destination = Environnement.getRandomDestination(Position);
                         }
                     }
-                    //Sinon recherche d'une position idéale
+                    //Sinon va à la tour
                     else
                     {
                         Destination = _tourCible.position;

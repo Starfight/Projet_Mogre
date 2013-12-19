@@ -763,6 +763,8 @@ namespace BaseMogre
                     Log.writeNewLine("Les ogres ont gagnés !");
                     _isFini = true;
                     FinishEvent("Les ogres ont gagnés !");
+                    Log.writeNewLine("il y a :" + _ListMaisons.Count + " maisons");
+                    Log.writeNewLine("il y a :" + _ListPersonnages.Count + " personnages tout confondu");
                 }
             }
 
