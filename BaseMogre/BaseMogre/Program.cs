@@ -18,7 +18,6 @@ namespace BaseMogre
         {
             //on nettoie les fichiers de log
             File.WriteAllText("Ogre.log", "", System.Text.Encoding.UTF8);
-            //File.WriteAllText("resultats.log", "", System.Text.Encoding.UTF8);
 
             //on lance la fenetre de l'application
             OgreForm form = new OgreForm();

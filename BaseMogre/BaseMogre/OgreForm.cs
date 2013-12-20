@@ -81,30 +81,11 @@ namespace BaseMogre
             cam = mgr.CreateCamera("Camera");
             cam.AutoAspectRatio = true;
             mWindow.AddViewport(cam);
-
-            //camera position
             cam.Position = new Mogre.Vector3(0, 200, -200);
 
             //Attache les handler
             CreateInputHandler();
             Environnement.FinishEvent += Environnement_FinishEvent;
-
-            /*Tour T = new Tour(ref mgr, new Mogre.Vector3(0, 0, 0));
-            for (int i = 0; i < 20; i++)
-            {
-                Cube C = new Cube(ref mgr, new Mogre.Vector3(i*10, i*10, i*10), TypeCube.Bois);
-                T.ajoutDeBloc(C);
-                Log.writeNewLine(T.isFinish().ToString());
-            }*/
-            
-            //Test
-            /*SceneNode myNode = mgr.RootSceneNode.CreateChildSceneNode();
-            BillboardSet mySet = mgr.CreateBillboardSet("mySet");
-            Billboard myBillboard = mySet.CreateBillboard(new Mogre.Vector3(50, 0, 20));
-            myBillboard.SetDimensions(100, 100);
-            mySet.SetMaterialName("Texture/Coeur");
-            myNode.AttachObject(mySet);
-            myNode.Position = new Mogre.Vector3(0, 100, 0);*/
 
             //Initialisation des événements de la souris
             this.MouseMove += new MouseEventHandler(OgreForm_MouseMove);

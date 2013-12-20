@@ -142,18 +142,6 @@ namespace BaseMogre
             }
             return false;
         }
-        
-        /// <summary>
-        /// méthode permettant de tester le cube que posséde l'ogre
-        /// </summary>
-        /// <param name="typeCubeVoulu">type de cube cherché</param>
-        /// <returns>true si l'ogre posséde un cube du bon type / false sinon</returns>
-        public bool requeteCube(Type typeCubeVoulu)
-        {
-            if (this._cube != null && this._cube.GetType() == typeCubeVoulu)
-                return true;
-            return false;
-        }
 
         /// <summary>
         /// Implémentation de Dispose pour la suppression du cube

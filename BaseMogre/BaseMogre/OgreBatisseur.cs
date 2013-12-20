@@ -84,7 +84,6 @@ namespace BaseMogre
                         if (int.TryParse(kq.Parametre, out atk))
                         {
                             this.Combat(atk);
-                            //Log.writeNewLine("contact " + this._nomEntity + " vs " + kq.Classe.ToString() + " " + this._pointsDeVie + " pv restants à l'ogre batisseur");
                         }
                     }
                     EviteCollision(kq.Position);

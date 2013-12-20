@@ -41,7 +41,7 @@ namespace BaseMogre
 
         #region Constructeur
         public Maison(ref SceneManager scm,Vector3 position)
-            : base(ref scm, position, NAMEDEFAULT + _COUNT, 20,11,12)
+            : base(ref scm, position, NAMEDEFAULT + _COUNT,11,12)
         {
             //création de l'entity et du node de la maison
             _entityMaison = scm.CreateEntity("base_maison" + _COUNT, "cube.mesh");

@@ -39,7 +39,7 @@ namespace BaseMogre
         public static void CreationPlan(ref SceneManager scm)
         {
             //définition ambiantLight, skydome et gestion des ombres
-            //scm.AmbientLight = ColourValue.White;
+            scm.AmbientLight = ColourValue.White;
             scm.SetSkyDome(true, "Examples/CloudySky", 5, 8);
             scm.ShadowTechnique = ShadowTechnique.SHADOWTYPE_TEXTURE_MODULATIVE;
 

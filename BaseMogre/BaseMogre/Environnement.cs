@@ -144,19 +144,6 @@ namespace BaseMogre
         public static event FinishEventHandler FinishEvent;
         #endregion
 
-        #region Getter et Setter
-        public Vector3 PositionEntrepotPierre
-        {
-            //TODO
-            get { return new Vector3(); }
-        }
-        public Vector3 PositionEntrepotBois
-        {
-            //TODO
-            get { return new Vector3(); }
-        }
-        #endregion
-
         #region Constructeur/Destructeur
         private Environnement(ref SceneManager scm, ref Camera cam)
         {

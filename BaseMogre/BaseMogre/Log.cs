@@ -43,32 +43,6 @@ namespace BaseMogre
         }
 
         /// <summary>
-        /// écriture de plusieurs lignes dans le fichier
-        /// </summary>
-        /// <param name="textes">tableau de textes a ecrire</param>
-        /// <returns>réussite ou echec de l'ecriture</returns>
-        public static bool writeNewLine(string[] textes)
-        {
-            string chaine = DateTime.Now.ToString() + " => " + Environment.NewLine;
-            try
-            {
-                foreach (string S in textes)
-                {
-                    chaine += S + Environment.NewLine;
-                }
-                lock (threadlock)
-                {
-                    File.AppendAllText(log_path, chaine);
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
         /// RAZ du fichier de log
         /// </summary>
         static Log()

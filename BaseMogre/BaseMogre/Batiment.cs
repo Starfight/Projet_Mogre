@@ -38,11 +38,6 @@ namespace BaseMogre
         protected int _nbCubeBoisNecessaire;
 
         /// <summary>
-        /// points de vie du batiment
-        /// </summary>
-        protected int _pointsDeVie;
-
-        /// <summary>
         /// Référence du scenemanager
         /// </summary>
         protected SceneManager _scm;
@@ -62,6 +57,10 @@ namespace BaseMogre
         /// </summary>
         protected Vector3 _position;
 
+        /// <summary>
+        /// Contient tous les cubes utilisés
+        /// </summary>
+        public List<Cube> _listeDesCubes;
         #endregion
 
         #region Getter et Setter
@@ -90,14 +89,6 @@ namespace BaseMogre
         }
 
         /// <summary>
-        /// points de vie du batiment
-        /// </summary>
-        public int PointsDeVie
-        {
-            get { return _pointsDeVie; }
-        }
-
-        /// <summary>
         /// Nom de l'entité
         /// </summary>
         public String NomEntity
@@ -114,15 +105,8 @@ namespace BaseMogre
         }
         #endregion
 
-        #region variables
-        /// <summary>
-        /// Contient tous les cubes utilisés
-        /// </summary>
-        public List<Cube> _listeDesCubes;
-        #endregion
-
         #region constructeur
-        public Batiment(ref SceneManager scm, Vector3 position, String nomBatiment,int PdV,int nbCubeBois=0, int NbCubePierre=0)
+        public Batiment(ref SceneManager scm, Vector3 position, String nomBatiment,int nbCubeBois=0, int NbCubePierre=0)
         {
             //Création de l'Entity et du Scenenode à la position
             _node = scm.RootSceneNode.CreateChildSceneNode(NAMENODE + nomBatiment, position);
@@ -134,7 +118,6 @@ namespace BaseMogre
             _nomEntity = nomBatiment;
 
             //Enregistrement des variables
-            _pointsDeVie = PdV;
             _position = position;
             _nbCubeBoisNecessaire = nbCubeBois;
             _nbCubePierreNecessaire = NbCubePierre;
