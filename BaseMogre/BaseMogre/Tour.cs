@@ -31,7 +31,7 @@ namespace BaseMogre
 
         #region constructeur
         public Tour(ref SceneManager scm,Vector3 position)
-            : base(ref scm, position, NAMEDEFAULT, 100)
+            : base(ref scm, position, NAMEDEFAULT)
         {
             _nombreCube = 1;
             Log.writeNewLine("Tour commencée en (" + this.Position.x + "," + this.Position.y + "," + this.Position.z + ")");
